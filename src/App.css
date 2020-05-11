@@ -1,0 +1,38 @@
+.masthead{
+  border-bottom: 1px solid #ccc;
+  box-shadow: 0 0 10px 2px #ddd;
+  position: relative;
+}
+
+.subheader {
+  background: #f3f3f3;
+  border-bottom: 1px solid #DDD;
+}
+
+.widget-title {
+  max-width: 280px;
+}
+
+@media screen and (max-width: 1200px) {
+  .widget-title {
+    max-width: 250px;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .widget-title {
+    max-width: 150px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .widget-title {
+    max-width: 400px;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .widget-title {
+    max-width: 300px;
+  }
+}
