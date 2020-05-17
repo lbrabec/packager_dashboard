@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import * as moment from 'moment';
+import { connect } from 'react-redux'
 
 import $ from 'jquery';
 
@@ -81,10 +81,11 @@ class WidgetSubTitle extends Component {
   }
 }
 
+
 class WidgetBadge extends Component {
   render() {
     return (
-      <div className="col-auto pl-4 pl-sm-4 p-md-0">
+      <div className="col-auto pl-4 pl-sm-4 pl-md-4 pl-lg-0 p-md-0">
         <span className={"mr-3 font-size-09 p-1 font-weight-normal badge badge-"+this.props.type}>
           <span className="font-weight-bold">
             {this.props.children}
@@ -98,7 +99,7 @@ class WidgetBadge extends Component {
 class WidgetIconDetail extends Component {
   render() {
     return (
-      <div className={"col-auto min-width-3 font-weight-bold mr-3 " + this.props.color}>
+      <div className={"col-auto min-width-3 pl-4 pl-sm-4 pl-md-4 pl-lg-0 font-weight-bold mr-3 " + this.props.color}>
         <div>
           <i className={"pr-1 fa "+this.props.icon} title={this.props.alt}></i>
           {this.props.children}
@@ -233,7 +234,7 @@ class Bug extends Component {
         </WidgetIconDetail>
         {this.props.data.severity === "unspecified"? null : (
         <WidgetIconDetail icon="fa-shield" alt="Security bug severity" color={severity_color(this.props.data.severity)}>
-          {this.props.data.severity}
+          {this.props.data.severity[0].toUpperCase()}
         </WidgetIconDetail>
         )}
       </WidgetRow>
@@ -244,6 +245,7 @@ class Bug extends Component {
 class Override extends Component {
   render() {
     const created = moment.utc(this.props.data.submission_date)
+    const expires = moment.utc(this.props.data.expiration_date)
     const { url, release } = toBodhiReleasesUrl(this.props.data.release)
 
     return (
@@ -258,6 +260,9 @@ class Override extends Component {
             created <span title={created.toDate()}> {created.fromNow()}</span>&nbsp;for <a href={url}>{release}</a>
           </WidgetSubTitle>
         </WidgetHead>
+        <div className="col-xs-auto  pl-4 pl-sm-4 pl-md-4 pl-lg-0 pr-2 text-muted">
+          <small>expires <strong>{expires.fromNow()}</strong></small>
+        </div>
       </WidgetRow>
     )
   }
@@ -272,15 +277,16 @@ class Widget extends Component {
 
   render() {
     const { title, bugs, pull_requests, updates, overrides, orphan} = this.props
-    const bugs_items = bugs.map((bug) => (<Bug data={bug}/>))
+
+    const bugs_items = bugs.map((bug) => (<Bug data={bug} key={"bug"+bug.title}/>))
     const updates_items = updates.map((update) => (<Update data={update} key={title+update.pretty_name}/>))
-    const pull_requests_items = pull_requests.map((pr) => (<PR data={pr}/>))
-    const overrides_items = overrides.map((override) => (<Override data={override}/>))
+    const pull_requests_items = pull_requests.map((pr) => (<PR data={pr} key={"pr"+pr.title}/>))
+    const overrides_items = overrides.map((override) => (<Override data={override} key={"override"+override.pretty_name}/>))
 
     const orphan_badge = orphan.orphanned? (<OrphanBadge since={orphan.orphanned_since} />) : null
 
     return (
-      <div className="widget">
+      <div className="widget card py-3">
         <h5 className="font-weight-bold d-flex align-items-center">
           {title}&nbsp;{orphan_badge}
         </h5>
@@ -296,4 +302,12 @@ class Widget extends Component {
 
 }
 
-export default Widget;
+const mapStateToProps = state => {
+  const { options } = state
+
+  return {
+    options
+  }
+}
+
+export default connect(mapStateToProps)(Widget)

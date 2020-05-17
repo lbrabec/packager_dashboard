@@ -1,3 +1,7 @@
+html, body {
+  height: 100%;
+}
+
 .masthead{
   border-bottom: 1px solid #ccc;
   box-shadow: 0 0 10px 2px #ddd;
@@ -27,7 +31,8 @@
 
 @media screen and (max-width: 768px) {
   .widget-title {
-    max-width: 400px;
+    max-width: 290px;
+    width: 290px !important;
   }
 }
 
@@ -35,4 +40,49 @@
   .widget-title {
     max-width: 300px;
   }
+}
+
+
+.appEntryContainer {
+  height: 100vh !important;
+  min-height: 100vh;
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: #f3f3f3;
+  flex-direction: column  ;
+}
+
+.appEntryContainer img {
+  width: 35em;
+}
+
+.card {
+  border: none;
+  background: none;
+  display: inline-block;
+  width: 100%;
+}
+
+@media screen and (max-width: 375px) {
+  .appEntryContainer img {
+    width: 25em;
+  }
+}
+
+@media (min-width: 576px) {
+  .card-columns {
+      column-count: 1;
+  }
+}
+
+@media (min-width: 768px) {
+  .card-columns {
+      column-count: 2;
+  }
+}
+
+.masthead a {
+  font-size: 1.5em;
 }
