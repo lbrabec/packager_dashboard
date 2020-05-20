@@ -5,10 +5,15 @@ const defaultState = {
     fasuser: "",
     options: {
         show_bugs: true,
+        bug_min_severity: "low",
+        bug_include_unspecified: true,
+
         show_updates: true,
         show_prs: true,
         show_overrides: true,
-        show_orphanned: true
+        show_orphaned: true,
+        show_koschei: true,
+        show_groups: {}
     }
 }
 
@@ -21,15 +26,12 @@ export default (state = defaultState, action) => {
             }
 
         case ActionTypes.UNSET_USER:
-            return {
-                ...state,
-                fasuser: ""
-            }
+            return defaultState
 
         case ActionTypes.LOAD_USER:
             return {
                 ...state,
-                user_data: undefined
+                //user_data: undefined
             }
 
         case ActionTypes.LOAD_USER_RESP:
@@ -39,7 +41,19 @@ export default (state = defaultState, action) => {
             }
 
         case ActionTypes.CHANGE_OPTION:
-            return {
+            return action.payload.group?
+            {
+                ...state,
+                options: {
+                    ...state.options,
+                    show_groups: {
+                        ...state.options.show_groups,
+                        [action.payload.name]: action.payload.value
+                    }
+                }
+            }
+            :
+            {
                 ...state,
                 options: {
                     ...state.options,

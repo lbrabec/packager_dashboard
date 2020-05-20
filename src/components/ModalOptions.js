@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { changeOption } from '../actions/reduxActions'
 import { connect } from 'react-redux'
+import * as R from 'ramda';
 
 
 class ModalOptionsLayout extends Component {
@@ -39,7 +40,7 @@ const valueOf = (t) => {
   }
 }
 
-class OptionsCheckbox extends Component {
+class OptionsSwitch extends Component {
   render() {
     return (
       <div className="custom-control custom-switch">
@@ -60,10 +61,16 @@ class OptionsCheckbox extends Component {
 
 class ModalOptions extends Component {
   handleChange(e) {
-    console.log("form change")
-    console.log(valueOf(e.target))
-
     this.props.dispatch(changeOption({
+      group: false,
+      name: e.target.name,
+      value: valueOf(e.target)
+    }))
+  }
+
+  handleGroupChange(e) {
+    this.props.dispatch(changeOption({
+      group: true,
       name: e.target.name,
       value: valueOf(e.target)
     }))
@@ -72,11 +79,24 @@ class ModalOptions extends Component {
   render() {
     const {
       show_bugs,
+      bug_min_severity,
+      bug_include_unspecified,
+
       show_updates,
       show_prs,
       show_overrides,
-      show_orphanned
+      show_orphaned,
+      show_koschei,
+      show_groups
     } = this.props.options
+
+    const groupSwitches = this.props.groups.map((group) => (
+      <OptionsSwitch name={group} value={show_groups[group] === undefined || show_groups[group]}
+                       handler={this.handleGroupChange.bind(this)}
+                       key={group}>
+        <div className="font-weight-bold">{group}</div>
+      </OptionsSwitch>
+    ))
 
     return (
       <ModalOptionsLayout>
@@ -88,26 +108,55 @@ class ModalOptions extends Component {
                   <small>If checked, the dashboard will show all packages with open bugs.</small>
               </label>
           </div>
+          <div className="form-group pl-as-switch mt-2">
+            <label htmlFor="bug_min_severity">Min shown bug priority/severity</label>
+            <select className="form-control" id="bug_min_severity" name="bug_min_severity"
+                    defaultValue={bug_min_severity}
+                    onChange={this.handleChange.bind(this)}>
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+              <option value="urgent">Urgent</option>
+            </select>
 
-          <OptionsCheckbox name="show_updates" value={show_updates} handler={this.handleChange.bind(this)}>
+            <div className="custom-control custom-checkbox mt-1">
+              <input type="checkbox" className="custom-control-input" id="bug_include_unspecified" name="bug_include_unspecified"
+                     checked={bug_include_unspecified} onChange={this.handleChange.bind(this)}/>
+              <label className="custom-control-label" htmlFor="bug_include_unspecified">
+                Include unspecified
+              </label>
+            </div>
+          </div>
+
+          <OptionsSwitch name="show_updates" value={show_updates} handler={this.handleChange.bind(this)}>
             <div className="font-weight-bold">Show updates</div>
             <small>If checked, the dashboard will show all packages with updates.</small>
-          </OptionsCheckbox>
+          </OptionsSwitch>
 
-          <OptionsCheckbox name="show_prs" value={show_prs} handler={this.handleChange.bind(this)}>
+          <OptionsSwitch name="show_prs" value={show_prs} handler={this.handleChange.bind(this)}>
             <div className="font-weight-bold">Show PRs</div>
             <small>If checked, the dashboard will show all packages with pull requests.</small>
-          </OptionsCheckbox>
+          </OptionsSwitch>
 
-          <OptionsCheckbox name="show_overrides" value={show_overrides} handler={this.handleChange.bind(this)}>
+          <OptionsSwitch name="show_overrides" value={show_overrides} handler={this.handleChange.bind(this)}>
             <div className="font-weight-bold">Show overrides</div>
             <small>If checked, the dashboard will show all packages with override in Bodhi.</small>
-          </OptionsCheckbox>
+          </OptionsSwitch>
 
-          <OptionsCheckbox name="show_orphanned" value={show_orphanned} handler={this.handleChange.bind(this)}>
+          <OptionsSwitch name="show_orphaned" value={show_orphaned} handler={this.handleChange.bind(this)}>
             <div className="font-weight-bold">Show orphanned</div>
-            <small>If checked, the dashboard will show all orphanned packages.</small>
-          </OptionsCheckbox>
+            <small>If checked, the dashboard will show all orphaned packages.</small>
+          </OptionsSwitch>
+
+          <OptionsSwitch name="show_koschei" value={show_koschei} handler={this.handleChange.bind(this)}>
+            <div className="font-weight-bold">Show Koschei fails</div>
+            <small>If checked, the dashboard will show all packages that failed to build in Koschei.</small>
+          </OptionsSwitch>
+
+          <hr />
+          <h5>Groups</h5>
+
+          {groupSwitches}
         </form>
       </ModalOptionsLayout>
     )
@@ -116,7 +165,11 @@ class ModalOptions extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    options: state.options
+    options: state.options,
+    groups: state.user_data === undefined || state.user_data.static_info.status !== 200?
+      []
+      :
+      R.keys(state.user_data.static_info.data.group_packages)
   }
 }
 

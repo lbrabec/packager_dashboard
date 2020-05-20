@@ -114,9 +114,21 @@ class OrphanBadge extends Component {
     const since = moment.utc(this.props.since)
 
     return (
-        <span className="mr-3 font-size-09 p-1 font-weight-normal badge badge-danger">
+        <span className="ml-3 font-size-09 p-1 font-weight-normal badge badge-danger">
           <span className="font-weight-bold">
-          <i class="fas fa-user-slash"></i>&nbsp;Orphanned&nbsp;{since.fromNow()}
+          <i class="fas fa-user-slash"></i>&nbsp;Orphaned&nbsp;{since.fromNow()}
+          </span>
+        </span>
+    )
+  }
+}
+
+class FTBadge extends Component {
+  render() {
+    return (
+        <span className="ml-3 font-size-09 p-1 font-weight-normal badge badge-danger">
+          <span className="font-weight-bold">
+            <i className="fas fa-exclamation-circle"></i>&nbsp;{this.props.children}
           </span>
         </span>
     )
@@ -230,7 +242,7 @@ class Bug extends Component {
           {this.props.data.status}
         </WidgetBadge>
         <WidgetIconDetail icon="fa-comment-o" alt="Number of comments" color="text-muted">
-          X
+          {this.props.data.comments}
         </WidgetIconDetail>
         {this.props.data.severity === "unspecified"? null : (
         <WidgetIconDetail icon="fa-shield" alt="Security bug severity" color={severity_color(this.props.data.severity)}>
@@ -268,6 +280,25 @@ class Override extends Component {
   }
 }
 
+class Koschei extends Component {
+  render() {
+    return (
+      <WidgetRow>
+        <WidgetHead type="This is package fails to build" icon="fa-wrench">
+          <WidgetTitle>
+            <a href={this.props.data.url}>
+              {this.props.title} is failing to build for {this.props.data.release}
+            </a>
+          </WidgetTitle>
+          <WidgetSubTitle>
+            &nbsp;
+          </WidgetSubTitle>
+        </WidgetHead>
+      </WidgetRow>
+    )
+  }
+}
+
 class Widget extends Component {
   componentDidMount() {
     $(function () {
@@ -276,25 +307,38 @@ class Widget extends Component {
   }
 
   render() {
-    const { title, bugs, pull_requests, updates, overrides, orphan} = this.props
+    const { title, bugs, pull_requests, updates, overrides, koschei, isPrimary, orphan} = this.props
 
-    const bugs_items = bugs.map((bug) => (<Bug data={bug} key={"bug"+bug.title}/>))
+    const bugs_items = bugs.map((bug) => (<Bug data={bug} key={bug.url}/>))
     const updates_items = updates.map((update) => (<Update data={update} key={title+update.pretty_name}/>))
     const pull_requests_items = pull_requests.map((pr) => (<PR data={pr} key={"pr"+pr.title}/>))
     const overrides_items = overrides.map((override) => (<Override data={override} key={"override"+override.pretty_name}/>))
+    const koschei_items = koschei.map((k) => (<Koschei title={title} data={k} key={"koschei"+title+k.release}/>))
 
-    const orphan_badge = orphan.orphanned? (<OrphanBadge since={orphan.orphanned_since} />) : null
+    const orphan_badge = orphan.orphaned? (<OrphanBadge since={orphan.orphaned_since} />) : null
+
+    const ftbfs_badge = bugs.map((b) => b.keywords.includes("FTBFS")).some(id => id) ? (<FTBadge>FTBFS</FTBadge>) : null
+    const fti_badge = bugs.map((b) => b.keywords.includes("FTI")).some(id => id) ? (<FTBadge>FTI</FTBadge>) : null
+    const groupIcon = !isPrimary? (<i className="fas fa-users mr-1"></i>) : null
 
     return (
       <div className="widget card py-3">
-        <h5 className="font-weight-bold d-flex align-items-center">
-          {title}&nbsp;{orphan_badge}
-        </h5>
+        <div className="row no-gutters d-flex justify-content-between">
+        <div>
+          <h5 className="font-weight-bold d-flex align-items-center">
+            {title}{orphan_badge}{ftbfs_badge}{fti_badge}
+          </h5>
+        </div>
+        <div>
+          {groupIcon}
+        </div>
+        </div>
         <div className="list-group">
           {bugs_items}
           {updates_items}
           {pull_requests_items}
           {overrides_items}
+          {koschei_items}
         </div>
       </div>
     );

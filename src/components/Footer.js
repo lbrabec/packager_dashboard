@@ -17,7 +17,7 @@ function Footer() {
           bodhi</a> is Free Software under GPL.
         </p>
         <p className="text-light text-center">
-          Please <a href="https://github.com/hroncok/packager-dashboard-mockup" className="text-white-50">
+          Please <a href="https://pagure.io/fedora-qa/packager_dashboard" className="text-white-50">
           file issues and PRs</a>&nbsp;if you have ideas.
         </p>
         <p className="text-light text-center">

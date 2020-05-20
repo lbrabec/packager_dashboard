@@ -86,3 +86,7 @@ html, body {
 .masthead a {
   font-size: 1.5em;
 }
+
+.pl-as-switch {
+  padding-left: 2.25rem;
+}
