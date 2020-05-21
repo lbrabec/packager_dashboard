@@ -13,7 +13,7 @@ import Dashboard from './Dashboard';
 class App extends Component {
   render() {
     return (
-      <BrowserRouter basename='/'>
+      <BrowserRouter basename={window.env.SUBDIR}>
         <Switch>
           <Route path="/" exact>
             <EntryForm />

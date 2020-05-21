@@ -21,8 +21,8 @@ export const loadUser = payload => dispatch => {
         type: ActionTypes.LOAD_USER,
         payload: payload
     });
-    //fetch('http://localhost:5000/api/v1/packager_dashboard/' + payload)
-    fetch('http://192.168.0.87:5000/api/v1/packager_dashboard/' + payload)
+
+    fetch(window.env.PACKAGER_DASHBOARD_API + payload)
     .then(blob => blob.json())
     .then(data => {
         dispatch(loadUserResp(data))
