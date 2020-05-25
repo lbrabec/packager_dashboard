@@ -58,6 +58,62 @@ class OptionsSwitch extends Component {
   }
 }
 
+class CustomRadio extends Component {
+  render() {
+    return (
+      <div className="custom-control custom-radio">
+        <input type="radio"
+              id={this.props.name + "-" + this.props.type}
+              name={this.props.name}
+              value={this.props.type}
+              checked={this.props.value === this.props.type}
+              onChange={this.props.handler}
+              className="custom-control-input" />
+        <label className="custom-control-label" htmlFor={this.props.name + "-" + this.props.type}>
+          {this.props.children}
+        </label>
+      </div>
+    )
+  }
+}
+
+class GroupTriSwitch extends Component {
+  render() {
+    return (
+      <div className="row no-gutters">
+        <div className="col-1">
+          <CustomRadio name={this.props.name}
+                      handler={this.props.handler}
+                      type="always"
+                      value={this.props.value}>
+          </CustomRadio>
+        </div>
+        <div className="col-1">
+          <CustomRadio name={this.props.name}
+                      handler={this.props.handler}
+                      type="mine"
+                      value={this.props.value}>
+          </CustomRadio>
+        </div>
+        <div className="col-1">
+          <CustomRadio name={this.props.name}
+                      handler={this.props.handler}
+                      type="never"
+                      value={this.props.value}>
+          </CustomRadio>
+        </div>
+        <div className="col-auto">
+          <div className="">
+            <label>
+              {this.props.children}
+            </label>
+          </div>
+        </div>
+      </div>
+    )
+  }
+}
+
 
 class ModalOptions extends Component {
   handleChange(e) {
@@ -90,6 +146,7 @@ class ModalOptions extends Component {
       show_groups
     } = this.props.options
 
+    /*
     const groupSwitches = this.props.groups.map((group) => (
       <OptionsSwitch name={group} value={show_groups[group] === undefined || show_groups[group]}
                        handler={this.handleGroupChange.bind(this)}
@@ -97,6 +154,41 @@ class ModalOptions extends Component {
         <div className="font-weight-bold">{group}</div>
       </OptionsSwitch>
     ))
+    */
+    const groupSwitches = this.props.groups.map((group) => (
+    <GroupTriSwitch name={group}
+                    value={show_groups[group] === undefined? "always" : show_groups[group]}
+                    handler={this.handleGroupChange.bind(this)}
+                    key={group}>
+      <div className="font-weight-bold">{group}</div>
+    </GroupTriSwitch>
+    ))
+
+    const groupBlock = (
+      <div>
+        <div className="row no-gutters mb-1">
+          <div className="col-1">
+            <span className="" data-toggle="tooltip" title=""
+               data-original-title="Include all packages maintained by this group regardless of my direct package relationship">
+              <i className="fas fa-eye"></i>
+            </span>
+          </div>
+          <div className="col-1">
+            <span className="" data-toggle="tooltip" title=""
+               data-original-title="Include packages that I directly maintain regardless of their relationship to this group">
+              <i className="fas fa-eye-slash"></i>
+            </span>
+          </div>
+          <div className="col-1">
+            <span style={{paddingLeft: "1px"}} data-toggle="tooltip" title=""
+               data-original-title="Exclude all packages maintained by this group regardless of my direct package relationship">
+              <i className="fas fa-times-circle"></i>
+            </span>
+          </div>
+        </div>
+        {groupSwitches}
+      </div>
+    )
 
     return (
       <ModalOptionsLayout>
@@ -156,7 +248,7 @@ class ModalOptions extends Component {
           <hr />
           <h5>Groups</h5>
 
-          {groupSwitches}
+          {groupBlock}
         </form>
       </ModalOptionsLayout>
     )

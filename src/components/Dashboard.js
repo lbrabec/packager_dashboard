@@ -62,12 +62,20 @@ class Dashboard extends Component {
       show_groups
      } = this.props.options
 
+    const excluded_packages = static_info.status !== 200? [] : R.compose(
+      R.uniq,
+      R.flatten,
+      R.values,
+      R.pickBy((_, group) => show_groups[group] === "never")
+    )(static_info.data.group_packages)
+
     const packages = static_info.status !== 200? [] : R.compose(
+      R.filter((pkg) => !excluded_packages.includes(pkg)),
       R.uniq,
       R.concat(static_info.data.primary_packages),
       R.flatten,
       R.values,
-      R.pickBy((_, group) => show_groups[group] === undefined || show_groups[group])
+      R.pickBy((_, group) => show_groups[group] === undefined || show_groups[group] === "always")
     )(static_info.data.group_packages)
 
     const packages_with_data = packages.filter((pkg_name) => {
