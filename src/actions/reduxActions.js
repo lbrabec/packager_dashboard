@@ -16,7 +16,7 @@ export const loadUserResp = payload => ({
     payload: payload
 })
 
-export const loadUser = payload => dispatch => {
+export const loadUser = payload => (dispatch, getState) => {
     dispatch({
         type: ActionTypes.LOAD_USER,
         payload: payload
@@ -25,12 +25,17 @@ export const loadUser = payload => dispatch => {
     fetch(window.env.PACKAGER_DASHBOARD_API + payload)
     .then(blob => blob.json())
     .then(data => {
-        dispatch(loadUserResp(data))
+        dispatch(loadUserResp({
+            forUser: payload,
+            data: data
+        }))
 
         // retry after 10s if fetched data not complete
-        if(data.bzs.status !== 200 ||
-           data.prs.status !== 200 ||
-           data.static_info.status !== 200){
+        // and user has not changed meanwhile
+        if(getState().fasuser === payload &&
+           (data.bzs.status !== 200 ||
+            data.prs.status !== 200 ||
+            data.static_info.status !== 200)){
             setTimeout(() => dispatch(loadUser(payload)), 10000);
         }
     })

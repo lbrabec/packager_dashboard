@@ -38,9 +38,15 @@ export default (state = defaultState, action) => {
             }
 
         case ActionTypes.LOAD_USER_RESP:
-            return {
+            //drop new payload if user changed
+            return action.payload.forUser === state.fasuser?
+            {
                 ...state,
-                user_data: action.payload
+                user_data: action.payload.data
+            }
+            :
+            {
+                ...state
             }
 
         case ActionTypes.CHANGE_OPTION:
