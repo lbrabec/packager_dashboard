@@ -6,7 +6,7 @@ import * as R from 'ramda';
 
 import { connect } from 'react-redux'
 
-import { setUser, loadUser } from '../actions/reduxActions'
+import { setUser, loadUser, loadOptions } from '../actions/reduxActions'
 
 
 class DashboardLoading extends Component {
@@ -43,10 +43,12 @@ class Dashboard extends Component {
       // dispatch action so the user parserd from url is stored
       this.props.dispatch(setUser(this.props.match.params.fasuser))
     }
+
+    this.props.dispatch(loadOptions(this.props.match.params.fasuser))
   }
 
   render() {
-    if (this.props.user_data === undefined) {
+    if (this.props.fasuser === "" || this.props.user_data === undefined) {
       return (<DashboardLoading />)
     }
     const { bzs, prs, static_info } = this.props.user_data

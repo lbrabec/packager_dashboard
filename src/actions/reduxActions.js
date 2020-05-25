@@ -39,8 +39,38 @@ export const loadUser = payload => dispatch => {
     });
 }
 
-export const changeOption = payload => ({
-    type: ActionTypes.CHANGE_OPTION,
-    payload: payload
-})
+export const changeOption = payload => (dispatch, getState) => {
+    dispatch({
+        type: ActionTypes.CHANGE_OPTION,
+        payload: payload
+    })
 
+    // fasuser needs to be set to proper username right now
+    // if not, this will cause a bug when fasuser === ""
+    // to prevent this, dashboard shouldn't render unless the
+    // username is properly set in global state
+    const { fasuser , options } = getState()
+
+    dispatch(saveOptions({
+        fasuser: fasuser,
+        options: options
+    }))
+}
+
+export const saveOptions = payload => dispatch => {
+    dispatch({
+        type: ActionTypes.SAVE_OPTIONS,
+        payload: payload
+    })
+
+    localStorage.setItem(payload.fasuser, JSON.stringify(payload.options))
+}
+
+export const loadOptions = payload => dispatch => {
+    const options = JSON.parse(localStorage.getItem(payload))
+
+    dispatch({
+        type: ActionTypes.LOAD_OPTIONS,
+        payload: options
+    })
+}

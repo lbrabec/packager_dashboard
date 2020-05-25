@@ -39,8 +39,6 @@ class EntryForm extends Component {
       <div className="appEntryContainer">
         <img src={logo} alt='Fedora Packager Dashboard' className="pb-4" />
 
-        <h3 className="pb-4">Log In</h3>
-
         <form className="form-inline" onSubmit={this.handleSubmit.bind(this)}>
             <div className="form-group mb-2 pr-2">
               <input type="text" className="form-control form-control-lg" id="fasusernameInput" placeholder="FAS Username" ref={this.input} defaultValue="" />

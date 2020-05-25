@@ -1,21 +1,24 @@
 import ActionTypes from '../constants';
 
+const defaultOptions = {
+    show_bugs: true,
+    bug_min_severity: "low",
+    bug_include_unspecified: true,
+
+    show_updates: true,
+    show_prs: true,
+    show_overrides: true,
+    show_orphaned: true,
+    show_koschei: true,
+    show_groups: {}
+}
+
 const defaultState = {
     user_data: undefined,
     fasuser: "",
-    options: {
-        show_bugs: true,
-        bug_min_severity: "low",
-        bug_include_unspecified: true,
-
-        show_updates: true,
-        show_prs: true,
-        show_overrides: true,
-        show_orphaned: true,
-        show_koschei: true,
-        show_groups: {}
-    }
+    options: defaultOptions
 }
+
 
 export default (state = defaultState, action) => {
     switch (action.type) {
@@ -59,6 +62,12 @@ export default (state = defaultState, action) => {
                     ...state.options,
                     [action.payload.name]: action.payload.value
                 }
+            }
+
+        case ActionTypes.LOAD_OPTIONS:
+            return {
+                ...state,
+                options: action.payload === null? defaultOptions : action.payload
             }
 
         default:
