@@ -36,6 +36,16 @@ const filterBugsByOptions = (bugs, options) => {
 
 
 class Dashboard extends Component {
+  constructor(props){
+    super(props)
+
+    this.state = {
+      search: RegExp("")
+    }
+
+    this.searchTimeout = undefined
+  }
+
   componentDidMount() {
     this.props.dispatch(loadUser(this.props.match.params.fasuser))
 
@@ -45,6 +55,13 @@ class Dashboard extends Component {
     }
 
     this.props.dispatch(loadOptions(this.props.match.params.fasuser))
+  }
+
+  searchHandler(re){
+    // debounce the setState
+    clearTimeout(this.searchTimeout)
+    //const value = e.target.value
+    this.searchTimeout = setTimeout(() => this.setState({search: re}), 500)
   }
 
   render() {
@@ -70,6 +87,7 @@ class Dashboard extends Component {
     )(static_info.data.group_packages)
 
     const packages = static_info.status !== 200? [] : R.compose(
+      R.filter(R.test(this.state.search)),
       R.filter((pkg) => !excluded_packages.includes(pkg)),
       R.uniq,
       R.concat(static_info.data.primary_packages),
@@ -106,7 +124,8 @@ class Dashboard extends Component {
 
   return (
     <div className="App">
-      <Masthead bzsLoading={bzs.status !== 200} prsLoading={prs.status !== 200} siLoading={static_info.status !== 200} />
+      <Masthead bzsLoading={bzs.status !== 200} prsLoading={prs.status !== 200} siLoading={static_info.status !== 200}
+                searchHandler={this.searchHandler.bind(this)} />
       <div className="bodycontent">
         <div className="subheader">
           <div className="container">

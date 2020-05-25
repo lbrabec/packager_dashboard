@@ -11,24 +11,47 @@ const cookies = new Cookies();
 
 
 class Masthead extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      style: ""
+    }
+  }
+
   logout() {
     cookies.remove('fasusername')
     this.props.dispatch(unsetUser())
   }
 
+  searchHandler(e){
+    // Don't fail when malformed regexp str is provided
+    // indicate it by red color in search input
+    try {
+      const re = RegExp(e.target.value)
+      this.setState({style: ""})
+      this.props.searchHandler(re)
+    }
+    // Gotta Catch 'Em All!
+    catch (err) {
+      this.setState({style: "text-danger"})
+    }
+  }
+
   render() {
-    const si_spinner = this.props.siLoading? (<span><i className="fas fa-sync-alt fa-spin"></i> Loading Packages</span>) : null
-    const bzs_spinner = this.props.bzsLoading? (<span><i className="fas fa-sync-alt fa-spin"></i> Loading Bugs</span>) : null
-    const prs_spinner = this.props.prsLoading? (<span><i className="fas fa-sync-alt fa-spin"></i> Loading PRs</span>) : null
+    const spinner = this.props.siLoading || this.props.bzsLoading || this.props.prsLoading?
+      (<i className="fas fa-sync-alt fa-spin"></i>) : null
 
     return (
       <div className="masthead navbar py-2">
         <div className="container">
           <img src={logo} alt='Fedora Packager Dashboard'/>
           <div>
-            {si_spinner}&nbsp;&nbsp;&nbsp;{bzs_spinner}&nbsp;&nbsp;&nbsp;{prs_spinner}
+            {spinner}
           </div>
-          <div>
+          <div className="form-inline">
+            <input className={"form-control form-control-inline mr-4 "+this.state.style}
+                   type="search" placeholder="Search" aria-label="Search"
+                   onChange={this.searchHandler.bind(this)} />
             <a href="#options" data-toggle="modal"><i className="fas fa-cog pr-4"></i></a>
             <Link onClick={this.logout.bind(this)} to="/"><i className="fas fa-sign-out-alt"></i></Link>
           </div>
