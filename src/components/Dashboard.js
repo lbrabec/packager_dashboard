@@ -19,22 +19,6 @@ class DashboardLoading extends Component {
   }
 }
 
-
-const filterBugsByOptions = (bugs, options) => {
-  const severities = ["unspecified", "low", "medium", "high", "urgent"]
-
-  if(!options.show_bugs)
-    return []
-
-  return bugs.filter((bug) => {
-    if(bug.severity === "unspecified")
-      return options.bug_include_unspecified
-
-    return severities.indexOf(bug.severity) >= severities.indexOf(options.bug_min_severity)
-  })
-}
-
-
 class Dashboard extends Component {
   constructor(props){
     super(props)
@@ -64,20 +48,74 @@ class Dashboard extends Component {
     this.searchTimeout = setTimeout(() => this.setState({search: re}), 500)
   }
 
+  filterBugs(pkg) {
+    const { bzs } = this.props.user_data
+    const { options } = this.props
+    const severities = ["unspecified", "low", "medium", "high", "urgent"]
+
+    if(bzs.status === 204 || !options.show_bugs)
+      return []
+
+    return bzs.data[pkg].filter((bug) => {
+      if(bug.severity === "unspecified")
+        return options.bug_include_unspecified
+
+      return severities.indexOf(bug.severity) >= severities.indexOf(options.bug_min_severity)
+    })
+  }
+
+  filterPRs(pkg) {
+    const { prs } = this.props.user_data
+    const { options } = this.props
+    if(prs.status === 204 || !options.show_prs)
+      return []
+
+    return prs.data[pkg]
+  }
+
+  filterUpdates(pkg) {
+    const { static_info } = this.props.user_data
+    const { options } = this.props
+    if(!options.show_updates)
+      return []
+
+    return static_info.data.updates[pkg]
+  }
+
+  filterOverrides(pkg) {
+    const { static_info } = this.props.user_data
+    const { options } = this.props
+    if(!options.show_overrides)
+      return []
+
+    return static_info.data.overrides[pkg]
+  }
+
+  filterKoschei(pkg) {
+    const { static_info } = this.props.user_data
+    const { options } = this.props
+    if(!options.show_koschei)
+      return []
+
+    return static_info.data.koschei[pkg].filter((k) => k.status=== "failing")
+  }
+
+  filterOrphan(pkg) {
+    const { static_info } = this.props.user_data
+    const { options } = this.props
+    if(!options.show_orphaned)
+      return {orphaned: false, orphaned_since: null}
+
+    return static_info.data.orphans[pkg]
+  }
+
   render() {
     if (this.props.fasuser === "" || this.props.user_data === undefined) {
       return (<DashboardLoading />)
     }
     const { bzs, prs, static_info } = this.props.user_data
-    const {
-      show_bugs,
-      show_updates,
-      show_prs,
-      show_overrides,
-      show_orphaned,
-      show_koschei,
-      show_groups
-     } = this.props.options
+    const { options } = this.props
+    const { show_groups } = options
 
     const excluded_packages = static_info.status !== 200? [] : R.compose(
       R.uniq,
@@ -96,31 +134,28 @@ class Dashboard extends Component {
       R.pickBy((_, group) => show_groups[group] === undefined || show_groups[group] === "always")
     )(static_info.data.group_packages)
 
-    const packages_with_data = packages.filter((pkg_name) => {
-      //const bugs_cnt = bzs.status === 204 || !show_bugs ? 0 : bzs.data[pkg_name].length
-      const bugs_cnt = bzs.status === 204? 0 : filterBugsByOptions(bzs.data[pkg_name], this.props.options).length
-      const pull_requests_cnt = prs.status === 204 || !show_prs? 0 : prs.data[pkg_name].length
-      const updates_cnt = !show_updates? 0 : static_info.data.updates[pkg_name].length
-      const overrides_cnt = !show_overrides? 0 : static_info.data.overrides[pkg_name].length
-      const koschei = !show_koschei? 0 : static_info.data.koschei[pkg_name].filter((k) => k.status=== "failing").length
-      const orphan = static_info.data.orphans[pkg_name].orphaned && show_orphaned? 1 : 0
-
-      return bugs_cnt + pull_requests_cnt + updates_cnt + overrides_cnt + koschei + orphan > 0
-    })
-
-  const packages_cards = R.sortBy((pkg) => pkg.toLowerCase(), [...new Set(packages_with_data)]).map((pkg_name)=>(
-    <Widget title={pkg_name}
-            //bugs={bzs.status === 204 || !show_bugs ? [] : bzs.data[pkg_name]}
-            bugs={bzs.status === 204 ? [] : filterBugsByOptions(bzs.data[pkg_name], this.props.options)}
-            pull_requests={prs.status === 204 || !show_prs? [] : prs.data[pkg_name]}
-            updates={!show_updates? [] : static_info.data.updates[pkg_name]}
-            overrides={!show_overrides? [] : static_info.data.overrides[pkg_name]}
-            orphan={!show_orphaned? {orphaned: false, orphaned_since: null} : static_info.data.orphans[pkg_name]}
-            koschei={!show_koschei? [] : static_info.data.koschei[pkg_name].filter((k) => k.status=== "failing")}
-            isPrimary={static_info.data.primary_packages.includes(pkg_name)}
-            key={pkg_name}
-    />
-  ))
+  const package_cards_ng = R.compose(
+    R.map(pkg => (
+      <Widget title={pkg.name} {...pkg.data} isPrimary={static_info.data.primary_packages.includes(pkg.name)} key={pkg.name}/>
+    )),
+    R.filter(pkg => {
+      return pkg.data.bugs.length +
+             pkg.data.pull_requests.length +
+             pkg.data.updates.length +
+             pkg.data.overrides.length +
+             pkg.data.koschei.length +
+            (pkg.data.orphan.orphaned? 1 : 0) > 0
+    }),
+    R.map(pkg => ({name: pkg, data: {
+      bugs: this.filterBugs(pkg),
+      pull_requests: this.filterPRs(pkg),
+      updates: this.filterUpdates(pkg),
+      overrides: this.filterOverrides(pkg),
+      koschei: this.filterKoschei(pkg),
+      orphan: this.filterOrphan(pkg)
+    }})),
+    R.sortBy(pkg => pkg.toLowerCase())
+  )(packages)
 
   return (
     <div className="App">
@@ -130,7 +165,7 @@ class Dashboard extends Component {
         <div className="subheader">
           <div className="container">
             <div className="card-columns py-md-4">
-              {packages_cards}
+              {package_cards_ng}
             </div>
           </div>
         </div>

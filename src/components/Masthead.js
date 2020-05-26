@@ -42,19 +42,26 @@ class Masthead extends Component {
       (<i className="fas fa-sync-alt fa-spin"></i>) : null
 
     return (
-      <div className="masthead navbar py-2">
-        <div className="container">
+      <div className="masthead navbar py-1 px-0 px-md-2">
+        <div className="container px-1 px-md-2">
           <img src={logo} alt='Fedora Packager Dashboard'/>
           <div>
             {spinner}
           </div>
-          <div className="form-inline">
-            <input className={"form-control form-control-inline mr-4 "+this.state.style}
-                   type="search" placeholder="Search" aria-label="Search"
-                   onChange={this.searchHandler.bind(this)} />
-            <a href="#options" data-toggle="modal"><i className="fas fa-cog pr-4"></i></a>
-            <Link onClick={this.logout.bind(this)} to="/"><i className="fas fa-sign-out-alt"></i></Link>
-          </div>
+          <nav className="navbar-expand-lg navbar-light">
+            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span className="navbar-toggler-icon"></span>
+            </button>
+            <div className="collapse navbar-collapse" id="navbarContent">
+              <div className="form-inline">
+                <input className={"form-control form-control-inline mr-4 "+this.state.style}
+                      type="search" placeholder="Search" aria-label="Search"
+                      onChange={this.searchHandler.bind(this)} />
+                <a href="#options" data-toggle="modal"><i className="fas fa-cog pr-4"></i></a>
+                <Link onClick={this.logout.bind(this)} to="/"><i className="fas fa-sign-out-alt"></i></Link>
+              </div>
+            </div>
+          </nav>
         </div>
         <ModalOptions />
       </div>
