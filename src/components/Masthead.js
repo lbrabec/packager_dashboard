@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PureComponent } from 'react';
 import logo from '../logo.svg';
 import { Link } from 'react-router-dom'
 import Cookies from 'universal-cookie';
@@ -10,7 +10,7 @@ import ModalOptions from './ModalOptions';
 const cookies = new Cookies();
 
 
-class Masthead extends Component {
+class Masthead extends PureComponent {
   constructor(props){
     super(props)
     this.state = {
@@ -48,22 +48,30 @@ class Masthead extends Component {
           <div>
             {spinner}
           </div>
-          <nav className="navbar-expand-lg navbar-light">
-            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+          <nav className="navbar-expand-md navbar-light">
+            <button className="navbar-toggler" type="button"
+                    data-toggle="collapse" data-target="#navbarContent"
+                    aria-controls="navbarContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
               <span className="navbar-toggler-icon"></span>
             </button>
+          </nav>
+          <nav className="navbar-expand-md navbar-light">
             <div className="collapse navbar-collapse" id="navbarContent">
-              <div className="form-inline">
-                <input className={"form-control form-control-inline mr-4 "+this.state.style}
-                      type="search" placeholder="Search" aria-label="Search"
-                      onChange={this.searchHandler.bind(this)} />
-                <a href="#options" data-toggle="modal"><i className="fas fa-cog pr-4"></i></a>
+              <div className="d-flex flex-row align-items-center">
+                <div className="mr-4 mt-1 mt-sm-0">
+                  <input className={"form-control "+this.state.style}
+                        type="search" placeholder="Search" aria-label="Search"
+                        onChange={this.searchHandler.bind(this)} />
+                </div>
+                <a data-target="#options" data-toggle="modal"><i className="fas fa-cog pr-4"></i></a>
                 <Link onClick={this.logout.bind(this)} to="/"><i className="fas fa-sign-out-alt"></i></Link>
               </div>
             </div>
           </nav>
+
+          <ModalOptions />
         </div>
-        <ModalOptions />
       </div>
     )
   }

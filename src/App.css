@@ -1,5 +1,7 @@
 html, body {
   height: 100%;
+  padding-right: 0 !important;
+  overflow: visible;
 }
 
 .masthead{
@@ -11,6 +13,7 @@ html, body {
 .subheader {
   background: #f3f3f3;
   border-bottom: 1px solid #DDD;
+  min-height: calc(100vh - 40px);
 }
 
 .widget-title {
@@ -55,7 +58,7 @@ html, body {
 }
 
 .appEntryContainer img {
-  width: 35em;
+  height: 5em;
 }
 
 .card {
@@ -85,8 +88,63 @@ html, body {
 
 .masthead a {
   font-size: 1.5em;
+  color: #3c6eb4 !important;
+  cursor: pointer;
+}
+
+.masthead a:hover {
+  color: #294b7b !important;
 }
 
 .pl-as-switch {
   padding-left: 2.25rem;
+}
+
+.modal {
+  padding-right: 0 !important;
+  pointer-events: none !important;
+  top: 50px;
+}
+
+.modal-dialog-slideout {
+  !min-height: 100%;
+  !height: 100%;
+  margin: 0 0 0 auto;
+  background: #fff;
+  width: 350px;
+}
+.modal.fade .modal-dialog.modal-dialog-slideout {
+  -webkit-transform: translate(100%,0)scale(1);
+  transform: translate(100%,0)scale(1);}
+.modal.fade.show .modal-dialog.modal-dialog-slideout {
+  -webkit-transform: translate(0,0);
+  transform: translate(0,0);
+  display: flex;
+  align-items: stretch;
+  -webkit-box-align: stretch;
+  !height: 100%;
+}
+.modal.fade.show .modal-dialog.modal-dialog-slideout .modal-body{
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.modal-dialog-slideout .modal-content{
+  border-radius: 0;
+}
+.modal-dialog-slideout .modal-header, .modal-dialog-slideout .modal-footer {
+  display: flex;
+  justify-content: space-between;
+  background-color: #fff;
+}
+.modal-dialog-slideout .modal-header h5 {
+
+}
+
+.modal-open {
+  overflow: visible !important;
+  padding-right: 0 !important;
+}
+
+.modal-backdrop {
+  display: none !important;
 }

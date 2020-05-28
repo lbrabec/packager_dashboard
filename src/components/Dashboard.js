@@ -19,6 +19,8 @@ class DashboardLoading extends Component {
   }
 }
 
+const EMPTY_ARRAY = []
+
 class Dashboard extends Component {
   constructor(props){
     super(props)
@@ -54,7 +56,7 @@ class Dashboard extends Component {
     const severities = ["unspecified", "low", "medium", "high", "urgent"]
 
     if(bzs.status === 204 || !options.show_bugs)
-      return []
+      return EMPTY_ARRAY
 
     return bzs.data[pkg].filter((bug) => {
       if(bug.severity === "unspecified")
@@ -68,7 +70,7 @@ class Dashboard extends Component {
     const { prs } = this.props.user_data
     const { options } = this.props
     if(prs.status === 204 || !options.show_prs)
-      return []
+      return EMPTY_ARRAY
 
     return prs.data[pkg]
   }
@@ -77,7 +79,7 @@ class Dashboard extends Component {
     const { static_info } = this.props.user_data
     const { options } = this.props
     if(!options.show_updates)
-      return []
+      return EMPTY_ARRAY
 
     return static_info.data.updates[pkg]
   }
@@ -86,7 +88,7 @@ class Dashboard extends Component {
     const { static_info } = this.props.user_data
     const { options } = this.props
     if(!options.show_overrides)
-      return []
+      return EMPTY_ARRAY
 
     return static_info.data.overrides[pkg]
   }
@@ -95,7 +97,7 @@ class Dashboard extends Component {
     const { static_info } = this.props.user_data
     const { options } = this.props
     if(!options.show_koschei)
-      return []
+      return EMPTY_ARRAY
 
     return static_info.data.koschei[pkg].filter((k) => k.status=== "failing")
   }
@@ -110,7 +112,9 @@ class Dashboard extends Component {
   }
 
   render() {
-    if (this.props.fasuser === "" || this.props.user_data === undefined) {
+    if (this.props.fasuser === "" ||
+        this.props.user_data === undefined || // mind the order (lazy eval)
+        this.props.user_data.static_info.status !== 200) {
       return (<DashboardLoading />)
     }
     const { bzs, prs, static_info } = this.props.user_data
@@ -134,45 +138,67 @@ class Dashboard extends Component {
       R.pickBy((_, group) => show_groups[group] === undefined || show_groups[group] === "always")
     )(static_info.data.group_packages)
 
-  const package_cards_ng = R.compose(
-    R.map(pkg => (
-      <Widget title={pkg.name} {...pkg.data} isPrimary={static_info.data.primary_packages.includes(pkg.name)} key={pkg.name}/>
-    )),
-    R.filter(pkg => {
-      return pkg.data.bugs.length +
-             pkg.data.pull_requests.length +
-             pkg.data.updates.length +
-             pkg.data.overrides.length +
-             pkg.data.koschei.length +
-            (pkg.data.orphan.orphaned? 1 : 0) > 0
-    }),
-    R.map(pkg => ({name: pkg, data: {
-      bugs: this.filterBugs(pkg),
-      pull_requests: this.filterPRs(pkg),
-      updates: this.filterUpdates(pkg),
-      overrides: this.filterOverrides(pkg),
-      koschei: this.filterKoschei(pkg),
-      orphan: this.filterOrphan(pkg)
-    }})),
-    R.sortBy(pkg => pkg.toLowerCase())
-  )(packages)
+    const all_group_packages = R.compose(
+      R.uniq,
+      R.flatten,
+      R.values
+    )(static_info.data.group_packages)
 
-  return (
-    <div className="App">
-      <Masthead bzsLoading={bzs.status !== 200} prsLoading={prs.status !== 200} siLoading={static_info.status !== 200}
-                searchHandler={this.searchHandler.bind(this)} />
-      <div className="bodycontent">
-        <div className="subheader">
-          <div className="container">
-            <div className="card-columns py-md-4">
-              {package_cards_ng}
+    const ownershipIcon = (pkg) => {
+
+      if(all_group_packages.includes(pkg)){
+        if(static_info.data.primary_packages.includes(pkg)){
+          // primary and group ownership
+          return (<i className="fas fa-user mr-1"></i>)
+        } else {
+          // group ownership only
+          return (<i className="fas fa-users mr-1"></i>)
+        }
+      } else {
+        // primary ownership only
+        return (null)
+      }
+    }
+
+    const package_cards = R.compose(
+      R.map(pkg => (
+        <Widget title={pkg.name} {...pkg.data} ownershipIcon={ownershipIcon(pkg.name)} key={pkg.name}/>
+      )),
+      R.filter(pkg => {
+        return pkg.data.bugs.length +
+               pkg.data.pull_requests.length +
+               pkg.data.updates.length +
+               pkg.data.overrides.length +
+               pkg.data.koschei.length +
+              (pkg.data.orphan.orphaned? 1 : 0) > 0
+      }),
+      R.map(pkg => ({name: pkg, data: {
+        bugs: this.filterBugs(pkg),
+        pull_requests: this.filterPRs(pkg),
+        updates: this.filterUpdates(pkg),
+        overrides: this.filterOverrides(pkg),
+        koschei: this.filterKoschei(pkg),
+        orphan: this.filterOrphan(pkg)
+      }})),
+      R.sortBy(pkg => pkg.toLowerCase())
+    )(packages)
+
+    return (
+      <div className="App">
+        <Masthead bzsLoading={bzs.status !== 200} prsLoading={prs.status !== 200} siLoading={static_info.status !== 200}
+                  searchHandler={this.searchHandler.bind(this)} />
+        <div className="bodycontent">
+          <div className="subheader">
+            <div className="container">
+              <div className="card-columns py-md-4">
+                {package_cards}
+              </div>
             </div>
           </div>
         </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
-  )
+    )
   }
 }
 

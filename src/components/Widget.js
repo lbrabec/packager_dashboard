@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PureComponent } from 'react';
 import * as moment from 'moment';
 import { connect } from 'react-redux'
 
@@ -32,7 +32,8 @@ const toBodhiReleasesUrl = (release) => {
   }
 }
 
-class WidgetRow extends Component {
+
+class WidgetRow extends PureComponent {
   render() {
     return (
       <div className="list-group-item p-1">
@@ -44,7 +45,16 @@ class WidgetRow extends Component {
   }
 }
 
-class WidgetHead extends Component {
+
+const WidgetRowx = (props) => (
+  <div className="list-group-item p-1">
+    <div className="row align-items-center no-gutters">
+      {props.children}
+    </div>
+  </div>
+)
+
+class WidgetHead extends PureComponent {
   render() {
     return (
       <div className="col-md">
@@ -59,7 +69,7 @@ class WidgetHead extends Component {
   }
 }
 
-class WidgetTitle extends Component {
+class WidgetTitle extends PureComponent {
   render() {
     return (
       <div className="font-weight-bold text-truncate widget-title" data-toggle="tooltip" title="" data-original-title={this.props.fulltitle}>
@@ -69,7 +79,7 @@ class WidgetTitle extends Component {
   }
 }
 
-class WidgetSubTitle extends Component {
+class WidgetSubTitle extends PureComponent {
   render() {
     return (
       <div className="line-height-1">
@@ -82,7 +92,7 @@ class WidgetSubTitle extends Component {
 }
 
 
-class WidgetBadge extends Component {
+class WidgetBadge extends PureComponent {
   render() {
     return (
       <div className="col-auto pl-4 pl-sm-4 pl-md-4 pl-lg-0 p-md-0">
@@ -96,7 +106,7 @@ class WidgetBadge extends Component {
   }
 }
 
-class WidgetIconDetail extends Component {
+class WidgetIconDetail extends PureComponent {
   render() {
     return (
       <div className={"col-auto min-width-3 pl-4 pl-sm-4 pl-md-4 pl-lg-0 font-weight-bold mr-3 " + this.props.color}>
@@ -109,7 +119,7 @@ class WidgetIconDetail extends Component {
   }
 }
 
-class OrphanBadge extends Component {
+class OrphanBadge extends PureComponent {
   render() {
     const since = moment.utc(this.props.since)
 
@@ -123,7 +133,7 @@ class OrphanBadge extends Component {
   }
 }
 
-class FTBadge extends Component {
+class FTBadge extends PureComponent {
   render() {
     return (
         <span className="ml-3 font-size-09 p-1 font-weight-normal badge badge-danger">
@@ -135,24 +145,26 @@ class FTBadge extends Component {
   }
 }
 
-class Update extends Component {
-  render() {
-    const created = moment.utc(this.props.data.submission_date)
-    const { url, release } = toBodhiReleasesUrl(this.props.data.release)
-    const color = (karma) => {
-      if(karma>0)
-        return "text-success"
-      if(karma<0)
-        return "text-danger"
+const karma_color = (karma) => {
+  if(karma>0)
+    return "text-success"
+  if(karma<0)
+    return "text-danger"
 
-      return "text-muted"
-    }
+  return "text-muted"
+}
+
+class Update extends PureComponent {
+  render() {
+    const created = moment.utc(this.props.submission_date)
+    const { url, release } = toBodhiReleasesUrl(this.props.release)
+
     return (
       <WidgetRow>
         <WidgetHead type="This is an enhancement update" icon="fa-bolt">
-          <WidgetTitle fulltitle={this.props.data.pretty_name}>
-            <a href={this.props.data.url}>
-              {this.props.data.pretty_name}
+          <WidgetTitle fulltitle={this.props.pretty_name}>
+            <a href={this.props.url}>
+              {this.props.pretty_name}
             </a>
           </WidgetTitle>
           <WidgetSubTitle>
@@ -160,93 +172,94 @@ class Update extends Component {
           </WidgetSubTitle>
         </WidgetHead>
         <WidgetBadge type="warning">
-          {this.props.data.status}
+          {this.props.status}
         </WidgetBadge>
         <WidgetIconDetail icon="fa-comment-o" alt="Number of comments" color="text-muted">
-          {this.props.data.comments}
+          {this.props.comments}
         </WidgetIconDetail>
-        <WidgetIconDetail icon="fa-thumbs-up" alt="Karma" color={color(this.props.data.karma)}>
-          {this.props.data.karma}
+        <WidgetIconDetail icon="fa-thumbs-up" alt="Karma" color={karma_color(this.props.karma)}>
+          {this.props.karma}
         </WidgetIconDetail>
       </WidgetRow>
     )
   }
 }
 
-class PR extends Component {
+class PR extends PureComponent {
   render() {
-    const created = moment.utc(this.props.data.date_created)
-    const status = this.props.data.ci_status===null? "unknown" : this.props.data.ci_status
+    const created = moment.utc(this.props.date_created)
+    const status = this.props.ci_status===null? "unknown" : this.props.ci_status
 
     return (
       <WidgetRow>
         <WidgetHead type="This is a pull request" icon="fa-git">
           <WidgetTitle>
-            <a href={this.props.data.url}>
-              {this.props.data.title}
+            <a href={this.props.url}>
+              {this.props.title}
             </a>
           </WidgetTitle>
           <WidgetSubTitle>
-            opened <span title={created.toDate()}> {created.fromNow()}</span>&nbsp;by {this.props.data.author}
+            opened <span title={created.toDate()}> {created.fromNow()}</span>&nbsp;by {this.props.author}
           </WidgetSubTitle>
         </WidgetHead>
         <WidgetBadge type="warning">
           CI {status}
         </WidgetBadge>
         <WidgetIconDetail icon="fa-comment-o" alt="Number of comments" color="text-muted">
-          {this.props.data.comments}
+          {this.props.comments}
         </WidgetIconDetail>
       </WidgetRow>
     )
   }
 }
 
-class Bug extends Component {
+const badge_color = (text) => {
+  if(text === "new")
+    return "danger"
+  if(text === "on_qa")
+    return "primary"
+
+  return "info"
+}
+
+const severity_color = (severity) => {
+  if(severity === "urgent")
+    return "text-danger"
+  if(severity === "high" || severity === "medium")
+    return "text-warning"
+  if(severity === "low")
+    return "text-info"
+
+  return "text-muted"
+}
+
+
+class Bug extends PureComponent {
   render() {
-    const reported = moment.utc(this.props.data.reported.replace(/:/g, ""))
-
-    const badge_color = (text) => {
-      if(text === "new")
-        return "danger"
-      if(text === "on_qa")
-        return "primary"
-
-      return "info"
-    }
-
-    const severity_color = (severity) => {
-      if(severity === "urgent")
-        return "text-danger"
-      if(severity === "high" || severity === "medium")
-        return "text-warning"
-      if(severity === "low")
-        return "text-info"
-
-      return "text-muted"
-    }
+    const reported = moment.utc(this.props.reported.replace(/:/g, ""))
 
     return (
       <WidgetRow>
         <WidgetHead type="This is a bug" icon="fa-bug">
-          <WidgetTitle fulltitle={this.props.data.title}>
-            <a href={this.props.data.url}>
-              {this.props.data.title}
+          <WidgetTitle fulltitle={this.props.title}>
+            <a href={this.props.url}>
+              {this.props.title}
             </a>
           </WidgetTitle>
           <WidgetSubTitle>
-            #{this.props.data.bug_id} opened
-            <span title={reported.toDate()}> {reported.fromNow()}</span> for Fedora {this.props.data.release}
+            #{this.props.bug_id} opened
+            <span title={reported.toDate()}> {reported.fromNow()}</span> for Fedora {this.props.release}
           </WidgetSubTitle>
         </WidgetHead>
-        <WidgetBadge type={badge_color(this.props.data.status.toLowerCase())}>
-          {this.props.data.status}
+        <WidgetBadge type={badge_color(this.props.status.toLowerCase())}>
+          {this.props.status}
         </WidgetBadge>
         <WidgetIconDetail icon="fa-comment-o" alt="Number of comments" color="text-muted">
-          {this.props.data.comments}
+          {this.props.comments}
         </WidgetIconDetail>
-        {this.props.data.severity === "unspecified"? null : (
-        <WidgetIconDetail icon="fa-shield" alt="Security bug severity" color={severity_color(this.props.data.severity)}>
-          {this.props.data.severity[0].toUpperCase()}
+        {this.props.severity === "unspecified"? null : (
+        <WidgetIconDetail icon="fa-shield" alt="Security bug severity" color={severity_color(this.props.severity)}>
+          {this.props.severity[0].toUpperCase()}
         </WidgetIconDetail>
         )}
       </WidgetRow>
@@ -254,18 +267,18 @@ class Bug extends Component {
   }
 }
 
-class Override extends Component {
+class Override extends PureComponent {
   render() {
-    const created = moment.utc(this.props.data.submission_date)
-    const expires = moment.utc(this.props.data.expiration_date)
-    const { url, release } = toBodhiReleasesUrl(this.props.data.release)
+    const created = moment.utc(this.props.submission_date)
+    const expires = moment.utc(this.props.expiration_date)
+    const { url, release } = toBodhiReleasesUrl(this.props.release)
 
     return (
       <WidgetRow>
         <WidgetHead type="This is an override" icon="fa-shapes">
           <WidgetTitle>
-            <a href={this.props.data.url}>
-              {this.props.data.pretty_name}
+            <a href={this.props.url}>
+              {this.props.pretty_name}
             </a>
           </WidgetTitle>
           <WidgetSubTitle>
@@ -280,14 +293,14 @@ class Override extends Component {
   }
 }
 
-class Koschei extends Component {
+class Koschei extends PureComponent {
   render() {
     return (
       <WidgetRow>
         <WidgetHead type="This is package fails to build" icon="fa-wrench">
           <WidgetTitle>
-            <a href={this.props.data.url}>
-              {this.props.title} is failing to build for {this.props.data.release}
+            <a href={this.props.url}>
+              {this.props.title} is failing to build for {this.props.release}
             </a>
           </WidgetTitle>
           <WidgetSubTitle>
@@ -299,7 +312,7 @@ class Koschei extends Component {
   }
 }
 
-class Widget extends Component {
+class Widget extends PureComponent {
   componentDidMount() {
     $(function () {
       $('[data-toggle="tooltip"]').tooltip()
@@ -307,19 +320,18 @@ class Widget extends Component {
   }
 
   render() {
-    const { title, bugs, pull_requests, updates, overrides, koschei, isPrimary, orphan} = this.props
+    const { title, bugs, pull_requests, updates, overrides, koschei, ownershipIcon, orphan} = this.props
 
-    const bugs_items = bugs.map((bug) => (<Bug data={bug} key={bug.url}/>))
-    const updates_items = updates.map((update) => (<Update data={update} key={title+update.pretty_name}/>))
-    const pull_requests_items = pull_requests.map((pr) => (<PR data={pr} key={"pr"+pr.title}/>))
-    const overrides_items = overrides.map((override) => (<Override data={override} key={"override"+override.pretty_name}/>))
-    const koschei_items = koschei.map((k) => (<Koschei title={title} data={k} key={"koschei"+title+k.release}/>))
+    const bugs_items = bugs.map((bug) => (<Bug {...bug} key={bug.url}/>))
+    const updates_items = updates.map((update) => (<Update {...update} key={title+update.pretty_name}/>))
+    const pull_requests_items = pull_requests.map((pr) => (<PR {...pr} key={"pr"+pr.title}/>))
+    const overrides_items = overrides.map((override) => (<Override {...override} key={"override"+override.pretty_name}/>))
+    const koschei_items = koschei.map((k) => (<Koschei title={title} {...k} key={"koschei"+title+k.release}/>))
 
     const orphan_badge = orphan.orphaned? (<OrphanBadge since={orphan.orphaned_since} />) : null
 
     const ftbfs_badge = bugs.map((b) => b.keywords.includes("FTBFS")).some(id => id) ? (<FTBadge>FTBFS</FTBadge>) : null
     const fti_badge = bugs.map((b) => b.keywords.includes("FTI")).some(id => id) ? (<FTBadge>FTI</FTBadge>) : null
-    const groupIcon = !isPrimary? (<i className="fas fa-users mr-1"></i>) : null
 
     return (
       <div className="widget card py-3">
@@ -330,7 +342,7 @@ class Widget extends Component {
           </h5>
         </div>
         <div>
-          {groupIcon}
+          {ownershipIcon}
         </div>
         </div>
         <div className="list-group">
@@ -346,11 +358,8 @@ class Widget extends Component {
 
 }
 
-const mapStateToProps = state => {
-  const { options } = state
-
+const mapStateToProps = _ => {
   return {
-    options
   }
 }
 
