@@ -1,6 +1,6 @@
 window.env = {
     SUBDIR: '/',
-    API: 'http://localhost:5000/api/v1/',
+    API: 'http://37.205.14.49:5000/api/v1/',
 };
 
 // convenience keys

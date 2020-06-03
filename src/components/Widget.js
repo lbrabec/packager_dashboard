@@ -1,4 +1,4 @@
-import React, { Component, PureComponent } from 'react';
+import React, { createRef, PureComponent } from 'react';
 import * as moment from 'moment';
 import { connect } from 'react-redux'
 
@@ -46,14 +46,6 @@ class WidgetRow extends PureComponent {
 }
 
 
-const WidgetRowx = (props) => (
-  <div className="list-group-item p-1">
-    <div className="row align-items-center no-gutters">
-      {props.children}
-    </div>
-  </div>
-)
-
 class WidgetHead extends PureComponent {
   render() {
     return (
@@ -70,9 +62,25 @@ class WidgetHead extends PureComponent {
 }
 
 class WidgetTitle extends PureComponent {
+  constructor(props) {
+    super(props)
+    this.titleRef = createRef()
+    this.state = {
+      showTooltip: true
+    }
+  }
+
+  componentDidMount() {
+    const div = $(this.titleRef.current)
+    this.setState({showTooltip: div.innerWidth() < div[0].scrollWidth})
+  }
+
   render() {
     return (
-      <div className="font-weight-bold text-truncate widget-title" data-toggle="tooltip" title="" data-original-title={this.props.fulltitle}>
+      <div className="font-weight-bold text-truncate widget-title"
+           data-toggle="tooltip" title=""
+           data-original-title={this.state.showTooltip? this.props.fulltitle : undefined}
+           ref={this.titleRef}>
         {this.props.children}
       </div>
     )
