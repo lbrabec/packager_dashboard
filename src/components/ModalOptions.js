@@ -7,7 +7,8 @@ import * as R from 'ramda';
 class ModalOptionsLayout extends Component {
   render() {
     return (
-      <div className="modal fade" data-backdrop="false" id="options" tabIndex="-1" role="dialog" aria-labelledby="optionsModalLabel" aria-hidden="true">
+      <div className="modal fade" data-backdrop="false" id="options" tabIndex="-1" role="dialog" aria-labelledby="optionsModalLabel" aria-hidden="true"
+           data-focus="false">
         <div className="modal-dialog modal-dialog-slideout" role="document">
           <div className="modal-content">
             <div className="modal-header">
