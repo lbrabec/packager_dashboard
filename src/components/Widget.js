@@ -201,7 +201,7 @@ class PR extends PureComponent {
     return (
       <WidgetRow>
         <WidgetHead type="This is a pull request" icon="fa-git">
-          <WidgetTitle>
+          <WidgetTitle fulltitle={this.props.title}>
             <a href={this.props.url}>
               {this.props.title}
             </a>
@@ -301,14 +301,27 @@ class Override extends PureComponent {
   }
 }
 
+const koscheiNiceRelease = (release) => {
+  if (release.startsWith("f"))
+    return release.replace("f", "Fedora ")
+
+  if (release.startsWith("epel"))
+    return release.replace("epel", "Fedora EPEL ")
+
+  //fallback
+  return release
+}
+
 class Koschei extends PureComponent {
   render() {
+    const title = "failing to build for " + koscheiNiceRelease(this.props.release)
+
     return (
       <WidgetRow>
         <WidgetHead type="This is package fails to build" icon="fa-wrench">
-          <WidgetTitle>
+          <WidgetTitle fulltitle={title}>
             <a href={this.props.url}>
-              {this.props.title} is failing to build for {this.props.release}
+              {title}
             </a>
           </WidgetTitle>
           <WidgetSubTitle>
