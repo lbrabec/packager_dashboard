@@ -134,7 +134,7 @@ class OrphanBadge extends PureComponent {
     return (
         <span className="ml-3 font-size-09 p-1 font-weight-normal badge badge-danger">
           <span className="font-weight-bold">
-          <i class="fas fa-user-slash"></i>&nbsp;Orphaned&nbsp;{since.fromNow()}
+          <i className="fas fa-user-slash"></i>&nbsp;Orphaned&nbsp;{since.fromNow()}
           </span>
         </span>
     )
@@ -333,6 +333,27 @@ class Koschei extends PureComponent {
   }
 }
 
+class FTI extends PureComponent {
+  render() {
+    const title = `failing to install for Fedora ${this.props.release}`
+
+    return (
+      <WidgetRow>
+        <WidgetHead type="This is package fails to build" icon="fa-file-medical-alt">
+          <WidgetTitle fulltitle={title}>
+              <a href={`https://pagure.io/fedora-health-check/blob/master/f/reports/report-${this.props.release}.md`}>
+                {title}
+              </a>
+          </WidgetTitle>
+          <WidgetSubTitle>
+            &nbsp;
+          </WidgetSubTitle>
+        </WidgetHead>
+      </WidgetRow>
+    )
+  }
+}
+
 class Widget extends PureComponent {
   componentDidMount() {
     $(function () {
@@ -341,18 +362,19 @@ class Widget extends PureComponent {
   }
 
   render() {
-    const { title, bugs, pull_requests, updates, overrides, koschei, ownershipIcon, orphan} = this.props
+    const { title, bugs, pull_requests, updates, overrides, koschei, fti, ownershipIcon, orphan} = this.props
 
     const bugs_items = bugs.map((bug) => (<Bug {...bug} key={bug.url}/>))
     const updates_items = updates.map((update) => (<Update {...update} key={title+update.pretty_name}/>))
     const pull_requests_items = pull_requests.map((pr) => (<PR {...pr} key={"pr"+pr.title}/>))
     const overrides_items = overrides.map((override) => (<Override {...override} key={"override"+override.pretty_name}/>))
     const koschei_items = koschei.map((k) => (<Koschei title={title} {...k} key={"koschei"+title+k.release}/>))
+    const fti_items = fti.map((f) => (<FTI title={title} release={f} key={"fti"+title+f}/>))
 
     const orphan_badge = orphan.orphaned? (<OrphanBadge since={orphan.orphaned_since} />) : null
 
-    const ftbfs_badge = bugs.map((b) => b.keywords.includes("FTBFS")).some(id => id) ? (<FTBadge>FTBFS</FTBadge>) : null
-    const fti_badge = bugs.map((b) => b.keywords.includes("FTI")).some(id => id) ? (<FTBadge>FTI</FTBadge>) : null
+    const ftbfs_badge = koschei.length > 0? (<FTBadge>FTBFS</FTBadge>) : null
+    const fti_badge = fti.length > 0 ? (<FTBadge>FTI</FTBadge>) : null  //bugs.map((b) => b.keywords.includes("FTI")).some(id => id) ? (<FTBadge>FTI</FTBadge>) : null
 
     return (
       <div className="widget card py-3">
@@ -372,6 +394,7 @@ class Widget extends PureComponent {
           {pull_requests_items}
           {overrides_items}
           {koschei_items}
+          {fti_items}
         </div>
       </div>
     );

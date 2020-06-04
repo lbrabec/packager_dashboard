@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Masthead from './Masthead';
 import Footer from './Footer';
 import Widget from './Widget';
+import Stats from './Stats';
 import * as R from 'ramda';
 
 import { connect } from 'react-redux'
@@ -111,6 +112,12 @@ class Dashboard extends Component {
     return static_info.data.orphans[pkg]
   }
 
+  filterFTI(pkg) {
+    const { static_info } = this.props.user_data
+
+    return static_info.data.fails_to_install[pkg]
+  }
+
   render() {
     if (this.props.fasuser === "" ||
         this.props.user_data === undefined || // mind the order (lazy eval)
@@ -170,6 +177,7 @@ class Dashboard extends Component {
                pkg.data.updates.length +
                pkg.data.overrides.length +
                pkg.data.koschei.length +
+               pkg.data.fti.length +
               (pkg.data.orphan.orphaned? 1 : 0) > 0
       }),
       R.map(pkg => ({name: pkg, data: {
@@ -178,7 +186,8 @@ class Dashboard extends Component {
         updates: this.filterUpdates(pkg),
         overrides: this.filterOverrides(pkg),
         koschei: this.filterKoschei(pkg),
-        orphan: this.filterOrphan(pkg)
+        orphan: this.filterOrphan(pkg),
+        fti: this.filterFTI(pkg)
       }})),
       R.sortBy(pkg => pkg.toLowerCase())
     )(packages)
@@ -189,6 +198,7 @@ class Dashboard extends Component {
                   searchHandler={this.searchHandler.bind(this)} />
         <div className="bodycontent">
           <div className="subheader">
+            <Stats shownPackages={package_cards.length}/>
             <div className="container">
               <div className="card-columns py-md-4">
                 {package_cards}

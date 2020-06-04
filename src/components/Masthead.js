@@ -1,4 +1,4 @@
-import React, { Component, PureComponent } from 'react';
+import React, { PureComponent } from 'react';
 import logo from '../logo.svg';
 import { Link } from 'react-router-dom'
 import Cookies from 'universal-cookie';
