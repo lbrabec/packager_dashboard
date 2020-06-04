@@ -5,19 +5,16 @@ function Footer() {
     <div className="footer py-5">
       <div className="container">
         <p className="text-light text-center">
-          Copyright © 2007-2020 Red Hat, Inc. and
-          &nbsp;<a href="https://github.com/fedora-infra/bodhi/graphs/contributors" className="text-white-50">
-          others</a>.
+          Copyright © 2019-2020 Red Hat, Inc. and others.
         </p>
         <p className="text-light text-center">
-          Mockup based on <strong>bodhi-5.1.0</strong> on <strong>bodhi-web-147-vxrnv</strong>.
+          <a href="https://pagure.io/fedora-qa/packager_dashboard" className="text-white-50">
+          Packager Dashboard</a>&nbsp;and&nbsp;
+          <a href="https://pagure.io/fedora-qa/oraculum" className="text-white-50">
+          Oraculum (back-end)</a> are Free Software under GPL.
         </p>
         <p className="text-light text-center">
-          <a href="https://github.com/fedora-infra/bodhi" className="text-white-50">
-          bodhi</a> is Free Software under GPL.
-        </p>
-        <p className="text-light text-center">
-          Please <a href="https://pagure.io/fedora-qa/packager_dashboard" className="text-white-50">
+          Please <a href="https://pagure.io/fedora-qa/packager_dashboard/issues" className="text-white-50">
           file issues and PRs</a>&nbsp;if you have ideas.
         </p>
         <p className="text-light text-center">
