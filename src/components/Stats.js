@@ -77,7 +77,7 @@ class Stats extends PureComponent {
             <i className="fa fa-file-medical-alt mr-1" /> {stats.fti}
           </span>
           <span data-toggle="tooltip" title="" className="ml-3"
-                data-original-title={`${stats.orphaned} packages orphaned`}>
+                data-original-title={`${stats.orphans} packages orphaned`}>
             <i className="fa fa-user-slash mr-1" /> {stats.orphans}
           </span>
         </div>
