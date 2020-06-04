@@ -339,7 +339,7 @@ class FTI extends PureComponent {
 
     return (
       <WidgetRow>
-        <WidgetHead type="This is package fails to build" icon="fa-file-medical-alt">
+        <WidgetHead type="This is package fails to install" icon="fa-file-medical-alt">
           <WidgetTitle fulltitle={title}>
               <a href={`https://pagure.io/fedora-health-check/blob/master/f/reports/report-${this.props.release}.md`}>
                 {title}
