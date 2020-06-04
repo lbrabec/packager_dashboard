@@ -1,5 +1,9 @@
 ## Packager Dashboard
 
+To try Packager dashboard, see [our test instance](http://37.205.14.49:3000/).
+
+### How to run
+
 Packager Dashboard uses [Oraculum](https://pagure.io/fedora-qa/oraculum) as backend.
 
 Clone Oraculum, change to its directory, install dependencies and run:
@@ -21,5 +25,5 @@ $ yarn start
 
 If browser didn't open, go to [http://localhost:3000](http://localhost:3000)
 
-If you are running Oraculum on different machine or using production one, change `API` accordingly in `public/env.js`
+If you are running Oraculum yourself or using other than production one, change `API` accordingly in `public/env.js`
 
