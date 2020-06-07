@@ -153,6 +153,7 @@ class ModalOptions extends Component {
       show_overrides,
       show_orphaned,
       show_koschei,
+      show_fti,
       show_groups
     } = this.props.options
 
@@ -237,7 +238,11 @@ class ModalOptions extends Component {
           </OptionsSwitch>
 
           <OptionsSwitch name="show_koschei" value={show_koschei} handler={this.handleChange}>
-            <div className="font-weight-bold">Show Koschei fails</div>
+            <div className="font-weight-bold">Show fails to build</div>
+          </OptionsSwitch>
+
+          <OptionsSwitch name="show_fti" value={show_fti} handler={this.handleChange}>
+            <div className="font-weight-bold">Show fails to install</div>
           </OptionsSwitch>
 
           <hr />

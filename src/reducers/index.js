@@ -10,6 +10,7 @@ const defaultOptions = {
     show_overrides: true,
     show_orphaned: true,
     show_koschei: true,
+    show_fti: true,
     show_groups: {}
 }
 

@@ -114,6 +114,9 @@ class Dashboard extends Component {
 
   filterFTI(pkg) {
     const { static_info } = this.props.user_data
+    const { options } = this.props
+      if(!options.show_fti)
+        return EMPTY_ARRAY
 
     return static_info.data.fails_to_install[pkg]
   }
