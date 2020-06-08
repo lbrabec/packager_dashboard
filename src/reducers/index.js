@@ -5,6 +5,8 @@ const defaultOptions = {
     bug_min_severity: "low",
     bug_include_unspecified: true,
 
+    sort: "name",
+
     show_updates: true,
     show_prs: true,
     show_overrides: true,

@@ -22,6 +22,16 @@ class DashboardLoading extends Component {
 
 const EMPTY_ARRAY = []
 
+
+const dataLen = (pkg) => pkg.data.bugs.length +
+                         pkg.data.pull_requests.length +
+                         pkg.data.updates.length +
+                         pkg.data.overrides.length +
+                         pkg.data.koschei.length +
+                         pkg.data.fti.length +
+                        (pkg.data.orphan.orphaned? 1 : 0)
+
+
 class Dashboard extends Component {
   constructor(props){
     super(props)
@@ -31,6 +41,7 @@ class Dashboard extends Component {
     }
 
     this.searchTimeout = undefined
+    this.packageSort = this.packageSort.bind(this)
   }
 
   componentDidMount() {
@@ -121,6 +132,32 @@ class Dashboard extends Component {
     return static_info.data.fails_to_install[pkg]
   }
 
+  packageSort(pkgs) {
+    // pkgs in format [{name, data: {bugs,...}}]
+
+    const { options } = this.props
+
+    switch(options.sort){
+      case "name":
+        return R.sortBy(pkg => pkg.name.toLowerCase(), pkgs)
+
+      case "cnt":
+        return R.sortBy(pkg => -dataLen(pkg), pkgs)
+
+      case "priority":
+        return R.sortWith([
+          R.descend(pkg => pkg.data.koschei.length +
+                           pkg.data.fti.length +
+                          (pkg.data.orphan.orphaned? 1 : 0)),
+          R.ascend(pkg => pkg.name.toLowerCase())
+        ],pkgs)
+
+      // fallback, sort by name
+      default:
+        return R.sortBy(pkg => pkg.name.toLowerCase(), pkgs)
+    }
+  }
+
   render() {
     if (this.props.fasuser === "" ||
         this.props.user_data === undefined || // mind the order (lazy eval)
@@ -174,15 +211,8 @@ class Dashboard extends Component {
       R.map(pkg => (
         <Widget title={pkg.name} {...pkg.data} ownershipIcon={ownershipIcon(pkg.name)} key={pkg.name}/>
       )),
-      R.filter(pkg => {
-        return pkg.data.bugs.length +
-               pkg.data.pull_requests.length +
-               pkg.data.updates.length +
-               pkg.data.overrides.length +
-               pkg.data.koschei.length +
-               pkg.data.fti.length +
-              (pkg.data.orphan.orphaned? 1 : 0) > 0
-      }),
+      this.packageSort,
+      R.filter(pkg => dataLen(pkg) > 0),
       R.map(pkg => ({name: pkg, data: {
         bugs: this.filterBugs(pkg),
         pull_requests: this.filterPRs(pkg),
@@ -191,8 +221,7 @@ class Dashboard extends Component {
         koschei: this.filterKoschei(pkg),
         orphan: this.filterOrphan(pkg),
         fti: this.filterFTI(pkg)
-      }})),
-      R.sortBy(pkg => pkg.toLowerCase())
+      }}))
     )(packages)
 
     return (

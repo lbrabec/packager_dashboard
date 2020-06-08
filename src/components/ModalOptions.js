@@ -148,6 +148,7 @@ class ModalOptions extends Component {
       bug_min_severity,
       bug_include_unspecified,
 
+      sort,
       show_updates,
       show_prs,
       show_overrides,
@@ -195,6 +196,19 @@ class ModalOptions extends Component {
     return (
       <ModalOptionsLayout>
         <form>
+          <div className="form-group">
+            <label htmlFor="sort">Sort by</label>
+            <select className="form-control" id="sort" name="sort"
+                    defaultValue={sort}
+                    onChange={this.handleChange}>
+              <option value="name">Name</option>
+              <option value="cnt">Issue count</option>
+              <option value="priority">FTIs, FTBFSs and orphans first</option>
+            </select>
+          </div>
+
+          <hr />
+
           <div className="custom-control custom-switch">
               <input type="checkbox" className="custom-control-input" name="show_bugs" id="show_bugs" checked={show_bugs} onChange={this.handleChange}/>
               <label className="custom-control-label" htmlFor="show_bugs">
