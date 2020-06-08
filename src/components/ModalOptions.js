@@ -201,7 +201,7 @@ class ModalOptions extends Component {
             <select className="form-control" id="sort" name="sort"
                     defaultValue={sort}
                     onChange={this.handleChange}>
-              <option value="name">Name</option>
+              <option value="name">Package name</option>
               <option value="cnt">Issue count</option>
               <option value="priority">FTIs, FTBFSs and orphans first</option>
             </select>
