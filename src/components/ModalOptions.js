@@ -1,28 +1,38 @@
-import React, { Component } from 'react';
-import { changeOption } from '../actions/reduxActions'
-import { connect } from 'react-redux'
-import * as R from 'ramda';
-
+import React, { Component } from "react"
+import { changeOption } from "../actions/reduxActions"
+import { connect } from "react-redux"
+import * as R from "ramda"
 
 class ModalOptionsLayout extends Component {
   render() {
     return (
-      <div className="modal fade" data-backdrop="false" id="options" tabIndex="-1" role="dialog" aria-labelledby="optionsModalLabel" aria-hidden="true"
-           data-focus="false">
+      <div
+        className="modal fade"
+        data-backdrop="false"
+        id="options"
+        tabIndex="-1"
+        role="dialog"
+        aria-labelledby="optionsModalLabel"
+        aria-hidden="true"
+        data-focus="false">
         <div className="modal-dialog modal-dialog-slideout" role="document">
           <div className="modal-content">
             <div className="modal-header">
-              <h4 className="modal-title" id="optionsModalLabel">Options</h4>
-              <button type="button" className="close" data-dismiss="modal" data-taget="#options" aria-label="Close" id="close-button">
+              <h4 className="modal-title" id="optionsModalLabel">
+                Options
+              </h4>
+              <button
+                type="button"
+                className="close"
+                data-dismiss="modal"
+                data-taget="#options"
+                aria-label="Close"
+                id="close-button">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div className="modal-body">
-              {this.props.children}
-            </div>
-            <div className="modal-footer">
-
-            </div>
+            <div className="modal-body">{this.props.children}</div>
+            <div className="modal-footer"></div>
           </div>
         </div>
       </div>
@@ -30,9 +40,8 @@ class ModalOptionsLayout extends Component {
   }
 }
 
-
 const valueOf = (t) => {
-  switch(t.type) {
+  switch (t.type) {
     case "checkbox":
       return t.checked
 
@@ -45,15 +54,17 @@ class OptionsSwitch extends Component {
   render() {
     return (
       <div className="custom-control custom-switch">
-          <input type="checkbox"
-                 className="custom-control-input"
-                 name={this.props.name}
-                 id={this.props.name}
-                 checked={this.props.value}
-                 onChange={this.props.handler}/>
-          <label className="custom-control-label" htmlFor={this.props.name}>
-              {this.props.children}
-          </label>
+        <input
+          type="checkbox"
+          className="custom-control-input"
+          name={this.props.name}
+          id={this.props.name}
+          checked={this.props.value}
+          onChange={this.props.handler}
+        />
+        <label className="custom-control-label" htmlFor={this.props.name}>
+          {this.props.children}
+        </label>
       </div>
     )
   }
@@ -63,13 +74,15 @@ class CustomRadio extends Component {
   render() {
     return (
       <div className="custom-control custom-radio">
-        <input type="radio"
-              id={this.props.name + "-" + this.props.type}
-              name={this.props.name}
-              value={this.props.type}
-              checked={this.props.value === this.props.type}
-              onChange={this.props.handler}
-              className="custom-control-input" />
+        <input
+          type="radio"
+          id={this.props.name + "-" + this.props.type}
+          name={this.props.name}
+          value={this.props.type}
+          checked={this.props.value === this.props.type}
+          onChange={this.props.handler}
+          className="custom-control-input"
+        />
         <label className="custom-control-label" htmlFor={this.props.name + "-" + this.props.type}>
           {this.props.children}
         </label>
@@ -83,31 +96,29 @@ class GroupTriSwitch extends Component {
     return (
       <div className="row no-gutters">
         <div className="col-1">
-          <CustomRadio name={this.props.name}
-                      handler={this.props.handler}
-                      type="always"
-                      value={this.props.value}>
-          </CustomRadio>
+          <CustomRadio
+            name={this.props.name}
+            handler={this.props.handler}
+            type="always"
+            value={this.props.value}></CustomRadio>
         </div>
         <div className="col-1">
-          <CustomRadio name={this.props.name}
-                      handler={this.props.handler}
-                      type="mine"
-                      value={this.props.value}>
-          </CustomRadio>
+          <CustomRadio
+            name={this.props.name}
+            handler={this.props.handler}
+            type="mine"
+            value={this.props.value}></CustomRadio>
         </div>
         <div className="col-1">
-          <CustomRadio name={this.props.name}
-                      handler={this.props.handler}
-                      type="never"
-                      value={this.props.value}>
-          </CustomRadio>
+          <CustomRadio
+            name={this.props.name}
+            handler={this.props.handler}
+            type="never"
+            value={this.props.value}></CustomRadio>
         </div>
         <div className="col-auto">
           <div className="">
-            <label>
-              {this.props.children}
-            </label>
+            <label>{this.props.children}</label>
           </div>
         </div>
       </div>
@@ -115,9 +126,8 @@ class GroupTriSwitch extends Component {
   }
 }
 
-
 class ModalOptions extends Component {
-  constructor(props){
+  constructor(props) {
     super(props)
 
     this.handleChange = this.handleChange.bind(this)
@@ -126,20 +136,24 @@ class ModalOptions extends Component {
 
   handleChange(e) {
     e.stopPropagation()
-    this.props.dispatch(changeOption({
-      group: false,
-      name: e.target.name,
-      value: valueOf(e.target)
-    }))
+    this.props.dispatch(
+      changeOption({
+        group: false,
+        name: e.target.name,
+        value: valueOf(e.target),
+      })
+    )
   }
 
   handleGroupChange(e) {
     e.stopPropagation()
-    this.props.dispatch(changeOption({
-      group: true,
-      name: e.target.name,
-      value: valueOf(e.target)
-    }))
+    this.props.dispatch(
+      changeOption({
+        group: true,
+        name: e.target.name,
+        value: valueOf(e.target),
+      })
+    )
   }
 
   render() {
@@ -155,36 +169,47 @@ class ModalOptions extends Component {
       show_orphaned,
       show_koschei,
       show_fti,
-      show_groups
+      show_groups,
     } = this.props.options
 
     const groupSwitches = this.props.groups.map((group) => (
-    <GroupTriSwitch name={group}
-                    value={show_groups[group] === undefined? "always" : show_groups[group]}
-                    handler={this.handleGroupChange}
-                    key={group}>
-      <div className="font-weight-bold">{group}</div>
-    </GroupTriSwitch>
+      <GroupTriSwitch
+        name={group}
+        value={show_groups[group] === undefined ? "always" : show_groups[group]}
+        handler={this.handleGroupChange}
+        key={group}>
+        <div className="font-weight-bold">{group}</div>
+      </GroupTriSwitch>
     ))
 
     const groupBlock = (
       <div>
         <div className="row no-gutters mb-1">
           <div className="col-1">
-            <span className="" data-toggle="tooltip" title=""
-               data-original-title="Include all packages maintained by this group regardless of my direct package relationship">
+            <span
+              className=""
+              data-toggle="tooltip"
+              title=""
+              data-original-title="Include all packages maintained by this group regardless of my direct package relationship">
               <i className="fas fa-users mr-1"></i>
             </span>
           </div>
           <div className="col-1">
-            <span style={{paddingLeft: "2px"}} className="" data-toggle="tooltip" title=""
-               data-original-title="Include packages that I directly maintain regardless of their relationship to this group">
+            <span
+              style={{ paddingLeft: "2px" }}
+              className=""
+              data-toggle="tooltip"
+              title=""
+              data-original-title="Include packages that I directly maintain regardless of their relationship to this group">
               <i className="fas fa-user mr-1"></i>
             </span>
           </div>
           <div className="col-1">
-            <span style={{paddingLeft: "0px"}} data-toggle="tooltip" title=""
-               data-original-title="Exclude all packages maintained by this group regardless of my direct package relationship">
+            <span
+              style={{ paddingLeft: "0px" }}
+              data-toggle="tooltip"
+              title=""
+              data-original-title="Exclude all packages maintained by this group regardless of my direct package relationship">
               <i className="fas fa-eye-slash"></i>
             </span>
           </div>
@@ -198,9 +223,12 @@ class ModalOptions extends Component {
         <form>
           <div className="form-group">
             <label htmlFor="sort">Sort by</label>
-            <select className="form-control" id="sort" name="sort"
-                    defaultValue={sort}
-                    onChange={this.handleChange}>
+            <select
+              className="form-control"
+              id="sort"
+              name="sort"
+              defaultValue={sort}
+              onChange={this.handleChange}>
               <option value="name">Package name</option>
               <option value="cnt">Issue count</option>
               <option value="priority">FTIs, FTBFSs and orphans first</option>
@@ -209,17 +237,18 @@ class ModalOptions extends Component {
 
           <hr />
 
-          <div className="custom-control custom-switch">
-              <input type="checkbox" className="custom-control-input" name="show_bugs" id="show_bugs" checked={show_bugs} onChange={this.handleChange}/>
-              <label className="custom-control-label" htmlFor="show_bugs">
-                  <div className="font-weight-bold">Show bugs</div>
-              </label>
-          </div>
+          <OptionsSwitch name="show_bugs" value={show_bugs} handler={this.handleChange}>
+            <div className="font-weight-bold">Show bugs</div>
+          </OptionsSwitch>
+
           <div className="form-group pl-as-switch mt-2">
             <label htmlFor="bug_min_priority_severity">Min shown bug priority/severity</label>
-            <select className="form-control" id="bug_min_priority_severity" name="bug_min_priority_severity"
-                    defaultValue={bug_min_priority_severity}
-                    onChange={this.handleChange}>
+            <select
+              className="form-control"
+              id="bug_min_priority_severity"
+              name="bug_min_priority_severity"
+              defaultValue={bug_min_priority_severity}
+              onChange={this.handleChange}>
               <option value="low">Low</option>
               <option value="medium">Medium</option>
               <option value="high">High</option>
@@ -227,8 +256,14 @@ class ModalOptions extends Component {
             </select>
 
             <div className="custom-control custom-checkbox mt-1">
-              <input type="checkbox" className="custom-control-input" id="bug_include_unspecified" name="bug_include_unspecified"
-                     checked={bug_include_unspecified} onChange={this.handleChange}/>
+              <input
+                type="checkbox"
+                className="custom-control-input"
+                id="bug_include_unspecified"
+                name="bug_include_unspecified"
+                checked={bug_include_unspecified}
+                onChange={this.handleChange}
+              />
               <label className="custom-control-label" htmlFor="bug_include_unspecified">
                 Include unspecified
               </label>
@@ -272,10 +307,10 @@ class ModalOptions extends Component {
 const mapStateToProps = (state) => {
   return {
     options: state.options,
-    groups: state.user_data === undefined || state.user_data.static_info.status !== 200?
-      []
-      :
-      R.keys(state.user_data.static_info.data.group_packages)
+    groups:
+      state.user_data === undefined || state.user_data.static_info.status !== 200
+        ? []
+        : R.keys(state.user_data.static_info.data.group_packages),
   }
 }
 
