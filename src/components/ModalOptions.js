@@ -145,7 +145,7 @@ class ModalOptions extends Component {
   render() {
     const {
       show_bugs,
-      bug_min_severity,
+      bug_min_priority_severity,
       bug_include_unspecified,
 
       sort,
@@ -216,9 +216,9 @@ class ModalOptions extends Component {
               </label>
           </div>
           <div className="form-group pl-as-switch mt-2">
-            <label htmlFor="bug_min_severity">Min shown bug priority/severity</label>
-            <select className="form-control" id="bug_min_severity" name="bug_min_severity"
-                    defaultValue={bug_min_severity}
+            <label htmlFor="bug_min_priority_severity">Min shown bug priority/severity</label>
+            <select className="form-control" id="bug_min_priority_severity" name="bug_min_priority_severity"
+                    defaultValue={bug_min_priority_severity}
                     onChange={this.handleChange}>
               <option value="low">Low</option>
               <option value="medium">Medium</option>

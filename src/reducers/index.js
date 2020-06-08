@@ -2,7 +2,7 @@ import ActionTypes from '../constants';
 
 const defaultOptions = {
     show_bugs: true,
-    bug_min_severity: "low",
+    bug_min_priority_severity: "low",
     bug_include_unspecified: true,
 
     sort: "name",

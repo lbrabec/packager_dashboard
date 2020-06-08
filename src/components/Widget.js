@@ -230,12 +230,12 @@ const badge_color = (text) => {
   return "info"
 }
 
-const severity_color = (severity) => {
-  if(severity === "urgent")
+const priority_severity_color = (ps) => {
+  if(ps === "urgent")
     return "text-danger"
-  if(severity === "high" || severity === "medium")
+  if(ps === "high" || ps === "medium")
     return "text-warning"
-  if(severity === "low")
+  if(ps === "low")
     return "text-info"
 
   return "text-muted"
@@ -265,9 +265,10 @@ class Bug extends PureComponent {
         <WidgetIconDetail icon="fa-comment-o" alt="Number of comments" color="text-muted">
           {this.props.comments}
         </WidgetIconDetail>
-        {this.props.severity === "unspecified"? null : (
-        <WidgetIconDetail icon="fa-shield" alt="Security bug severity" color={severity_color(this.props.severity)}>
-          {this.props.severity[0].toUpperCase()}
+        {this.props.priority_severity === "unspecified"? null : (
+        <WidgetIconDetail icon="fa-shield" alt="Security bug severity or priority"
+                          color={priority_severity_color(this.props.priority_severity)}>
+          {this.props.priority_severity[0].toUpperCase()}
         </WidgetIconDetail>
         )}
       </WidgetRow>

@@ -65,16 +65,17 @@ class Dashboard extends Component {
   filterBugs(pkg) {
     const { bzs } = this.props.user_data
     const { options } = this.props
-    const severities = ["unspecified", "low", "medium", "high", "urgent"]
+    const priorities_severities = ["unspecified", "low", "medium", "high", "urgent"]
 
     if(bzs.status === 204 || !options.show_bugs)
       return EMPTY_ARRAY
 
     return bzs.data[pkg].filter((bug) => {
-      if(bug.severity === "unspecified")
+      if(bug.priority_severity === "unspecified")
         return options.bug_include_unspecified
 
-      return severities.indexOf(bug.severity) >= severities.indexOf(options.bug_min_severity)
+      return priorities_severities.indexOf(bug.priority_severity) >=
+             priorities_severities.indexOf(options.bug_min_priority_severity)
     })
   }
 
