@@ -218,7 +218,7 @@ export class FTI extends PureComponent {
   }
 
   render() {
-    const title = `failing to install for Fedora ${this.props.release}`
+    const title = `failing to ${this.props.isFTI? "install" : "build" } for Fedora ${this.props.release}`
     const reasons = Object.entries(this.props.reason).map((r) => (
       <span>
         <span className="font-weight-bold">{`${r[0]}: `}</span>

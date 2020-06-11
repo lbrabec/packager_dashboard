@@ -36,12 +36,21 @@ class Widget extends PureComponent {
     const koschei_items = koschei.map((k) => (
       <Koschei title={title} {...k} key={"koschei" + title + k.release} />
     ))
-    const fti_items = fti.map((f) => <FTI title={title} {...f} key={"fti" + title + f} />)
 
+
+    console.log(title)
+    const fti_no_src = R.compose(
+      R.filter((r) => R.keys(r).length > 0),
+      R.map((f) => R.pickBy((v, k) => k !== "src", f.reason))
+    )(fti)
+
+    console.log(fti_no_src)
+
+    const fti_items = fti.map((f) => <FTI title={title} {...f} key={"fti" + title + f} isFTI={fti_no_src.length > 0} />)
     const orphan_badge = orphan.orphaned ? <OrphanBadge since={orphan.orphaned_since} /> : null
     const fti_src = fti.map(f => R.keys(f.reason).includes("src")).some(R.identity)
     const ftbfs_badge = (fti_src || koschei.length > 0) ? <FTBadge>FTBFS</FTBadge> : null
-    const fti_badge = fti.length > 0 ? <FTBadge>FTI</FTBadge> : null
+    const fti_badge = fti_no_src.length > 0 ? <FTBadge>FTI</FTBadge> : null
 
     return (
       <div className="widget card py-3">
