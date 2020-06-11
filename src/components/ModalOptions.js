@@ -91,6 +91,55 @@ class CustomRadio extends Component {
   }
 }
 
+class CustomCheckbox extends Component {
+  render() {
+    return (
+      <div className="custom-control custom-checkbox">
+        <input
+          type="checkbox"
+          className="custom-control-input"
+          id={this.props.name}
+          name={this.props.name}
+          checked={this.props.value}
+          onChange={this.props.handler}
+        />
+        <label className="custom-control-label" htmlFor={this.props.name}>
+          {this.props.children}
+        </label>
+      </div>
+    )
+  }
+}
+
+
+class _BugStatusGrid extends Component {
+  render() {
+    const grid = this.props.grid.map((row) => (
+      <div className="row" key={`status_row_${row[0]}${row[1]}`}>
+        {row.map((status) => (
+          <div className="col-4" key={`status_${status}`}>
+            <CustomCheckbox
+              name={`show_bug_status_${status}`}
+              handler={this.props.handler}
+              value={this.props.options[`show_bug_status_${status}`]}>
+              {status}
+            </CustomCheckbox>
+          </div>
+        ))}
+      </div>
+    ))
+
+    return grid
+  }
+}
+
+const BugStatusGrid = connect((state) => {
+  return {
+    options: state.options,
+  }
+})(_BugStatusGrid)
+
+
 class GroupTriSwitch extends Component {
   render() {
     return (
@@ -268,6 +317,18 @@ class ModalOptions extends Component {
                 Include unspecified
               </label>
             </div>
+          </div>
+
+          <div className="form-group pl-as-switch mt-3">
+            <BugStatusGrid
+              handler={this.handleChange}
+              grid={[
+                ["NEW", "MODIFIED"],
+                ["ASSIGNED", "ON_QA"],
+                ["ON_DEV", "VERIFIED"],
+                ["POST", "RELEASE_PENDING"],
+              ]}
+            />
           </div>
 
           <OptionsSwitch name="show_updates" value={show_updates} handler={this.handleChange}>

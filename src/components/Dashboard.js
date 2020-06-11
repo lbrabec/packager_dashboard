@@ -71,8 +71,9 @@ class Dashboard extends Component {
     if (bzs.status === 204 || !options.show_bugs) return EMPTY_ARRAY
 
     return bzs.data[pkg].filter((bug) => {
-      if (bug.priority_severity === "unspecified") return options.bug_include_unspecified
+      if (!options[`show_bug_status_${bug.status}`]) return false
 
+      if (bug.priority_severity === "unspecified") return options.bug_include_unspecified
       return (
         priorities_severities.indexOf(bug.priority_severity) >=
         priorities_severities.indexOf(options.bug_min_priority_severity)

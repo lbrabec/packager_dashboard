@@ -5,6 +5,15 @@ const defaultOptions = {
     bug_min_priority_severity: "low",
     bug_include_unspecified: true,
 
+    show_bug_status_NEW: true,
+    show_bug_status_MODIFIED: true,
+    show_bug_status_ASSIGNED: true,
+    show_bug_status_ON_QA: true,
+    show_bug_status_ON_DEV: true,
+    show_bug_status_VERIFIED: true,
+    show_bug_status_POST: true,
+    show_bug_status_RELEASE_PENDING: true,
+
     sort: "name",
 
     show_updates: true,
