@@ -8,6 +8,8 @@ import {
   WidgetIconDetail,
 } from "./WidgetLayout"
 import * as moment from "moment"
+import * as R from "ramda"
+import $ from "jquery"
 
 const toBodhiReleasesUrl = (release) => {
   const url = "https://bodhi.fedoraproject.org/releases"
@@ -199,21 +201,64 @@ export class Koschei extends PureComponent {
 }
 
 export class FTI extends PureComponent {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      collapsed: true,
+    }
+  }
+
+  collapseToggle() {
+    this.setState({ collapsed: !this.state.collapsed })
+  }
+
   render() {
     const title = `failing to install for Fedora ${this.props.release}`
+    const reasons = Object.entries(this.props.reason).map((r) => (
+      <span>
+        <span className="font-weight-bold">{`${r[0]}: `}</span>
+        <ul>
+          {r[1].map((ra) => (
+            <li>{ra}</li>
+          ))}
+        </ul>
+      </span>
+    ))
 
     return (
-      <WidgetRow>
-        <WidgetHead type="This is package fails to install" icon="fa-file-medical-alt">
-          <WidgetTitle fulltitle={title}>
-            <a
-              href={`https://pagure.io/fedora-health-check/blob/master/f/reports/report-${this.props.release}.md`}>
-              {title}
-            </a>
-          </WidgetTitle>
-          <WidgetSubTitle>&nbsp;</WidgetSubTitle>
-        </WidgetHead>
-      </WidgetRow>
+      <div
+        onClick={this.collapseToggle.bind(this)}
+        data-toggle="collapse"
+        data-target={`#FTI_reasons_${this.props.title}_${this.props.release}`}>
+        <div className="list-group-item p-1">
+          <div className="row align-items-center no-gutters">
+            <WidgetHead type="This is package fails to install" icon="fa-file-medical-alt">
+              <WidgetTitle fulltitle={title}>
+                <a
+                  href={`https://pagure.io/fedora-health-check/blob/master/f/reports/report-${this.props.release}.md`}>
+                  {title}
+                </a>
+              </WidgetTitle>
+              <WidgetSubTitle>
+                {this.state.collapsed? Object.keys(this.props.reason).join(", ") : <span>&nbsp;</span>}
+              </WidgetSubTitle>
+            </WidgetHead>
+            <div className="col-auto min-width-3 pl-4 pl-sm-4 pl-md-4 pl-lg-0 font-weight-bold mr-3 text-muted mh-100">
+              {this.state.collapsed ? (
+                <i className="fas fa-expand-arrows-alt mr-2"></i>
+              ) : (
+                <i className="fas fa-compress-arrows-alt mr-2"></i>
+              )}
+            </div>
+          </div>
+          <div className="row no-gutters pl-4">
+            <div className="collapse small mt-n3 bg-white" id={`FTI_reasons_${this.props.title}_${this.props.release}`}>
+              {reasons}
+            </div>
+          </div>
+        </div>
+      </div>
     )
   }
 }

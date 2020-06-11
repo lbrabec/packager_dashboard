@@ -3,6 +3,7 @@ import { connect } from "react-redux"
 import { Bug, Update, PR, Override, Koschei, FTI } from "./WidgetItems"
 import { OrphanBadge, FTBadge } from "./WidgetLayout"
 import $ from "jquery"
+import * as R from "ramda"
 
 class Widget extends PureComponent {
   componentDidMount() {
@@ -24,27 +25,22 @@ class Widget extends PureComponent {
       orphan,
     } = this.props
 
-    const bugs_items = bugs.map((bug) => (
-      <Bug {...bug} key={bug.url} />
-    ))
+    const bugs_items = bugs.map((bug) => <Bug {...bug} key={bug.url} />)
     const updates_items = updates.map((update) => (
       <Update {...update} key={title + update.pretty_name} />
     ))
-    const pull_requests_items = pull_requests.map((pr) => (
-      <PR {...pr} key={"pr" + pr.title} />
-    ))
+    const pull_requests_items = pull_requests.map((pr) => <PR {...pr} key={"pr" + pr.title} />)
     const overrides_items = overrides.map((override) => (
       <Override {...override} key={"override" + override.pretty_name} />
     ))
     const koschei_items = koschei.map((k) => (
       <Koschei title={title} {...k} key={"koschei" + title + k.release} />
     ))
-    const fti_items = fti.map((f) => (
-      <FTI title={title} {...f} key={"fti" + title + f} />
-    ))
+    const fti_items = fti.map((f) => <FTI title={title} {...f} key={"fti" + title + f} />)
 
     const orphan_badge = orphan.orphaned ? <OrphanBadge since={orphan.orphaned_since} /> : null
-    const ftbfs_badge = koschei.length > 0 ? <FTBadge>FTBFS</FTBadge> : null
+    const fti_src = fti.map(f => R.keys(f.reason).includes("src")).some(R.identity)
+    const ftbfs_badge = (fti_src || koschei.length > 0) ? <FTBadge>FTBFS</FTBadge> : null
     const fti_badge = fti.length > 0 ? <FTBadge>FTI</FTBadge> : null
 
     return (
