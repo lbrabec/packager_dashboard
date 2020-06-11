@@ -40,7 +40,7 @@ class Widget extends PureComponent {
       <Koschei title={title} {...k} key={"koschei" + title + k.release} />
     ))
     const fti_items = fti.map((f) => (
-      <FTI title={title} release={f} key={"fti" + title + f} />
+      <FTI title={title} {...f} key={"fti" + title + f} />
     ))
 
     const orphan_badge = orphan.orphaned ? <OrphanBadge since={orphan.orphaned_since} /> : null
