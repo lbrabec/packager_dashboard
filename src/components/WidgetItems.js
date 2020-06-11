@@ -88,7 +88,11 @@ export class PR extends PureComponent {
             {this.props.author}
           </WidgetSubTitle>
         </WidgetHead>
-        <WidgetBadge type="warning">CI {status}</WidgetBadge>
+        {this.props.ci_status === null ? null : (
+          <WidgetBadge type={this.props.ci_status === "success" ? "success" : "danger"}>
+            CI {this.props.ci_status}
+          </WidgetBadge>
+        )}
         <WidgetIconDetail icon="fa-comment-o" alt="Number of comments" color="text-muted">
           {this.props.comments}
         </WidgetIconDetail>
@@ -241,7 +245,11 @@ export class FTI extends PureComponent {
                 </a>
               </WidgetTitle>
               <WidgetSubTitle>
-                {this.state.collapsed? Object.keys(this.props.reason).join(", ") : <span>&nbsp;</span>}
+                {this.state.collapsed ? (
+                  Object.keys(this.props.reason).join(", ")
+                ) : (
+                  <span>&nbsp;</span>
+                )}
               </WidgetSubTitle>
             </WidgetHead>
             <div className="col-auto min-width-3 pl-4 pl-sm-4 pl-md-4 pl-lg-0 font-weight-bold mr-3 text-muted mh-100">
@@ -253,7 +261,9 @@ export class FTI extends PureComponent {
             </div>
           </div>
           <div className="row no-gutters pl-4">
-            <div className="collapse small mt-n3 bg-white" id={`FTI_reasons_${this.props.title}_${this.props.release}`}>
+            <div
+              className="collapse small mt-n3 bg-white"
+              id={`FTI_reasons_${this.props.title}_${this.props.release}`}>
               {reasons}
             </div>
           </div>
