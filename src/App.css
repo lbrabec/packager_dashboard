@@ -107,7 +107,7 @@ html, body {
 }
 
 .modal-dialog-slideout {
-  !min-height: 100%;
+  max-height: 100%;
   !height: 100%;
   margin: 0 0 0 auto;
   background: #fff;
@@ -127,6 +127,7 @@ html, body {
 .modal.fade.show .modal-dialog.modal-dialog-slideout .modal-body{
   overflow-y: auto;
   overflow-x: hidden;
+  pointer-events: auto !important;
 }
 .modal-dialog-slideout .modal-content{
   border-radius: 0;
