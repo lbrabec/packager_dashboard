@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { changeOption } from "../actions/reduxActions"
+import { changeOption, resetOptions } from "../actions/reduxActions"
 import { connect } from "react-redux"
 import * as R from "ramda"
 
@@ -17,10 +17,14 @@ class ModalOptionsLayout extends Component {
         data-focus="false">
         <div className="modal-dialog modal-dialog-slideout" role="document">
           <div className="modal-content">
-            <div className="modal-header">
+            <div className="modal-header d-flex align-items-center">
               <h4 className="modal-title" id="optionsModalLabel">
                 Options
               </h4>
+              <a className="ml-3"
+                onClick={this.props.reset}>
+                Reset
+              </a>
               <button
                 type="button"
                 className="close"
@@ -32,7 +36,6 @@ class ModalOptionsLayout extends Component {
               </button>
             </div>
             <div className="modal-body">{this.props.children}</div>
-            <div className="modal-footer"></div>
           </div>
         </div>
       </div>
@@ -111,7 +114,6 @@ class CustomCheckbox extends Component {
   }
 }
 
-
 class _BugStatusGrid extends Component {
   render() {
     const grid = this.props.grid.map((row) => (
@@ -139,6 +141,58 @@ const BugStatusGrid = connect((state) => {
   }
 })(_BugStatusGrid)
 
+class _BugKeywordsGrid extends Component {
+  render() {
+    const { options, handler } = this.props
+
+    return (
+      <div>
+        <div className="row">
+          <div className="col-4">
+            <CustomCheckbox
+              name="show_bug_kw_tracking"
+              handler={handler}
+              value={options.show_bug_kw_tracking}>
+              Tracking
+            </CustomCheckbox>
+          </div>
+          <div className="col-8">
+            <CustomCheckbox
+              name="show_bug_kw_futurefeature"
+              handler={handler}
+              value={options.show_bug_kw_futurefeature}>
+              FutureFeature
+            </CustomCheckbox>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-4">
+            <CustomCheckbox
+              name="show_bug_kw_triaged"
+              handler={handler}
+              value={options.show_bug_kw_triaged}>
+              Triaged
+            </CustomCheckbox>
+          </div>
+          <div className="col-8">
+            <CustomCheckbox
+              name="show_bug_kw_releasemonitoring"
+              handler={handler}
+              value={options.show_bug_kw_releasemonitoring}>
+              Release monitoring
+            </CustomCheckbox>
+          </div>
+        </div>
+      </div>
+    )
+  }
+}
+
+const BugKeywordsGrid = connect((state) => {
+  return {
+    options: state.options,
+  }
+})(_BugKeywordsGrid)
 
 class GroupTriSwitch extends Component {
   render() {
@@ -268,7 +322,7 @@ class ModalOptions extends Component {
     )
 
     return (
-      <ModalOptionsLayout>
+      <ModalOptionsLayout reset={() => this.props.dispatch(resetOptions())}>
         <form>
           <div className="form-group">
             <label htmlFor="sort">Sort by</label>
@@ -331,6 +385,10 @@ class ModalOptions extends Component {
             />
           </div>
 
+          <div className="form-group pl-as-switch mt-3">
+            <BugKeywordsGrid handler={this.handleChange} />
+          </div>
+
           <OptionsSwitch name="show_updates" value={show_updates} handler={this.handleChange}>
             <div className="font-weight-bold">Show updates</div>
           </OptionsSwitch>
@@ -360,6 +418,10 @@ class ModalOptions extends Component {
 
           {groupBlock}
         </form>
+
+        <hr />
+
+
       </ModalOptionsLayout>
     )
   }

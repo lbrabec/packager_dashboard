@@ -8,8 +8,6 @@ import {
   WidgetIconDetail,
 } from "./WidgetLayout"
 import * as moment from "moment"
-import * as R from "ramda"
-import $ from "jquery"
 
 const toBodhiReleasesUrl = (release) => {
   const url = "https://bodhi.fedoraproject.org/releases"
@@ -75,7 +73,6 @@ export class Update extends PureComponent {
 export class PR extends PureComponent {
   render() {
     const created = moment.utc(this.props.date_created)
-    const status = this.props.ci_status === null ? "unknown" : this.props.ci_status
 
     return (
       <WidgetRow>

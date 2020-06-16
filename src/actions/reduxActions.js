@@ -1,4 +1,6 @@
 import ActionTypes from '../constants';
+import { defaultOptions } from '../reducers';
+import * as R from "ramda"
 
 
 export const setUser = payload => ({
@@ -76,6 +78,11 @@ export const loadOptions = payload => dispatch => {
 
     dispatch({
         type: ActionTypes.LOAD_OPTIONS,
-        payload: options
+        payload: R.mergeRight(defaultOptions, options)
     })
 }
+
+export const resetOptions = payload => ({
+    type: ActionTypes.RESET_OPTIONS,
+    payload: payload
+})

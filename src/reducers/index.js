@@ -1,6 +1,6 @@
 import ActionTypes from '../constants';
 
-const defaultOptions = {
+export const defaultOptions = {
     show_bugs: true,
     bug_min_priority_severity: "low",
     bug_include_unspecified: true,
@@ -13,6 +13,11 @@ const defaultOptions = {
     show_bug_status_VERIFIED: true,
     show_bug_status_POST: true,
     show_bug_status_RELEASE_PENDING: true,
+
+    show_bug_kw_tracking: true,
+    show_bug_kw_futurefeature: true,
+    show_bug_kw_triaged: true,
+    show_bug_kw_releasemonitoring: true,
 
     sort: "name",
 
@@ -86,6 +91,12 @@ export default (state = defaultState, action) => {
             return {
                 ...state,
                 options: action.payload === null? defaultOptions : action.payload
+            }
+
+        case ActionTypes.RESET_OPTIONS:
+            return {
+                ...state,
+                options: defaultOptions
             }
 
         default:

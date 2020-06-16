@@ -149,3 +149,8 @@ html, body {
 .modal-backdrop {
   display: none !important;
 }
+
+.modal-header a {
+  font-size: 0.75rem !important;
+  padding-top: 3px;
+}

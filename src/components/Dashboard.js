@@ -72,6 +72,12 @@ class Dashboard extends Component {
 
     return bzs.data[pkg].filter((bug) => {
       if (!options[`show_bug_status_${bug.status}`]) return false
+      if (!options.show_bug_kw_tracking && bug.keywords.includes("Tracking")) return false
+      if (!options.show_bug_kw_futurefeature && bug.keywords.includes("FutureFeature"))
+        return false
+      if (!options.show_bug_kw_triaged && bug.keywords.includes("Triaged")) return false
+      if (!options.show_bug_kw_releasemonitoring && bug.keywords.includes("ReleaseMonitoring"))
+        return false
 
       if (bug.priority_severity === "unspecified") return options.bug_include_unspecified
       return (
