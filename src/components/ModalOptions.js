@@ -406,11 +406,11 @@ class ModalOptions extends Component {
           </OptionsSwitch>
 
           <OptionsSwitch name="show_koschei" value={show_koschei} handler={this.handleChange}>
-            <div className="font-weight-bold">Show fails to build</div>
+            <div className="font-weight-bold">Show Koschei fails</div>
           </OptionsSwitch>
 
           <OptionsSwitch name="show_fti" value={show_fti} handler={this.handleChange}>
-            <div className="font-weight-bold">Show fails to install</div>
+            <div className="font-weight-bold">Show fedora-health-check fails</div>
           </OptionsSwitch>
 
           <hr />

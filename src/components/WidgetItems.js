@@ -9,6 +9,7 @@ import {
 } from "./WidgetLayout"
 import * as moment from "moment"
 
+/*
 const toBodhiReleasesUrl = (release) => {
   const url = "https://bodhi.fedoraproject.org/releases"
 
@@ -34,6 +35,7 @@ const toBodhiReleasesUrl = (release) => {
     }
   }
 }
+*/
 
 const karma_color = (karma) => {
   if (karma > 0) return "text-success"
@@ -45,7 +47,6 @@ const karma_color = (karma) => {
 export class Update extends PureComponent {
   render() {
     const created = moment.utc(this.props.submission_date)
-    const { url, release } = toBodhiReleasesUrl(this.props.release)
 
     return (
       <WidgetRow>
@@ -55,7 +56,7 @@ export class Update extends PureComponent {
           </WidgetTitle>
           <WidgetSubTitle>
             created <span title={created.toDate()}> {created.fromNow()}</span>&nbsp;for{" "}
-            <a href={url}>{release}</a>
+            {this.props.release}
           </WidgetSubTitle>
         </WidgetHead>
         <WidgetBadge type="warning">{this.props.status}</WidgetBadge>
@@ -125,8 +126,7 @@ export class Bug extends PureComponent {
           </WidgetTitle>
           <WidgetSubTitle>
             #{this.props.bug_id} opened
-            <span title={reported.toDate()}> {reported.fromNow()}</span> for Fedora{" "}
-            {this.props.release}
+            <span title={reported.toDate()}> {reported.fromNow()}</span> for {this.props.release}
           </WidgetSubTitle>
         </WidgetHead>
         <WidgetBadge type={badge_color(this.props.status.toLowerCase())}>
@@ -152,7 +152,6 @@ export class Override extends PureComponent {
   render() {
     const created = moment.utc(this.props.submission_date)
     const expires = moment.utc(this.props.expiration_date)
-    const { url, release } = toBodhiReleasesUrl(this.props.release)
 
     return (
       <WidgetRow>
@@ -162,7 +161,7 @@ export class Override extends PureComponent {
           </WidgetTitle>
           <WidgetSubTitle>
             created <span title={created.toDate()}> {created.fromNow()}</span>&nbsp;for{" "}
-            <a href={url}>{release}</a>
+            {this.props.release}
           </WidgetSubTitle>
         </WidgetHead>
         <div className="col-xs-auto  pl-4 pl-sm-4 pl-md-4 pl-lg-0 pr-2 text-muted">
@@ -175,18 +174,9 @@ export class Override extends PureComponent {
   }
 }
 
-const koscheiNiceRelease = (release) => {
-  if (release.startsWith("f")) return release.replace("f", "Fedora ")
-
-  if (release.startsWith("epel")) return release.replace("epel", "Fedora EPEL ")
-
-  //fallback
-  return release
-}
-
 export class Koschei extends PureComponent {
   render() {
-    const title = "failing to build for " + koscheiNiceRelease(this.props.release)
+    const title = `failing to build for ${this.props.release}`
 
     return (
       <WidgetRow>
@@ -215,8 +205,15 @@ export class FTI extends PureComponent {
   }
 
   render() {
-    const title = `failing to ${this.props.isFTI? "install" : "build" } for Fedora ${this.props.release}`
-    const reasons = Object.entries(this.props.reason).map((r) => (
+    const { isFTI, release, repo, title, reason, url } = this.props
+    const fulltitle = `failing to ${isFTI ? "install" : "build"} for ${release} ${
+      ["rawhide", "stable"].includes(repo) ? "" : repo
+    }`
+    const icon = isFTI ? "fa-file-medical-alt" : "fa-wrench"
+    const tooltip = isFTI
+      ? "This is package fails to install"
+      : `Missing build dependencies on ${release}`
+    const reasons_list = Object.entries(reason).map((r) => (
       <span>
         <span className="font-weight-bold">{`${r[0]}: `}</span>
         <ul>
@@ -231,22 +228,15 @@ export class FTI extends PureComponent {
       <div
         onClick={this.collapseToggle.bind(this)}
         data-toggle="collapse"
-        data-target={`#FTI_reasons_${this.props.title}_${this.props.release}`}>
+        data-target={`#FTI_reasons_${title}_${release.replace(/\s/g, "")}`}>
         <div className="list-group-item p-1">
           <div className="row align-items-center no-gutters">
-            <WidgetHead type="This is package fails to install" icon="fa-file-medical-alt">
-              <WidgetTitle fulltitle={title}>
-                <a
-                  href={`https://pagure.io/fedora-health-check/blob/master/f/reports/report-${this.props.release}.md`}>
-                  {title}
-                </a>
+            <WidgetHead type={tooltip} icon={icon}>
+              <WidgetTitle fulltitle={fulltitle}>
+                <a href={url}>{fulltitle}</a>
               </WidgetTitle>
               <WidgetSubTitle>
-                {this.state.collapsed ? (
-                  Object.keys(this.props.reason).join(", ")
-                ) : (
-                  <span>&nbsp;</span>
-                )}
+                {this.state.collapsed ? Object.keys(reason).join(", ") : <span>&nbsp;</span>}
               </WidgetSubTitle>
             </WidgetHead>
             <div className="col-auto min-width-3 pl-4 pl-sm-4 pl-md-4 pl-lg-0 font-weight-bold mr-3 text-muted mh-100">
@@ -260,8 +250,8 @@ export class FTI extends PureComponent {
           <div className="row no-gutters pl-4">
             <div
               className="collapse small mt-n3 bg-white"
-              id={`FTI_reasons_${this.props.title}_${this.props.release}`}>
-              {reasons}
+              id={`FTI_reasons_${title}_${release.replace(/\s/g, "")}`}>
+              {reasons_list}
             </div>
           </div>
         </div>
