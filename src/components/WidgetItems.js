@@ -249,7 +249,7 @@ export class FTI extends PureComponent {
           </div>
           <div className="row no-gutters pl-4">
             <div
-              className="collapse small mt-n3 bg-white"
+              className="collapse small mt-md-n3 bg-white"
               id={`FTI_reasons_${title}_${release.replace(/\s/g, "")}`}>
               {reasons_list}
             </div>

@@ -35,51 +35,53 @@ class Stats extends PureComponent {
     const stats = this.stats()
 
     return (
-      <div className="container d-flex justify-content-between pt-4 font-weight-bold text-muted">
-        <div>
-          {this.props.fasuser}:
-          <span data-toggle="tooltip" title="" className="ml-3 mr-2"
-                data-original-title={`${this.props.fasuser} has ${static_info.data.primary_packages.length} packages`}>
-            <i className="fas fa-user mr-1" /> {static_info.data.primary_packages.length}
-          </span>
-          <span data-toggle="tooltip" title="" className="ml-3 mr-2"
-                data-original-title={`${this.props.fasuser} has ${static_info.data.packages.length} packages (including groups)`}>
-            <i className="fas fa-users mr-1" /> {static_info.data.packages.length}
-          </span>
-          <span data-toggle="tooltip" title="" className="ml-3 mr-2"
-                data-original-title={`${this.props.shownPackages} packages shown`}>
-            <i className="fas fa-eye mr-1" /> {this.props.shownPackages}
-          </span>
-        </div>
-        <div>
-          <span data-toggle="tooltip" title="" className="ml-3 mr-2"
-                data-original-title={`${stats.bugs} bugs`}>
-            <i className="fa fa-bug mr-1" /> {stats.bugs}
-          </span>
-          <span data-toggle="tooltip" title="" className="ml-3 mr-2"
-                data-original-title={`${stats.updates} updates`}>
-            <i className="fa fa-bolt mr-1" /> {stats.updates}
-          </span>
-          <span data-toggle="tooltip" title="" className="ml-3 mr-2"
-                data-original-title={`${stats.prs} PRs`}>
-            <i className="fa fa-git mr-1" /> {stats.prs}
-          </span>
-          <span data-toggle="tooltip" title="" className="ml-3 mr-2"
-                data-original-title={`${stats.overrides} overrides`}>
-            <i className="fa fa-shapes mr-1" /> {stats.overrides}
-          </span>
-          <span data-toggle="tooltip" title="" className="ml-3 mr-2"
-                data-original-title={`${stats.koschei} fails to build`}>
-            <i className="fa fa-wrench mr-1" /> {stats.koschei}
-          </span>
-          <span data-toggle="tooltip" title="" className="ml-3 mr-2"
-                data-original-title={`${stats.fti} fails to install`}>
-            <i className="fa fa-file-medical-alt mr-1" /> {stats.fti}
-          </span>
-          <span data-toggle="tooltip" title="" className="ml-3"
-                data-original-title={`${stats.orphans} packages orphaned`}>
-            <i className="fa fa-user-slash mr-1" /> {stats.orphans}
-          </span>
+      <div className="container pt-4 font-weight-bold text-muted">
+        <div className="row">
+          <div className="col-md-6">
+            {this.props.fasuser}:
+            <span data-toggle="tooltip" title="" className="ml-3 mr-2"
+                  data-original-title={`${this.props.fasuser} has ${static_info.data.primary_packages.length} packages`}>
+              <i className="fas fa-user mr-1" /> {static_info.data.primary_packages.length}
+            </span>
+            <span data-toggle="tooltip" title="" className="ml-3 mr-2"
+                  data-original-title={`${this.props.fasuser} has ${static_info.data.packages.length} packages (including groups)`}>
+              <i className="fas fa-users mr-1" /> {static_info.data.packages.length}
+            </span>
+            <span data-toggle="tooltip" title="" className="ml-3 mr-2"
+                  data-original-title={`${this.props.shownPackages} packages shown`}>
+              <i className="fas fa-eye mr-1" /> {this.props.shownPackages}
+            </span>
+          </div>
+          <div className="col-md-6 text-right mt-3 mt-md-0">
+            <span data-toggle="tooltip" title="" className="ml-3 mr-2 text-nowrap"
+                  data-original-title={`${stats.bugs} bugs`}>
+              <i className="fa fa-bug mr-1" /> {stats.bugs}
+            </span>
+            <span data-toggle="tooltip" title="" className="ml-3 mr-2 text-nowrap"
+                  data-original-title={`${stats.updates} updates`}>
+              <i className="fa fa-bolt mr-1" /> {stats.updates}
+            </span>
+            <span data-toggle="tooltip" title="" className="ml-3 mr-2 text-nowrap"
+                  data-original-title={`${stats.prs} PRs`}>
+              <i className="fa fa-git mr-1" /> {stats.prs}
+            </span>
+            <span data-toggle="tooltip" title="" className="ml-3 mr-2 text-nowrap"
+                  data-original-title={`${stats.overrides} overrides`}>
+              <i className="fa fa-shapes mr-1" /> {stats.overrides}
+            </span>
+            <span data-toggle="tooltip" title="" className="ml-3 mr-2 text-nowrap"
+                  data-original-title={`${stats.koschei} fails to build`}>
+              <i className="fa fa-wrench mr-1" /> {stats.koschei}
+            </span>
+            <span data-toggle="tooltip" title="" className="ml-3 mr-2 text-nowrap"
+                  data-original-title={`${stats.fti} fails to install`}>
+              <i className="fa fa-file-medical-alt mr-1" /> {stats.fti}
+            </span>
+            <span data-toggle="tooltip" title="" className="ml-3 text-nowrap"
+                  data-original-title={`${stats.orphans} packages orphaned`}>
+              <i className="fa fa-user-slash mr-1" /> {stats.orphans}
+            </span>
+          </div>
         </div>
       </div>
     )
