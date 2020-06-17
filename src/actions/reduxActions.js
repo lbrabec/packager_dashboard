@@ -82,7 +82,10 @@ export const loadOptions = payload => dispatch => {
     })
 }
 
-export const resetOptions = payload => ({
-    type: ActionTypes.RESET_OPTIONS,
-    payload: payload
-})
+export const resetOptions = payload => dispatch => {
+    localStorage.setItem(payload, JSON.stringify(defaultOptions))
+    dispatch({
+        type: ActionTypes.RESET_OPTIONS,
+        payload: payload
+    })
+}

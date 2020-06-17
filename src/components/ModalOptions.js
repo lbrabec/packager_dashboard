@@ -322,7 +322,7 @@ class ModalOptions extends Component {
     )
 
     return (
-      <ModalOptionsLayout reset={() => this.props.dispatch(resetOptions())}>
+      <ModalOptionsLayout reset={() => this.props.dispatch(resetOptions(this.props.fasuser))}>
         <form>
           <div className="form-group">
             <label htmlFor="sort">Sort by</label>
@@ -429,6 +429,7 @@ class ModalOptions extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    fasuser: state.fasuser,
     options: state.options,
     groups:
       state.user_data === undefined || state.user_data.static_info.status !== 200

@@ -37,14 +37,10 @@ class Widget extends PureComponent {
       <Koschei title={title} {...k} key={"koschei" + title + k.release} />
     ))
 
-
-    console.log(title)
     const fti_no_src = R.compose(
       R.filter((r) => R.keys(r).length > 0),
       R.map((f) => R.pickBy((v, k) => k !== "src", f.reason))
     )(fti)
-
-    console.log(fti_no_src)
 
     const fti_items = fti.map((f) => <FTI title={title} {...f} key={"fti" + title + f} isFTI={fti_no_src.length > 0} />)
     const orphan_badge = orphan.orphaned ? <OrphanBadge since={orphan.orphaned_since} /> : null

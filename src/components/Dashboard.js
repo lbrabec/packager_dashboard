@@ -4,6 +4,7 @@ import Footer from "./Footer"
 import Widget from "./Widget"
 import Stats from "./Stats"
 import * as R from "ramda"
+import $ from "jquery"
 
 import { connect } from "react-redux"
 
