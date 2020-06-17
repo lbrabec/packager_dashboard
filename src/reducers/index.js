@@ -13,11 +13,7 @@ export const defaultOptions = {
     show_bug_status_VERIFIED: true,
     show_bug_status_POST: true,
     show_bug_status_RELEASE_PENDING: true,
-
-    show_bug_kw_tracking: true,
-    show_bug_kw_futurefeature: true,
-    show_bug_kw_triaged: true,
-    show_bug_kw_releasemonitoring: true,
+    show_bug_kw: {},
 
     sort: "name",
 
@@ -101,6 +97,18 @@ export default (state = defaultState, action) => {
                             ...state.options,
                             show_releases: {
                                 ...state.options.show_releases,
+                                [action.payload.name]: action.payload.value
+                            }
+                        }
+                    }
+
+                case 'bug_kw':
+                    return {
+                        ...state,
+                        options: {
+                            ...state.options,
+                            show_bug_kw: {
+                                ...state.options.show_bug_kw,
                                 [action.payload.name]: action.payload.value
                             }
                         }

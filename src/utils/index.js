@@ -58,3 +58,7 @@ export const balancedSplit = (data) => {
 
 export const showRelease = (options, what) =>
     R.defaultTo(true, options.show_releases[what.release.replace(/\s/g, '')])
+
+export const showOption = R.curry(
+    (show_obj, what) =>R.defaultTo(true, show_obj[what])
+)

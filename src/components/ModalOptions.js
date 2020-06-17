@@ -150,17 +150,17 @@ class _BugKeywordsGrid extends Component {
         <div className="row">
           <div className="col-4">
             <CustomCheckbox
-              name="show_bug_kw_tracking"
+              name="Tracking"
               handler={handler}
-              value={options.show_bug_kw_tracking}>
+              value={R.defaultTo(true, options.show_bug_kw["Tracking"])}>
               Tracking
             </CustomCheckbox>
           </div>
           <div className="col-8">
             <CustomCheckbox
-              name="show_bug_kw_futurefeature"
+              name="FutureFeature"
               handler={handler}
-              value={options.show_bug_kw_futurefeature}>
+              value={R.defaultTo(true, options.show_bug_kw["FutureFeature"])}>
               FutureFeature
             </CustomCheckbox>
           </div>
@@ -168,17 +168,17 @@ class _BugKeywordsGrid extends Component {
         <div className="row">
           <div className="col-4">
             <CustomCheckbox
-              name="show_bug_kw_triaged"
+              name="Triaged"
               handler={handler}
-              value={options.show_bug_kw_triaged}>
+              value={R.defaultTo(true, options.show_bug_kw["Triaged"])}>
               Triaged
             </CustomCheckbox>
           </div>
           <div className="col-8">
             <CustomCheckbox
-              name="show_bug_kw_releasemonitoring"
+              name="ReleaseMonitoring"
               handler={handler}
-              value={options.show_bug_kw_releasemonitoring}>
+              value={R.defaultTo(true, options.show_bug_kw["ReleaseMonitoring"])}>
               Release monitoring
             </CustomCheckbox>
           </div>
@@ -236,6 +236,7 @@ class ModalOptions extends Component {
     this.handleChange = this.handleChange.bind(this)
     this.handleGroupChange = this.handleGroupChange.bind(this)
     this.handleRelease = this.handleRelease.bind(this)
+    this.handleKwChange = this.handleKwChange.bind(this)
   }
 
   handleChange(e) {
@@ -265,6 +266,17 @@ class ModalOptions extends Component {
     this.props.dispatch(
       changeOption({
         type: 'release',
+        name: e.target.name,
+        value: valueOf(e.target),
+      })
+    )
+  }
+
+  handleKwChange(e){
+    e.stopPropagation()
+    this.props.dispatch(
+      changeOption({
+        type: 'bug_kw',
         name: e.target.name,
         value: valueOf(e.target),
       })
@@ -343,6 +355,7 @@ class ModalOptions extends Component {
                 {
                   this.props.releases.fedora.map(release => (
                     <CustomCheckbox
+                      key={`show_${release.replace(/\s/g, '')}`}
                       name={release.replace(/\s/g, '')}
                       handler={this.handleRelease}
                       value={R.defaultTo(true, show_releases[release.replace(/\s/g, '')])}>
@@ -355,6 +368,7 @@ class ModalOptions extends Component {
                 {
                   this.props.releases.epel.map(release => (
                     <CustomCheckbox
+                      key={`show_${release.replace(/\s/g, '')}`}
                       name={release.replace(/\s/g, '')}
                       handler={this.handleRelease}
                       value={R.defaultTo(true, show_releases[release.replace(/\s/g, '')])}>
@@ -428,7 +442,7 @@ class ModalOptions extends Component {
           </div>
 
           <div className="form-group pl-as-switch mt-3">
-            <BugKeywordsGrid handler={this.handleChange} />
+            <BugKeywordsGrid handler={this.handleKwChange} />
           </div>
 
           <OptionsSwitch name="show_updates" value={show_updates} handler={this.handleChange}>

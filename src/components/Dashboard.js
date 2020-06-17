@@ -51,14 +51,14 @@ class Dashboard extends Component {
     if (bzs.status === 204 || !options.show_bugs) return EMPTY_ARRAY
 
     return bzs.data[pkg].filter((bug) => {
-      if (!R.defaultTo(true, options.show_releases[bug.release.replace(/\s/g, "")])) return false
-      if (!options[`show_bug_status_${bug.status}`]) return false
-      if (!options.show_bug_kw_tracking && bug.keywords.includes("Tracking")) return false
-      if (!options.show_bug_kw_futurefeature && bug.keywords.includes("FutureFeature"))
-        return false
-      if (!options.show_bug_kw_triaged && bug.keywords.includes("Triaged")) return false
-      if (!options.show_bug_kw_releasemonitoring && bug.keywords.includes("ReleaseMonitoring"))
-        return false
+      if (
+        !U.showRelease(options, bug) ||
+        !options[`show_bug_status_${bug.status}`] ||
+        !R.compose(
+          R.all(R.identity),
+          R.map(U.showOption(options.show_bug_kw))
+        )(bug.keywords)
+      ) return false
 
       if (bug.priority_severity === "unspecified") return options.bug_include_unspecified
       return (
