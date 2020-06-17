@@ -248,9 +248,9 @@ export class FTI extends PureComponent {
             </div>
             <div className="col-2 text-right pr-2 pl-0 pl-sm-0 pl-md-0 pl-lg-0 font-weight-bold text-muted mh-100">
               {this.state.collapsed ? (
-                <i className="fas fa-expand-arrows-alt mr-2"></i>
+                <i className="fas fa-chevron-down mr-2"></i>
               ) : (
-                <i className="fas fa-compress-arrows-alt mr-2"></i>
+                <i className="fas fa-chevron-up mr-2"></i>
               )}
             </div>
           </div>
