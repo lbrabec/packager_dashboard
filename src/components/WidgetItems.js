@@ -231,15 +231,22 @@ export class FTI extends PureComponent {
         data-target={`#FTI_reasons_${title}_${release.replace(/\s/g, "")}`}>
         <div className="list-group-item p-1">
           <div className="row align-items-center no-gutters">
-            <WidgetHead type={tooltip} icon={icon}>
-              <WidgetTitle fulltitle={fulltitle}>
-                <a href={url}>{fulltitle}</a>
-              </WidgetTitle>
-              <WidgetSubTitle>
-                {this.state.collapsed ? Object.keys(reason).join(", ") : <span>&nbsp;</span>}
-              </WidgetSubTitle>
-            </WidgetHead>
-            <div className="col-auto min-width-3 pl-4 pl-sm-4 pl-md-4 pl-lg-0 font-weight-bold mr-3 text-muted mh-100">
+            <div className="col-10">
+              <div className="media">
+                <span data-toggle="tooltip" title="" data-original-title={tooltip}>
+                  <i className={"fa fa-fw " + icon}></i>
+                </span>
+                <div className="media-body ml-2">
+                  <WidgetTitle fulltitle={fulltitle}>
+                    <a href={url}>{fulltitle}</a>
+                  </WidgetTitle>
+                  <WidgetSubTitle>
+                    {this.state.collapsed ? Object.keys(reason).join(", ") : <span>&nbsp;</span>}
+                  </WidgetSubTitle>
+                </div>
+              </div>
+            </div>
+            <div className="col-2 text-right pr-2 pl-0 pl-sm-0 pl-md-0 pl-lg-0 font-weight-bold text-muted mh-100">
               {this.state.collapsed ? (
                 <i className="fas fa-expand-arrows-alt mr-2"></i>
               ) : (
@@ -249,7 +256,7 @@ export class FTI extends PureComponent {
           </div>
           <div className="row no-gutters pl-4">
             <div
-              className="collapse small mt-md-n3 bg-white"
+              className="collapse small mt-n3 bg-white"
               id={`FTI_reasons_${title}_${release.replace(/\s/g, "")}`}>
               {reasons_list}
             </div>

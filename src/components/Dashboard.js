@@ -260,7 +260,7 @@ class Dashboard extends Component {
           <div className="subheader">
             <Stats shownPackages={package_cards.length} />
             <div className="container">
-              <div className="card-columns py-md-4">{package_cards}</div>
+              <div className="card-columns py-4">{package_cards}</div>
             </div>
           </div>
         </div>
