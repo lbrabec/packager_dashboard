@@ -228,7 +228,7 @@ export class FTI extends PureComponent {
       <div
         onClick={this.collapseToggle.bind(this)}
         data-toggle="collapse"
-        data-target={`#FTI_reasons_${title}_${release.replace(/\s/g, "")}`}>
+        data-target={`#FTI_reasons_${title}_${release.replace(/\s/g, "")}_${repo}`}>
         <div className="list-group-item p-1">
           <div className="row align-items-center no-gutters">
             <div className="col-10">
@@ -257,7 +257,7 @@ export class FTI extends PureComponent {
           <div className="row no-gutters pl-4">
             <div
               className="collapse small mt-n3 bg-white"
-              id={`FTI_reasons_${title}_${release.replace(/\s/g, "")}`}>
+              id={`FTI_reasons_${title}_${release.replace(/\s/g, "")}_${repo}`}>
               {reasons_list}
             </div>
           </div>
