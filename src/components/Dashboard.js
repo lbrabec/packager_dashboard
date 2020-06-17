@@ -5,6 +5,7 @@ import Widget from "./Widget"
 import Stats from "./Stats"
 import * as R from "ramda"
 import $ from "jquery"
+import { useMediaQuery } from 'react-responsive'
 
 import { connect } from "react-redux"
 
@@ -33,6 +34,44 @@ const dataLen = (pkg) =>
   pkg.data.koschei.length +
   pkg.data.fti.length +
   (pkg.data.orphan.orphaned ? 1 : 0)
+
+
+const Mobile = ({ children }) => {
+  const isMobile = useMediaQuery({ maxWidth: 767 })
+  return isMobile ? children : null
+}
+const NotMobile = ({ children }) => {
+  const isNotMobile = useMediaQuery({ minWidth: 768 })
+  return isNotMobile ? children : null
+}
+
+
+class ResponsiveMasonry extends Component {
+  render() {
+    const columns = R.splitAt(Math.round((this.props.items.length/2)), this.props.items)
+    return(
+      <div className="py-4 masonry">
+        <Mobile>
+          <div className="row">
+            <div className="col-12">
+              {this.props.items}
+            </div>
+          </div>
+        </Mobile>
+        <NotMobile>
+          <div className="row">
+            <div className="col-6">
+              {columns[0]}
+            </div>
+            <div className="col-6">
+              {columns[1]}
+            </div>
+          </div>
+        </NotMobile>
+      </div>
+    )
+  }
+}
 
 class Dashboard extends Component {
   constructor(props) {
@@ -261,7 +300,7 @@ class Dashboard extends Component {
           <div className="subheader">
             <Stats shownPackages={package_cards.length} />
             <div className="container">
-              <div className="card-columns py-4">{package_cards}</div>
+              <ResponsiveMasonry items={package_cards}/>
             </div>
           </div>
         </div>

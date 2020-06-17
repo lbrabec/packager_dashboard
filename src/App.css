@@ -68,6 +68,10 @@ html, body {
   width: 100%;
 }
 
+.masonry .card {
+  margin-bottom: 0.75rem;
+}
+
 @media screen and (max-width: 375px) {
   .appEntryContainer img {
     width: 25em;
