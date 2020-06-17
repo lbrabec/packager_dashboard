@@ -42,7 +42,7 @@ class Widget extends PureComponent {
       R.map((f) => R.pickBy((v, k) => k !== "src", f.reason))
     )(fti)
 
-    const fti_items = fti.map((f) => <FTI title={title} {...f} key={"fti" + title + f} isFTI={fti_no_src.length > 0} />)
+    const fti_items = fti.map((f) => <FTI title={title} {...f} key={"fti_" + title + f.release + f.repo} isFTI={fti_no_src.length > 0} />)
     const orphan_badge = orphan.orphaned ? <OrphanBadge since={orphan.orphaned_since} /> : null
     const fti_src = fti.map(f => R.keys(f.reason).includes("src")).some(R.identity)
     const ftbfs_badge = (fti_src || koschei.length > 0) ? <FTBadge>FTBFS</FTBadge> : null

@@ -214,11 +214,11 @@ export class FTI extends PureComponent {
       ? "This is package fails to install"
       : `Missing build dependencies on ${release}`
     const reasons_list = Object.entries(reason).map((r) => (
-      <span>
+      <span key={title+r[0]}>
         <span className="font-weight-bold">{`${r[0]}: `}</span>
         <ul>
           {r[1].map((ra) => (
-            <li>{ra}</li>
+            <li key={r[0]+ra}>{ra}</li>
           ))}
         </ul>
       </span>
