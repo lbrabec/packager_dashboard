@@ -2,232 +2,11 @@ import React, { Component } from "react"
 import { changeOption, resetOptions } from "../actions/reduxActions"
 import { connect } from "react-redux"
 import * as R from "ramda"
+import * as U from "../utils"
 
-class ModalOptionsLayout extends Component {
-  render() {
-    return (
-      <div
-        className="modal fade"
-        data-backdrop="false"
-        id="options"
-        tabIndex="-1"
-        role="dialog"
-        aria-labelledby="optionsModalLabel"
-        aria-hidden="true"
-        data-focus="false">
-        <div className="modal-dialog modal-dialog-slideout" role="document">
-          <div className="modal-content">
-            <div className="modal-header d-flex align-items-center">
-              <h4 className="modal-title" id="optionsModalLabel">
-                Options
-              </h4>
-              <a className="ml-3"
-                onClick={this.props.reset}>
-                Reset
-              </a>
-              <button
-                type="button"
-                className="close"
-                data-dismiss="modal"
-                data-taget="#options"
-                aria-label="Close"
-                id="close-button">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div className="modal-body">{this.props.children}</div>
-          </div>
-        </div>
-      </div>
-    )
-  }
-}
-
-const valueOf = (t) => {
-  switch (t.type) {
-    case "checkbox":
-      return t.checked
-
-    default:
-      return t.value
-  }
-}
-
-class OptionsSwitch extends Component {
-  render() {
-    return (
-      <div className="custom-control custom-switch">
-        <input
-          type="checkbox"
-          className="custom-control-input"
-          name={this.props.name}
-          id={this.props.name}
-          checked={this.props.value}
-          onChange={this.props.handler}
-        />
-        <label className="custom-control-label" htmlFor={this.props.name}>
-          {this.props.children}
-        </label>
-      </div>
-    )
-  }
-}
-
-class CustomRadio extends Component {
-  render() {
-    return (
-      <div className="custom-control custom-radio">
-        <input
-          type="radio"
-          id={this.props.name + "-" + this.props.type}
-          name={this.props.name}
-          value={this.props.type}
-          checked={this.props.value === this.props.type}
-          onChange={this.props.handler}
-          className="custom-control-input"
-        />
-        <label className="custom-control-label" htmlFor={this.props.name + "-" + this.props.type}>
-          {this.props.children}
-        </label>
-      </div>
-    )
-  }
-}
-
-class CustomCheckbox extends Component {
-  render() {
-    return (
-      <div className="custom-control custom-checkbox">
-        <input
-          type="checkbox"
-          className="custom-control-input"
-          id={this.props.name}
-          name={this.props.name}
-          checked={this.props.value}
-          onChange={this.props.handler}
-        />
-        <label className="custom-control-label" htmlFor={this.props.name}>
-          {this.props.children}
-        </label>
-      </div>
-    )
-  }
-}
-
-class _BugStatusGrid extends Component {
-  render() {
-    const grid = this.props.grid.map((row) => (
-      <div className="row" key={`status_row_${row[0]}${row[1]}`}>
-        {row.map((status) => (
-          <div className="col-4" key={`status_${status}`}>
-            <CustomCheckbox
-              name={`show_bug_status_${status}`}
-              handler={this.props.handler}
-              value={this.props.options[`show_bug_status_${status}`]}>
-              {status}
-            </CustomCheckbox>
-          </div>
-        ))}
-      </div>
-    ))
-
-    return grid
-  }
-}
-
-const BugStatusGrid = connect((state) => {
-  return {
-    options: state.options,
-  }
-})(_BugStatusGrid)
-
-class _BugKeywordsGrid extends Component {
-  render() {
-    const { options, handler } = this.props
-
-    return (
-      <div>
-        <div className="row">
-          <div className="col-4">
-            <CustomCheckbox
-              name="Tracking"
-              handler={handler}
-              value={R.defaultTo(true, options.show_bug_kw["Tracking"])}>
-              Tracking
-            </CustomCheckbox>
-          </div>
-          <div className="col-8">
-            <CustomCheckbox
-              name="FutureFeature"
-              handler={handler}
-              value={R.defaultTo(true, options.show_bug_kw["FutureFeature"])}>
-              FutureFeature
-            </CustomCheckbox>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-4">
-            <CustomCheckbox
-              name="Triaged"
-              handler={handler}
-              value={R.defaultTo(true, options.show_bug_kw["Triaged"])}>
-              Triaged
-            </CustomCheckbox>
-          </div>
-          <div className="col-8">
-            <CustomCheckbox
-              name="ReleaseMonitoring"
-              handler={handler}
-              value={R.defaultTo(true, options.show_bug_kw["ReleaseMonitoring"])}>
-              Release monitoring
-            </CustomCheckbox>
-          </div>
-        </div>
-      </div>
-    )
-  }
-}
-
-const BugKeywordsGrid = connect((state) => {
-  return {
-    options: state.options,
-  }
-})(_BugKeywordsGrid)
-
-class GroupTriSwitch extends Component {
-  render() {
-    return (
-      <div className="row no-gutters">
-        <div className="col-1">
-          <CustomRadio
-            name={this.props.name}
-            handler={this.props.handler}
-            type="always"
-            value={this.props.value}></CustomRadio>
-        </div>
-        <div className="col-1">
-          <CustomRadio
-            name={this.props.name}
-            handler={this.props.handler}
-            type="mine"
-            value={this.props.value}></CustomRadio>
-        </div>
-        <div className="col-1">
-          <CustomRadio
-            name={this.props.name}
-            handler={this.props.handler}
-            type="never"
-            value={this.props.value}></CustomRadio>
-        </div>
-        <div className="col-auto">
-          <div className="">
-            <label>{this.props.children}</label>
-          </div>
-        </div>
-      </div>
-    )
-  }
-}
+import { ReleasesBlock, BugStatusGrid, BugKeywordsGrid, GroupBlock } from "./ModalOptionsItems"
+import { ModalOptionsLayout } from "./ModalOptionsLayout"
+import { CustomCheckbox, GroupTriSwitch, OptionsSwitch } from "./ModalOptionsLayout"
 
 class ModalOptions extends Component {
   constructor(props) {
@@ -243,9 +22,9 @@ class ModalOptions extends Component {
     e.stopPropagation()
     this.props.dispatch(
       changeOption({
-        type: 'general',
+        type: "general",
         name: e.target.name,
-        value: valueOf(e.target),
+        value: U.valueOfInput(e.target),
       })
     )
   }
@@ -254,31 +33,31 @@ class ModalOptions extends Component {
     e.stopPropagation()
     this.props.dispatch(
       changeOption({
-        type: 'group',
+        type: "group",
         name: e.target.name,
-        value: valueOf(e.target),
+        value: U.valueOfInput(e.target),
       })
     )
   }
 
-  handleRelease(e){
+  handleRelease(e) {
     e.stopPropagation()
     this.props.dispatch(
       changeOption({
-        type: 'release',
+        type: "release",
         name: e.target.name,
-        value: valueOf(e.target),
+        value: U.valueOfInput(e.target),
       })
     )
   }
 
-  handleKwChange(e){
+  handleKwChange(e) {
     e.stopPropagation()
     this.props.dispatch(
       changeOption({
-        type: 'bug_kw',
+        type: "bug_kw",
         name: e.target.name,
-        value: valueOf(e.target),
+        value: U.valueOfInput(e.target),
       })
     )
   }
@@ -296,89 +75,12 @@ class ModalOptions extends Component {
       show_orphaned,
       show_koschei,
       show_fti,
-      show_groups,
-      show_releases,
     } = this.props.options
-
-    const groupSwitches = this.props.groups.map((group) => (
-      <GroupTriSwitch
-        name={group}
-        value={show_groups[group] === undefined ? "always" : show_groups[group]}
-        handler={this.handleGroupChange}
-        key={group}>
-        <div className="font-weight-bold">{group}</div>
-      </GroupTriSwitch>
-    ))
-
-    const groupBlock = (
-      <div>
-        <div className="row no-gutters mb-1">
-          <div className="col-1">
-            <span
-              className=""
-              data-toggle="tooltip"
-              title=""
-              data-original-title="Include all packages maintained by this group regardless of my direct package relationship">
-              <i className="fas fa-users mr-1"></i>
-            </span>
-          </div>
-          <div className="col-1">
-            <span
-              style={{ paddingLeft: "2px" }}
-              className=""
-              data-toggle="tooltip"
-              title=""
-              data-original-title="Include packages that I directly maintain regardless of their relationship to this group">
-              <i className="fas fa-user mr-1"></i>
-            </span>
-          </div>
-          <div className="col-1">
-            <span
-              style={{ paddingLeft: "0px" }}
-              data-toggle="tooltip"
-              title=""
-              data-original-title="Exclude all packages maintained by this group regardless of my direct package relationship">
-              <i className="fas fa-eye-slash"></i>
-            </span>
-          </div>
-        </div>
-        {groupSwitches}
-      </div>
-    )
 
     return (
       <ModalOptionsLayout reset={() => this.props.dispatch(resetOptions(this.props.fasuser))}>
         <form>
-          <div className="form-group">
-            <div className="row">
-              <div className="col-6">
-                {
-                  this.props.releases.fedora.map(release => (
-                    <CustomCheckbox
-                      key={`show_${release.replace(/\s/g, '')}`}
-                      name={release.replace(/\s/g, '')}
-                      handler={this.handleRelease}
-                      value={R.defaultTo(true, show_releases[release.replace(/\s/g, '')])}>
-                      {release}
-                    </CustomCheckbox>
-                  ))
-                }
-              </div>
-              <div className="col-4">
-                {
-                  this.props.releases.epel.map(release => (
-                    <CustomCheckbox
-                      key={`show_${release.replace(/\s/g, '')}`}
-                      name={release.replace(/\s/g, '')}
-                      handler={this.handleRelease}
-                      value={R.defaultTo(true, show_releases[release.replace(/\s/g, '')])}>
-                      {release}
-                    </CustomCheckbox>
-                  ))
-                }
-              </div>
-            </div>
-          </div>
+          <ReleasesBlock releases={this.props.releases} handler={this.handleRelease} />
 
           <div className="form-group">
             <label htmlFor="sort">Sort by</label>
@@ -472,12 +174,10 @@ class ModalOptions extends Component {
           <hr />
           <h5>Groups</h5>
 
-          {groupBlock}
+          <GroupBlock groups={this.props.groups} handler={this.handleGroupChange} />
         </form>
 
         <hr />
-
-
       </ModalOptionsLayout>
     )
   }

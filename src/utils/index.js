@@ -10,7 +10,6 @@ export const dataLen = (pkg, includeOrphans = true) =>
   (includeOrphans && pkg.data.orphan.orphaned ? 1 : 0)
 
 
-
 const t = 0
 const dl = R.compose(
   R.sum,
@@ -62,3 +61,13 @@ export const showRelease = (options, what) =>
 export const showOption = R.curry(
     (show_obj, what) =>R.defaultTo(true, show_obj[what])
 )
+
+export const valueOfInput = (t) => {
+    switch (t.type) {
+      case "checkbox":
+        return t.checked
+
+      default:
+        return t.value
+    }
+  }
