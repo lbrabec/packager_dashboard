@@ -34,6 +34,13 @@ class Stats extends PureComponent {
     const { static_info } = this.props.user_data
     const stats = this.stats()
 
+    const spinner =
+      this.props.isLoading ? (
+        <span className="ml-3 mr-2">
+          <i className="fas fa-sync-alt fa-spin"></i>
+        </span>
+      ) : null
+
     return (
       <div className="container pt-4 font-weight-bold text-muted">
         <div className="row">
@@ -51,6 +58,7 @@ class Stats extends PureComponent {
                   data-original-title={`${this.props.shownPackages} packages shown`}>
               <i className="fas fa-eye mr-1" /> {this.props.shownPackages}
             </span>
+            {spinner}
           </div>
           <div className="col-md-6 text-left text-md-right mt-3 mt-md-0">
             <span data-toggle="tooltip" title="" className="ml-0 ml-md-3 mr-4 text-nowrap"

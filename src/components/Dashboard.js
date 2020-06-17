@@ -3,120 +3,14 @@ import Masthead from "./Masthead"
 import Footer from "./Footer"
 import Widget from "./Widget"
 import Stats from "./Stats"
+import ResponsiveMasonry from "./ResponsiveMasonry"
+import DashboardLoading from "./DashboardLoading"
 import * as R from "ramda"
-import $ from "jquery"
-import { useMediaQuery } from 'react-responsive'
-
 import { connect } from "react-redux"
-
 import { setUser, loadUser, loadOptions } from "../actions/reduxActions"
-
-class DashboardLoading extends Component {
-  render() {
-    return (
-      <div className="appEntryContainer">
-        <h1>
-          <i className="fas fa-spinner fa-spin"></i>
-          {this.props.children}
-        </h1>
-      </div>
-    )
-  }
-}
+import * as U from "../utils"
 
 const EMPTY_ARRAY = []
-
-const dataLen = (pkg, includeOrphans=true) =>
-  pkg.data.bugs.length +
-  pkg.data.pull_requests.length +
-  pkg.data.updates.length +
-  pkg.data.overrides.length +
-  pkg.data.koschei.length +
-  pkg.data.fti.length +
-  (includeOrphans && pkg.data.orphan.orphaned ? 1 : 0)
-
-
-const Mobile = ({ children }) => {
-  const isMobile = useMediaQuery({ maxWidth: 767 })
-  return isMobile ? children : null
-}
-const NotMobile = ({ children }) => {
-  const isNotMobile = useMediaQuery({ minWidth: 768 })
-  return isNotMobile ? children : null
-}
-
-const t = 0
-const dl = R.compose(
-  R.sum,
-  R.map(x => 52*dataLen(x, false) + 67) // *52 for row height, +67 for title and padding
-)
-
-const balanced_split = (data) => {
-  const t0 = performance.now();
-  const out = _bs(data, [])
-  const t1 = performance.now();
-
-  console.log(`BS (recursive) took ${t1 - t0} milliseconds.`);
-  console.log(dl(out[0]), dl(out[1]))
-  return out
-}
-
-const _bs = (a, b=[]) => {
-  if(a.length < 2) return [a, b]
-  const new_a = R.dropLast(1, a)
-  const new_b = R.concat([R.last(a)], b)
-  if(dl(new_a) - dl(new_b) < t) return [a, b]
-
-  return _bs(new_a, new_b)
-}
-
-const balanced_split2 = (data) => {
-  const t0 = performance.now();
-  var a = data
-  var b = []
-  if(a.length < 2) return [a, b]
-
-  var new_a = R.dropLast(1, a)
-  var new_b = R.concat([R.last(a)], b)
-  while(a.length >= 2 && dl(new_a) - dl(new_b) >= t ){
-        b = new_b
-        a = new_a
-
-        new_a = R.dropLast(1, a)
-        new_b = R.concat([R.last(a)], b)
-  }
-  const t1 = performance.now();
-  console.log(`BS (while) took ${t1 - t0} milliseconds.`);
-  return [a, b]
-}
-
-class ResponsiveMasonry extends Component {
-  render() {
-    //const columns = R.splitAt(Math.round((this.props.items.length/2)), this.props.items)
-    return(
-      <div className="py-4 masonry">
-        <Mobile>
-          <div className="row">
-            <div className="col-12">
-              {this.props.items[0]}
-              {this.props.items[1]}
-            </div>
-          </div>
-        </Mobile>
-        <NotMobile>
-          <div className="row">
-            <div className="col-6">
-            {this.props.items[0]}
-            </div>
-            <div className="col-6">
-            {this.props.items[1]}
-            </div>
-          </div>
-        </NotMobile>
-      </div>
-    )
-  }
-}
 
 class Dashboard extends Component {
   constructor(props) {
@@ -230,7 +124,7 @@ class Dashboard extends Component {
         return R.sortBy((pkg) => pkg.name.toLowerCase(), pkgs)
 
       case "cnt":
-        return R.sortBy((pkg) => -dataLen(pkg), pkgs)
+        return R.sortBy((pkg) => -U.dataLen(pkg), pkgs)
 
       case "priority":
         return R.sortWith(
@@ -262,31 +156,6 @@ class Dashboard extends Component {
     const { options } = this.props
     const { show_groups } = options
 
-    const excluded_packages =
-      static_info.status !== 200
-        ? []
-        : R.compose(
-            R.uniq,
-            R.flatten,
-            R.values,
-            R.pickBy((_, group) => show_groups[group] === "never")
-          )(static_info.data.group_packages)
-
-    const packages =
-      static_info.status !== 200
-        ? []
-        : R.compose(
-            R.filter(R.test(this.state.search)),
-            R.filter((pkg) => !excluded_packages.includes(pkg)),
-            R.uniq,
-            R.concat(static_info.data.primary_packages),
-            R.flatten,
-            R.values,
-            R.pickBy(
-              (_, group) => show_groups[group] === undefined || show_groups[group] === "always"
-            )
-          )(static_info.data.group_packages)
-
     const all_group_packages = R.compose(
       R.uniq,
       R.flatten,
@@ -308,18 +177,27 @@ class Dashboard extends Component {
       }
     }
 
+    const excluded_packages = R.compose(
+      R.uniq,
+      R.flatten,
+      R.values,
+      R.pickBy((_, group) => show_groups[group] === "never")
+    )(static_info.data.group_packages)
+
     const package_cards = R.compose(
-      R.map(R.map((pkg) => (
-        <Widget
-          title={pkg.name}
-          {...pkg.data}
-          ownershipIcon={ownershipIcon(pkg.name)}
-          key={pkg.name}
-        />
-      ))),
-      balanced_split2,
+      R.map(
+        R.map((pkg) => (
+          <Widget
+            title={pkg.name}
+            {...pkg.data}
+            ownershipIcon={ownershipIcon(pkg.name)}
+            key={pkg.name}
+          />
+        ))
+      ),
+      U.balancedSplit,
       this.packageSort,
-      R.filter((pkg) => dataLen(pkg) > 0),
+      R.filter((pkg) => U.dataLen(pkg) > 0),
       R.map((pkg) => ({
         name: pkg,
         data: {
@@ -331,22 +209,27 @@ class Dashboard extends Component {
           orphan: this.filterOrphan(pkg),
           fti: this.filterFTI(pkg),
         },
-      }))
-    )(packages)
+      })),
+      R.filter(R.test(this.state.search)),
+      R.filter((pkg) => !excluded_packages.includes(pkg)),
+      R.uniq,
+      R.concat(static_info.data.primary_packages),
+      R.flatten,
+      R.values,
+      R.pickBy((_, group) => show_groups[group] === undefined || show_groups[group] === "always")
+    )(static_info.data.group_packages)
 
     return (
       <div className="App">
-        <Masthead
-          bzsLoading={bzs.status !== 200}
-          prsLoading={prs.status !== 200}
-          siLoading={static_info.status !== 200}
-          searchHandler={this.searchHandler.bind(this)}
-        />
+        <Masthead searchHandler={this.searchHandler.bind(this)} />
         <div className="bodycontent">
           <div className="subheader">
-            <Stats shownPackages={package_cards[0].length + package_cards[1].length} />
+            <Stats
+              shownPackages={package_cards[0].length + package_cards[1].length}
+              isLoading={bzs.status !== 200 || prs.status !== 200 || static_info.status !== 200}
+            />
             <div className="container">
-              <ResponsiveMasonry items={package_cards}/>
+              <ResponsiveMasonry items={package_cards} />
             </div>
           </div>
         </div>

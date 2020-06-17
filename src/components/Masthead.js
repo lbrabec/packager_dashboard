@@ -36,16 +36,10 @@ class Masthead extends PureComponent {
   }
 
   render() {
-    const spinner =
-      this.props.siLoading || this.props.bzsLoading || this.props.prsLoading ? (
-        <i className="fas fa-sync-alt fa-spin"></i>
-      ) : null
-
     return (
       <div className="masthead navbar py-1 px-0 px-md-2">
         <div className="container px-1 px-md-2">
           <img src={logo} alt="Fedora Packager Dashboard" />
-          <div>{spinner}</div>
           <nav className="navbar-expand-md navbar-light">
             <button
               className="navbar-toggler"

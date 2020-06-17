@@ -9,33 +9,6 @@ import {
 } from "./WidgetLayout"
 import * as moment from "moment"
 
-/*
-const toBodhiReleasesUrl = (release) => {
-  const url = "https://bodhi.fedoraproject.org/releases"
-
-  if (release.includes("fedora-obsolete-packages")) {
-    return {
-      url: url + "/F" + release.substr(25, 2),
-      release: "Fedora " + release.substr(25, 2),
-    }
-  } else if (release.includes("fc")) {
-    return {
-      url: url + "/F" + release.substr(2, 2),
-      release: "Fedora " + release.substr(2, 2),
-    }
-  } else if (release.includes("el")) {
-    return {
-      url: url + "/EPEL-" + release.substr(2, 1),
-      release: "Fedora EPEL " + release.substr(2, 1),
-    }
-  } else {
-    return {
-      url: url,
-      release: "Unknown - FIXME",
-    }
-  }
-}
-*/
 
 const karma_color = (karma) => {
   if (karma > 0) return "text-success"
