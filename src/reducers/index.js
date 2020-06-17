@@ -27,13 +27,18 @@ export const defaultOptions = {
     show_orphaned: true,
     show_koschei: true,
     show_fti: true,
-    show_groups: {}
+    show_groups: {},
+    show_releases: {},
 }
 
 const defaultState = {
     user_data: undefined,
     fasuser: "",
-    options: defaultOptions
+    options: defaultOptions,
+    releases: {
+        fedora: [],
+        epel: []
+    }
 }
 
 
@@ -67,25 +72,44 @@ export default (state = defaultState, action) => {
             }
 
         case ActionTypes.CHANGE_OPTION:
-            return action.payload.group?
-            {
-                ...state,
-                options: {
-                    ...state.options,
-                    show_groups: {
-                        ...state.options.show_groups,
-                        [action.payload.name]: action.payload.value
+            switch(action.payload.type){
+                case 'general':
+                    return {
+                        ...state,
+                        options: {
+                            ...state.options,
+                            [action.payload.name]: action.payload.value
+                        }
                     }
-                }
+
+                case 'group':
+                    return {
+                        ...state,
+                        options: {
+                            ...state.options,
+                            show_groups: {
+                                ...state.options.show_groups,
+                                [action.payload.name]: action.payload.value
+                            }
+                        }
+                    }
+
+                case 'release':
+                    return {
+                        ...state,
+                        options: {
+                            ...state.options,
+                            show_releases: {
+                                ...state.options.show_releases,
+                                [action.payload.name]: action.payload.value
+                            }
+                        }
+                    }
+
+                default:
+                    return state
             }
-            :
-            {
-                ...state,
-                options: {
-                    ...state.options,
-                    [action.payload.name]: action.payload.value
-                }
-            }
+
 
         case ActionTypes.LOAD_OPTIONS:
             return {
@@ -97,6 +121,12 @@ export default (state = defaultState, action) => {
             return {
                 ...state,
                 options: defaultOptions
+            }
+
+        case ActionTypes.LOAD_RELEASES_RESP:
+            return {
+                ...state,
+                releases: action.payload
             }
 
         default:

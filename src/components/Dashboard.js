@@ -7,7 +7,7 @@ import ResponsiveMasonry from "./ResponsiveMasonry"
 import DashboardLoading from "./DashboardLoading"
 import * as R from "ramda"
 import { connect } from "react-redux"
-import { setUser, loadUser, loadOptions } from "../actions/reduxActions"
+import { setUser, loadUser, loadOptions, loadReleases } from "../actions/reduxActions"
 import * as U from "../utils"
 
 const EMPTY_ARRAY = []
@@ -25,6 +25,7 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
+    this.props.dispatch(loadReleases())
     this.props.dispatch(loadUser(this.props.match.params.fasuser))
 
     if (this.props.fasuser === "") {
@@ -50,6 +51,7 @@ class Dashboard extends Component {
     if (bzs.status === 204 || !options.show_bugs) return EMPTY_ARRAY
 
     return bzs.data[pkg].filter((bug) => {
+      if (!R.defaultTo(true, options.show_releases[bug.release.replace(/\s/g, "")])) return false
       if (!options[`show_bug_status_${bug.status}`]) return false
       if (!options.show_bug_kw_tracking && bug.keywords.includes("Tracking")) return false
       if (!options.show_bug_kw_futurefeature && bug.keywords.includes("FutureFeature"))
@@ -79,7 +81,11 @@ class Dashboard extends Component {
     const { options } = this.props
     if (!options.show_updates) return EMPTY_ARRAY
 
-    return static_info.data.updates[pkg]
+    return static_info.data.updates[pkg].filter((update) => {
+      if (!U.showRelease(options, update)) return false
+
+      return true
+    })
   }
 
   filterOverrides(pkg) {
@@ -87,7 +93,11 @@ class Dashboard extends Component {
     const { options } = this.props
     if (!options.show_overrides) return EMPTY_ARRAY
 
-    return static_info.data.overrides[pkg]
+    return static_info.data.overrides[pkg].filter((override) => {
+      if (!U.showRelease(options, override)) return false
+
+      return true
+    })
   }
 
   filterKoschei(pkg) {
@@ -95,7 +105,13 @@ class Dashboard extends Component {
     const { options } = this.props
     if (!options.show_koschei) return EMPTY_ARRAY
 
-    return static_info.data.koschei[pkg].filter((k) => k.status === "failing")
+    return static_info.data.koschei[pkg]
+      .filter((k) => k.status === "failing")
+      .filter((k) => {
+        if (!U.showRelease(options, k)) return false
+
+        return true
+      })
   }
 
   filterOrphan(pkg) {
@@ -111,7 +127,11 @@ class Dashboard extends Component {
     const { options } = this.props
     if (!options.show_fti) return EMPTY_ARRAY
 
-    return static_info.data.fails_to_install[pkg]
+    return static_info.data.fails_to_install[pkg].filter((fti) => {
+      if (!U.showRelease(options, fti)) return false
+
+      return true
+    })
   }
 
   packageSort(pkgs) {

@@ -235,13 +235,14 @@ class ModalOptions extends Component {
 
     this.handleChange = this.handleChange.bind(this)
     this.handleGroupChange = this.handleGroupChange.bind(this)
+    this.handleRelease = this.handleRelease.bind(this)
   }
 
   handleChange(e) {
     e.stopPropagation()
     this.props.dispatch(
       changeOption({
-        group: false,
+        type: 'general',
         name: e.target.name,
         value: valueOf(e.target),
       })
@@ -252,7 +253,18 @@ class ModalOptions extends Component {
     e.stopPropagation()
     this.props.dispatch(
       changeOption({
-        group: true,
+        type: 'group',
+        name: e.target.name,
+        value: valueOf(e.target),
+      })
+    )
+  }
+
+  handleRelease(e){
+    e.stopPropagation()
+    this.props.dispatch(
+      changeOption({
+        type: 'release',
         name: e.target.name,
         value: valueOf(e.target),
       })
@@ -273,6 +285,7 @@ class ModalOptions extends Component {
       show_koschei,
       show_fti,
       show_groups,
+      show_releases,
     } = this.props.options
 
     const groupSwitches = this.props.groups.map((group) => (
@@ -324,6 +337,35 @@ class ModalOptions extends Component {
     return (
       <ModalOptionsLayout reset={() => this.props.dispatch(resetOptions(this.props.fasuser))}>
         <form>
+          <div className="form-group">
+            <div className="row">
+              <div className="col-6">
+                {
+                  this.props.releases.fedora.map(release => (
+                    <CustomCheckbox
+                      name={release.replace(/\s/g, '')}
+                      handler={this.handleRelease}
+                      value={R.defaultTo(true, show_releases[release.replace(/\s/g, '')])}>
+                      {release}
+                    </CustomCheckbox>
+                  ))
+                }
+              </div>
+              <div className="col-4">
+                {
+                  this.props.releases.epel.map(release => (
+                    <CustomCheckbox
+                      name={release.replace(/\s/g, '')}
+                      handler={this.handleRelease}
+                      value={R.defaultTo(true, show_releases[release.replace(/\s/g, '')])}>
+                      {release}
+                    </CustomCheckbox>
+                  ))
+                }
+              </div>
+            </div>
+          </div>
+
           <div className="form-group">
             <label htmlFor="sort">Sort by</label>
             <select
@@ -431,6 +473,7 @@ const mapStateToProps = (state) => {
   return {
     fasuser: state.fasuser,
     options: state.options,
+    releases: state.releases,
     groups:
       state.user_data === undefined || state.user_data.static_info.status !== 200
         ? []

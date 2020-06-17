@@ -89,3 +89,29 @@ export const resetOptions = payload => dispatch => {
         payload: payload
     })
 }
+
+export const loadReleases = payload => dispatch => {
+    dispatch({
+        type: ActionTypes.LOAD_RELEASES,
+        payload: payload
+    })
+
+    fetch(window.env.RELEASES_API)
+    .then(blob => blob.json())
+    .then(data => {
+        const fedora = R.compose(
+            R.map(release => `Fedora ${release}`),
+            R.append("Rawhide"),
+            R.dropLast(1)
+        )(data.fedora.values)
+        const epel = R.map(release => `EPEL ${release}`, data.epel)
+
+        dispatch({
+            type: ActionTypes.LOAD_RELEASES_RESP,
+            payload: { fedora, epel }
+        })
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
