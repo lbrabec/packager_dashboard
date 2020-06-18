@@ -9,7 +9,6 @@ import {
 } from "./WidgetLayout"
 import * as moment from "moment"
 
-
 const karma_color = (karma) => {
   if (karma > 0) return "text-success"
   if (karma < 0) return "text-danger"
@@ -187,11 +186,11 @@ export class FTI extends PureComponent {
       ? "This is package fails to install"
       : `Missing build dependencies on ${release}`
     const reasons_list = Object.entries(reason).map((r) => (
-      <span key={title+r[0]}>
+      <span key={title + r[0]}>
         <span className="font-weight-bold">{`${r[0]}: `}</span>
         <ul>
           {r[1].map((ra) => (
-            <li key={r[0]+ra}>{ra}</li>
+            <li key={r[0] + ra}>{ra}</li>
           ))}
         </ul>
       </span>
@@ -199,40 +198,39 @@ export class FTI extends PureComponent {
 
     return (
       <div
+        className="list-group-item p-1"
         onClick={this.collapseToggle.bind(this)}
         data-toggle="collapse"
         data-target={`#FTI_reasons_${title}_${release.replace(/\s/g, "")}_${repo}`}>
-        <div className="list-group-item p-1">
-          <div className="row align-items-center no-gutters">
-            <div className="col-10">
-              <div className="media">
-                <span data-toggle="tooltip" title="" data-original-title={tooltip}>
-                  <i className={"fa fa-fw " + icon}></i>
-                </span>
-                <div className="media-body ml-2">
-                  <WidgetTitle fulltitle={fulltitle}>
-                    <a href={url}>{fulltitle}</a>
-                  </WidgetTitle>
-                  <WidgetSubTitle>
-                    {this.state.collapsed ? Object.keys(reason).join(", ") : <span>&nbsp;</span>}
-                  </WidgetSubTitle>
-                </div>
+        <div className="row align-items-center no-gutters">
+          <div className="col-10">
+            <div className="media">
+              <span data-toggle="tooltip" title="" data-original-title={tooltip}>
+                <i className={"fa fa-fw " + icon}></i>
+              </span>
+              <div className="media-body ml-2">
+                <WidgetTitle fulltitle={fulltitle}>
+                  <a href={url}>{fulltitle}</a>
+                </WidgetTitle>
+                <WidgetSubTitle>
+                  {this.state.collapsed ? Object.keys(reason).join(", ") : <span>&nbsp;</span>}
+                </WidgetSubTitle>
               </div>
             </div>
-            <div className="col-2 text-right pr-2 pl-0 pl-sm-0 pl-md-0 pl-lg-0 font-weight-bold text-muted mh-100">
-              {this.state.collapsed ? (
-                <i className="fas fa-chevron-down mr-2"></i>
-              ) : (
-                <i className="fas fa-chevron-up mr-2"></i>
-              )}
-            </div>
           </div>
-          <div className="row no-gutters pl-4">
-            <div
-              className="collapse small mt-n3 bg-white"
-              id={`FTI_reasons_${title}_${release.replace(/\s/g, "")}_${repo}`}>
-              {reasons_list}
-            </div>
+          <div className="col-2 text-right pr-2 pl-0 pl-sm-0 pl-md-0 pl-lg-0 font-weight-bold text-muted mh-100">
+            {this.state.collapsed ? (
+              <i className="fas fa-chevron-down mr-2"></i>
+            ) : (
+              <i className="fas fa-chevron-up mr-2"></i>
+            )}
+          </div>
+        </div>
+        <div className="row no-gutters pl-4">
+          <div
+            className="collapse small mt-n3 bg-white"
+            id={`FTI_reasons_${title}_${release.replace(/\s/g, "")}_${repo}`}>
+            {reasons_list}
           </div>
         </div>
       </div>
