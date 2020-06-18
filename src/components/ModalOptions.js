@@ -12,54 +12,20 @@ class ModalOptions extends Component {
   constructor(props) {
     super(props)
 
-    this.handleChange = this.handleChange.bind(this)
-    this.handleGroupChange = this.handleGroupChange.bind(this)
-    this.handleRelease = this.handleRelease.bind(this)
-    this.handleKwChange = this.handleKwChange.bind(this)
+    this.handle = this.handle.bind(this)
   }
 
-  handleChange(e) {
-    e.stopPropagation()
-    this.props.dispatch(
-      changeOption({
-        type: "general",
-        name: e.target.name,
-        value: U.valueOfInput(e.target),
-      })
-    )
-  }
-
-  handleGroupChange(e) {
-    e.stopPropagation()
-    this.props.dispatch(
-      changeOption({
-        type: "group",
-        name: e.target.name,
-        value: U.valueOfInput(e.target),
-      })
-    )
-  }
-
-  handleRelease(e) {
-    e.stopPropagation()
-    this.props.dispatch(
-      changeOption({
-        type: "release",
-        name: e.target.name,
-        value: U.valueOfInput(e.target),
-      })
-    )
-  }
-
-  handleKwChange(e) {
-    e.stopPropagation()
-    this.props.dispatch(
-      changeOption({
-        type: "bug_kw",
-        name: e.target.name,
-        value: U.valueOfInput(e.target),
-      })
-    )
+  handle(changeType) {
+    return (e) => {
+      e.stopPropagation()
+      this.props.dispatch(
+        changeOption({
+          type: changeType,
+          name: e.target.name,
+          value: U.valueOfInput(e.target),
+        })
+      )
+    }
   }
 
   render() {
@@ -80,7 +46,7 @@ class ModalOptions extends Component {
     return (
       <ModalOptionsLayout reset={() => this.props.dispatch(resetOptions(this.props.fasuser))}>
         <form>
-          <ReleasesBlock releases={this.props.releases} handler={this.handleRelease} />
+          <ReleasesBlock releases={this.props.releases} handler={this.handle("release")} />
 
           <div className="form-group">
             <label htmlFor="sort">Sort by</label>
@@ -89,7 +55,7 @@ class ModalOptions extends Component {
               id="sort"
               name="sort"
               defaultValue={sort}
-              onChange={this.handleChange}>
+              onChange={this.handle("general")}>
               <option value="name">Package name</option>
               <option value="cnt">Issue count</option>
               <option value="priority">FTIs, FTBFSs and orphans first</option>
@@ -98,7 +64,7 @@ class ModalOptions extends Component {
 
           <hr />
 
-          <OptionsSwitch name="show_bugs" value={show_bugs} handler={this.handleChange}>
+          <OptionsSwitch name="show_bugs" value={show_bugs} handler={this.handle("general")}>
             <div className="font-weight-bold">Show bugs</div>
           </OptionsSwitch>
 
@@ -109,31 +75,23 @@ class ModalOptions extends Component {
               id="bug_min_priority_severity"
               name="bug_min_priority_severity"
               defaultValue={bug_min_priority_severity}
-              onChange={this.handleChange}>
+              onChange={this.handle("general")}>
               <option value="low">Low</option>
               <option value="medium">Medium</option>
               <option value="high">High</option>
               <option value="urgent">Urgent</option>
             </select>
-
-            <div className="custom-control custom-checkbox mt-1">
-              <input
-                type="checkbox"
-                className="custom-control-input"
-                id="bug_include_unspecified"
-                name="bug_include_unspecified"
-                checked={bug_include_unspecified}
-                onChange={this.handleChange}
-              />
-              <label className="custom-control-label" htmlFor="bug_include_unspecified">
-                Include unspecified
-              </label>
-            </div>
+            <CustomCheckbox
+              name={"bug_include_unspecified"}
+              value={bug_include_unspecified}
+              handler={this.handle("general")}>
+              Include unspecified
+            </CustomCheckbox>
           </div>
 
           <div className="form-group pl-as-switch mt-3">
             <BugStatusGrid
-              handler={this.handleChange}
+              handler={this.handle("general")}
               grid={[
                 ["NEW", "MODIFIED"],
                 ["ASSIGNED", "ON_QA"],
@@ -144,40 +102,36 @@ class ModalOptions extends Component {
           </div>
 
           <div className="form-group pl-as-switch mt-3">
-            <BugKeywordsGrid handler={this.handleKwChange} />
+            <BugKeywordsGrid handler={this.handle("bug_kw")} />
           </div>
 
-          <OptionsSwitch name="show_updates" value={show_updates} handler={this.handleChange}>
+          <OptionsSwitch name="show_updates" value={show_updates} handler={this.handle("general")}>
             <div className="font-weight-bold">Show updates</div>
           </OptionsSwitch>
 
-          <OptionsSwitch name="show_prs" value={show_prs} handler={this.handleChange}>
+          <OptionsSwitch name="show_prs" value={show_prs} handler={this.handle("general")}>
             <div className="font-weight-bold">Show PRs</div>
           </OptionsSwitch>
 
-          <OptionsSwitch name="show_overrides" value={show_overrides} handler={this.handleChange}>
+          <OptionsSwitch name="show_overrides" value={show_overrides} handler={this.handle("general")}>
             <div className="font-weight-bold">Show overrides</div>
           </OptionsSwitch>
 
-          <OptionsSwitch name="show_orphaned" value={show_orphaned} handler={this.handleChange}>
+          <OptionsSwitch name="show_orphaned" value={show_orphaned} handler={this.handle("general")}>
             <div className="font-weight-bold">Show orphanned</div>
           </OptionsSwitch>
 
-          <OptionsSwitch name="show_koschei" value={show_koschei} handler={this.handleChange}>
+          <OptionsSwitch name="show_koschei" value={show_koschei} handler={this.handle("general")}>
             <div className="font-weight-bold">Show Koschei fails</div>
           </OptionsSwitch>
 
-          <OptionsSwitch name="show_fti" value={show_fti} handler={this.handleChange}>
+          <OptionsSwitch name="show_fti" value={show_fti} handler={this.handle("general")}>
             <div className="font-weight-bold">Show fedora-health-check fails</div>
           </OptionsSwitch>
 
           <hr />
-          <h5>Groups</h5>
-
-          <GroupBlock groups={this.props.groups} handler={this.handleGroupChange} />
+          <GroupBlock groups={this.props.groups} handler={this.handle("group")} />
         </form>
-
-        <hr />
       </ModalOptionsLayout>
     )
   }

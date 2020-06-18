@@ -124,6 +124,10 @@ export const BugKeywordsGrid = connect((state) => {
 
 class _GroupBlock extends Component {
   render() {
+    if (this.props.groups.length === 0){
+      return (null)
+    }
+
     const groupSwitches = this.props.groups.map((group) => (
       <GroupTriSwitch
         name={group}
@@ -136,6 +140,7 @@ class _GroupBlock extends Component {
 
     return (
       <div>
+        <h5>Groups</h5>
         <div className="row no-gutters mb-1">
           <div className="col-1">
             <span
