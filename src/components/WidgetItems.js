@@ -210,7 +210,7 @@ export class FTI extends PureComponent {
               </span>
               <div className="media-body ml-2">
                 <WidgetTitle fulltitle={fulltitle}>
-                  <a href={url}>{fulltitle}</a>
+                  {fulltitle}
                 </WidgetTitle>
                 <WidgetSubTitle>
                   {this.state.collapsed ? Object.keys(reason).join(", ") : <span>&nbsp;</span>}

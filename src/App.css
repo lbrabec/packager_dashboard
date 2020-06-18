@@ -18,6 +18,8 @@ html, body {
 
 .widget-title {
   max-width: 280px;
+  color: #3c6eb4;
+  cursor: pointer;
 }
 
 @media screen and (max-width: 1200px) {
