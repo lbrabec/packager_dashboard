@@ -45,14 +45,14 @@ class Dashboard extends Component {
 
   filterBugs(pkg) {
     const { bzs } = this.props.user_data
-    const { options } = this.props
+    const { releases, options } = this.props
     const priorities_severities = ["unspecified", "low", "medium", "high", "urgent"]
 
     if (bzs.status === 204 || !options.show_bugs) return EMPTY_ARRAY
 
     return bzs.data[pkg].filter((bug) => {
       if (
-        !U.showRelease(options, bug) ||
+        !U.showRelease(releases, options, bug) ||
         !options[`show_bug_status_${bug.status}`] ||
         !R.compose(
           R.all(R.identity),
@@ -70,7 +70,7 @@ class Dashboard extends Component {
 
   filterPRs(pkg) {
     const { prs } = this.props.user_data
-    const { options } = this.props
+    const { releases, options } = this.props
     if (prs.status === 204 || !options.show_prs) return EMPTY_ARRAY
 
     return prs.data[pkg]
@@ -78,11 +78,11 @@ class Dashboard extends Component {
 
   filterUpdates(pkg) {
     const { static_info } = this.props.user_data
-    const { options } = this.props
+    const { releases, options } = this.props
     if (!options.show_updates) return EMPTY_ARRAY
 
     return static_info.data.updates[pkg].filter((update) => {
-      if (!U.showRelease(options, update)) return false
+      if (!U.showRelease(releases, options, update)) return false
 
       return true
     })
@@ -90,11 +90,11 @@ class Dashboard extends Component {
 
   filterOverrides(pkg) {
     const { static_info } = this.props.user_data
-    const { options } = this.props
+    const { releases, options } = this.props
     if (!options.show_overrides) return EMPTY_ARRAY
 
     return static_info.data.overrides[pkg].filter((override) => {
-      if (!U.showRelease(options, override)) return false
+      if (!U.showRelease(releases, options, override)) return false
 
       return true
     })
@@ -102,13 +102,13 @@ class Dashboard extends Component {
 
   filterKoschei(pkg) {
     const { static_info } = this.props.user_data
-    const { options } = this.props
+    const { releases, options } = this.props
     if (!options.show_koschei) return EMPTY_ARRAY
 
     return static_info.data.koschei[pkg]
       .filter((k) => k.status === "failing")
       .filter((k) => {
-        if (!U.showRelease(options, k)) return false
+        if (!U.showRelease(releases, options, k)) return false
 
         return true
       })
@@ -116,7 +116,7 @@ class Dashboard extends Component {
 
   filterOrphan(pkg) {
     const { static_info } = this.props.user_data
-    const { options } = this.props
+    const { releases, options } = this.props
     if (!options.show_orphaned) return { orphaned: false, orphaned_since: null }
 
     return static_info.data.orphans[pkg]
@@ -124,11 +124,11 @@ class Dashboard extends Component {
 
   filterFTI(pkg) {
     const { static_info } = this.props.user_data
-    const { options } = this.props
+    const { releases, options } = this.props
     if (!options.show_fti) return EMPTY_ARRAY
 
     return static_info.data.fails_to_install[pkg].filter((fti) => {
-      if (!U.showRelease(options, fti)) return false
+      if (!U.showRelease(releases, options, fti)) return false
 
       return true
     })
@@ -260,12 +260,13 @@ class Dashboard extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { user_data, fasuser, options } = state
+  const { user_data, fasuser, options, releases } = state
 
   return {
     user_data,
     fasuser,
     options,
+    releases,
   }
 }
 

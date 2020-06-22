@@ -9,7 +9,6 @@ export const dataLen = (pkg, includeOrphans = true) =>
   pkg.data.fti.length +
   (includeOrphans && pkg.data.orphan.orphaned ? 1 : 0)
 
-
 const t = 0
 const dl = R.compose(
   R.sum,
@@ -55,19 +54,33 @@ export const balancedSplit = (data) => {
   return [a, b]
 }
 
-export const showRelease = (options, what) =>
-    R.defaultTo(true, options.show_releases[what.release.replace(/\s/g, '')])
+export const showRelease = (releases, options, what) => {
+  const showAll = R.compose(
+    R.any(R.identity),
+    R.map(r => R.defaultTo(true, options.show_releases[r.replace(/\s/g, "")])),
+  )
 
-export const showOption = R.curry(
-    (show_obj, what) =>R.defaultTo(true, show_obj[what])
-)
+  // Show [fedora-all] [epel-all] (i.e. "Fedora" and "EPEL" without release number)
+  // only when there is at least one "Fedora XX" or "EPEL X" set to true
+  switch(what.release){
+    case "Fedora":
+      return showAll(releases.fedora)
+    case "EPEL":
+      return showAll(releases.epel)
+
+    default:
+      return R.defaultTo(true, options.show_releases[what.release.replace(/\s/g, "")])
+  }
+}
+
+export const showOption = R.curry((show_obj, what) => R.defaultTo(true, show_obj[what]))
 
 export const valueOfInput = (t) => {
-    switch (t.type) {
-      case "checkbox":
-        return t.checked
+  switch (t.type) {
+    case "checkbox":
+      return t.checked
 
-      default:
-        return t.value
-    }
+    default:
+      return t.value
   }
+}
