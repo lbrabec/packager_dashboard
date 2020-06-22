@@ -73,7 +73,11 @@ class Dashboard extends Component {
     const { releases, options } = this.props
     if (prs.status === 204 || !options.show_prs) return EMPTY_ARRAY
 
-    return prs.data[pkg]
+    return prs.data[pkg].filter((pr) => {
+      if (!U.showRelease(releases, options, pr)) return false
+
+      return true
+    })
   }
 
   filterUpdates(pkg) {

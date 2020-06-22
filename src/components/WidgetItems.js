@@ -55,7 +55,7 @@ export class PR extends PureComponent {
           </WidgetTitle>
           <WidgetSubTitle>
             opened <span title={created.toDate()}> {created.fromNow()}</span>&nbsp;by{" "}
-            {this.props.author}
+            {this.props.author} for {this.props.release}
           </WidgetSubTitle>
         </WidgetHead>
         {this.props.ci_status === null ? null : (
