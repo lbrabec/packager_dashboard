@@ -7,7 +7,9 @@ export const dataLen = (pkg, includeOrphans = true) =>
   pkg.data.overrides.length +
   pkg.data.koschei.length +
   pkg.data.fti.length +
+  (pkg.data.orphan.depends_on_orphaned ? 1 : 0) +
   (includeOrphans && pkg.data.orphan.orphaned ? 1 : 0)
+
 
 const t = 0
 const dl = R.compose(

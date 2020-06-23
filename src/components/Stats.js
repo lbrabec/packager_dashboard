@@ -16,7 +16,7 @@ class Stats extends PureComponent {
     const updates = getAll(static_info.data.updates)
     const overrides = getAll(static_info.data.overrides)
     const koschei = getAll(static_info.data.koschei).filter((k) => k.status=== "failing")
-    const orphans = getAll(static_info.data.orphans).filter((o) => o.orphaned=== true)
+    const orphans = getAll(static_info.data.orphans).filter((o) => o.orphaned || o.depends_on_orphaned)
     const fti = getAll(static_info.data.fails_to_install)
 
     return {

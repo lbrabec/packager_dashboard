@@ -237,3 +237,68 @@ export class FTI extends PureComponent {
     )
   }
 }
+
+export class Orphan extends PureComponent {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      collapsed: true,
+    }
+  }
+
+  collapseToggle() {
+    this.setState({ collapsed: !this.state.collapsed })
+  }
+
+  render() {
+    const { problematic_since, reason_tree, title } = this.props
+    const fulltitle = "depends on orphaned packages"
+    const since = moment.utc(problematic_since)
+
+    return (
+      <div
+        className="list-group-item p-1"
+        onClick={this.collapseToggle.bind(this)}
+        data-toggle="collapse"
+        data-target={`#Orphan_reasons_tree_${title}`}>
+        <div className="row align-items-center no-gutters">
+          <div className="col-10">
+            <div className="media">
+              <span data-toggle="tooltip" title="" data-original-title="Package depends on orphan(s)">
+                <i className="fas fa-fw fa-baby"></i>
+              </span>
+              <div className="media-body ml-2">
+                <WidgetTitle fulltitle={fulltitle}>
+                  {fulltitle}
+                </WidgetTitle>
+                <WidgetSubTitle>
+                  {this.state.collapsed ? `will have trouble ${since.add(6, 'w').fromNow()}` : <span>&nbsp;</span>}
+                </WidgetSubTitle>
+              </div>
+            </div>
+          </div>
+          <div className="col-2 text-right pr-2 pl-0 pl-sm-0 pl-md-0 pl-lg-0 font-weight-bold text-muted mh-100">
+            {this.state.collapsed ? (
+              <i className="fas fa-chevron-down mr-2"></i>
+            ) : (
+              <i className="fas fa-chevron-up mr-2"></i>
+            )}
+          </div>
+        </div>
+        <div className="row no-gutters pl-4">
+          <div
+            className="collapse small mt-n3 bg-white"
+            id={`Orphan_reasons_tree_${title}`}>
+              problematic since {since.format("MMM D YYYY, H:mm:ss z")}<br />
+              will have trouble on {since.add(6, 'w').format("MMM D YYYY, H:mm:ss z")}<br />
+              directly or indirectly depends on orphaned packages:
+            <ul>
+              {reason_tree.map(reason => <li key={`orphan_reason_${title}_${reason}`}>{reason}</li>)}
+            </ul>
+          </div>
+        </div>
+      </div>
+    )
+  }
+}

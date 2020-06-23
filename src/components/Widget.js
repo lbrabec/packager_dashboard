@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react"
 import { connect } from "react-redux"
-import { Bug, Update, PR, Override, Koschei, FTI } from "./WidgetItems"
+import { Bug, Update, PR, Override, Koschei, FTI, Orphan } from "./WidgetItems"
 import { OrphanBadge, FTBadge } from "./WidgetLayout"
 import $ from "jquery"
 import * as R from "ramda"
@@ -43,7 +43,8 @@ class Widget extends PureComponent {
     )(fti)
 
     const fti_items = fti.map((f) => <FTI title={title} {...f} key={"fti_" + title + f.release + f.repo} isFTI={fti_no_src.length > 0} />)
-    const orphan_badge = orphan.orphaned ? <OrphanBadge since={orphan.orphaned_since} /> : null
+    const orphan_badge = orphan.orphaned ? <OrphanBadge since={orphan.problematic_since} /> : null
+    const orphan_item = orphan.depends_on_orphaned? <Orphan {...orphan} title={title}/> : null
     const fti_src = fti.map(f => R.keys(f.reason).includes("src")).some(R.identity)
     const ftbfs_badge = (fti_src || koschei.length > 0) ? <FTBadge>FTBFS</FTBadge> : null
     const fti_badge = fti_no_src.length > 0 ? <FTBadge>FTI</FTBadge> : null
@@ -68,6 +69,7 @@ class Widget extends PureComponent {
           {overrides_items}
           {koschei_items}
           {fti_items}
+          {orphan_item}
         </div>
       </div>
     )
