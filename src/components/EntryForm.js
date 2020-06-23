@@ -42,7 +42,7 @@ class EntryForm extends Component {
               type="text"
               className="form-control form-control-lg"
               id="fasusernameInput"
-              placeholder="FAS Username"
+              placeholder="FAS Username or Group"
               ref={this.input}
               defaultValue=""
             />
