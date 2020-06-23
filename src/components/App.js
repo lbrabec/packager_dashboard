@@ -1,37 +1,43 @@
-import React, { Component } from 'react';
-import { Route, Switch } from 'react-router';
-import { BrowserRouter } from 'react-router-dom'
+import React, { Component } from "react"
+import { Route, Switch } from "react-router"
+import { BrowserRouter } from "react-router-dom"
 
-import { connect } from 'react-redux'
+import { connect } from "react-redux"
 
-import '../App.css';
+import "../App.css"
 
-import EntryForm from './EntryForm';
-import Dashboard from './Dashboard';
+import EntryForm from "./EntryForm"
+import Dashboard from "./Dashboard"
+import Error from "./Error"
 
+import { throwError } from "../actions/reduxActions"
 
 class App extends Component {
+  componentDidCatch(error, info) {
+    console.log(error, info)
+
+    this.props.dispatch(throwError({ error: error, reason: info.componentStack }))
+  }
+
   render() {
-    return (
+    return this.props.error === undefined ? (
       <BrowserRouter basename={window.env.SUBDIR}>
         <Switch>
           <Route path="/" exact>
             <EntryForm />
           </Route>
-          <Route path="/:fasuser"
-                 render={(props) => (
-                  <Dashboard {...props}/>
-          )}>
-          </Route>
+          <Route path="/:fasuser" render={(props) => <Dashboard {...props} />}></Route>
         </Switch>
       </BrowserRouter>
+    ) : (
+      <Error error={this.props.error} />
     )
   }
 }
 
-
-const mapStateToProps = _ => {
+const mapStateToProps = (state) => {
   return {
+    error: state.error,
   }
 }
 

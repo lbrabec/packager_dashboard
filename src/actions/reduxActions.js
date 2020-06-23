@@ -43,6 +43,7 @@ export const loadUser = payload => (dispatch, getState) => {
     })
     .catch((error) => {
         console.error('Error:', error);
+        dispatch(throwError({error: error, reason: ActionTypes.LOAD_USER}))
     });
 }
 
@@ -115,3 +116,8 @@ export const loadReleases = payload => dispatch => {
         console.error('Error:', error);
     });
 }
+
+export const throwError = payload => ({
+    type: ActionTypes.THROW_ERROR,
+    payload: new Error(`${payload.error} ${payload.reason}`)
+})

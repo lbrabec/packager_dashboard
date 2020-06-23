@@ -34,7 +34,8 @@ const defaultState = {
     releases: {
         fedora: [],
         epel: []
-    }
+    },
+    error: undefined
 }
 
 
@@ -135,6 +136,12 @@ export default (state = defaultState, action) => {
             return {
                 ...state,
                 releases: action.payload
+            }
+
+        case ActionTypes.THROW_ERROR:
+            return {
+                ...state,
+                error: action.payload
             }
 
         default:
