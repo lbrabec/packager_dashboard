@@ -7,6 +7,8 @@ import { unsetUser } from "../actions/reduxActions"
 
 import ModalOptions from "./ModalOptions"
 
+import $ from "jquery"
+
 const cookies = new Cookies()
 
 class Masthead extends PureComponent {
@@ -18,6 +20,7 @@ class Masthead extends PureComponent {
   }
 
   logout() {
+    $('[data-toggle="tooltip"]').tooltip('hide')
     cookies.remove("fasusername")
     this.props.dispatch(unsetUser())
   }
@@ -64,12 +67,16 @@ class Masthead extends PureComponent {
                     onChange={this.searchHandler.bind(this)}
                   />
                 </div>
-                <a data-target="#options" data-toggle="modal">
-                  <i className="fas fa-cog pr-4"></i>
-                </a>
-                <Link onClick={this.logout.bind(this)} to="/">
-                  <i className="fas fa-sign-out-alt"></i>
-                </Link>
+                <span data-toggle="tooltip" title="" data-original-title="Options" className="mr-4">
+                  <a data-target="#options" data-toggle="modal">
+                    <i className="fas fa-cog"></i>
+                  </a>
+                </span>
+                <span data-toggle="tooltip" title="" data-original-title="Change user/group">
+                  <Link onClick={this.logout.bind(this)} to="/">
+                    <i className="fas fa-sign-out-alt"></i>
+                  </Link>
+                </span>
               </div>
             </div>
           </nav>

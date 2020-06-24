@@ -1,8 +1,14 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux'
+import { changeOptionBatch } from '../actions/reduxActions'
 import * as R from 'ramda';
 
 class Stats extends PureComponent {
+  constructor(props) {
+    super(props)
+    this.handleClick = this.handleClick.bind(this)
+  }
+
   stats() {
     const { bzs, prs } = this.props.user_data
     const { static_info } = this.props.user_data
@@ -27,6 +33,21 @@ class Stats extends PureComponent {
       koschei: koschei.length,
       orphans: orphans.length,
       fti: fti.length
+    }
+  }
+
+  handleClick(onWhat) {
+    return (e) => {
+      this.props.dispatch(changeOptionBatch({
+        show_bugs: false,
+        show_updates: false,
+        show_prs: false,
+        show_overrides: false,
+        show_orphaned: false,
+        show_koschei: false,
+        show_fti: false,
+        [`show_${onWhat}`]: true,
+      }))
     }
   }
 
@@ -61,32 +82,39 @@ class Stats extends PureComponent {
             {spinner}
           </div>
           <div className="col-md-6 text-left text-md-right mt-3 mt-md-0">
-            <span data-toggle="tooltip" title="" className="ml-0 ml-md-3 mr-4 text-nowrap"
-                  data-original-title={`${stats.bugs} bugs`}>
+            <span data-toggle="tooltip" title="" className="ml-0 ml-md-3 mr-4 text-nowrap pointer"
+                  data-original-title={`${stats.bugs} bugs`}
+                  onClick={this.handleClick("bugs")}>
               <i className="fa fa-bug mr-1" /> {stats.bugs}
             </span>
-            <span data-toggle="tooltip" title="" className="mr-4 text-nowrap"
-                  data-original-title={`${stats.updates} updates`}>
+            <span data-toggle="tooltip" title="" className="mr-4 text-nowrap pointer"
+                  data-original-title={`${stats.updates} updates`}
+                  onClick={this.handleClick("updates")}>
               <i className="fa fa-bolt mr-1" /> {stats.updates}
             </span>
-            <span data-toggle="tooltip" title="" className="mr-4 text-nowrap"
-                  data-original-title={`${stats.prs} PRs`}>
+            <span data-toggle="tooltip" title="" className="mr-4 text-nowrap pointer"
+                  data-original-title={`${stats.prs} PRs`}
+                  onClick={this.handleClick("prs")}>
               <i className="fa fa-git mr-1" /> {stats.prs}
             </span>
-            <span data-toggle="tooltip" title="" className="mr-4 text-nowrap"
-                  data-original-title={`${stats.overrides} overrides`}>
+            <span data-toggle="tooltip" title="" className="mr-4 text-nowrap pointer"
+                  data-original-title={`${stats.overrides} overrides`}
+                  onClick={this.handleClick("overrides")}>
               <i className="fa fa-shapes mr-1" /> {stats.overrides}
             </span>
-            <span data-toggle="tooltip" title="" className="mr-4 text-nowrap"
-                  data-original-title={`${stats.koschei} fails to build`}>
+            <span data-toggle="tooltip" title="" className="mr-4 text-nowrap pointer"
+                  data-original-title={`${stats.koschei} fails to build`}
+                  onClick={this.handleClick("koschei")}>
               <i className="fa fa-wrench mr-1" /> {stats.koschei}
             </span>
-            <span data-toggle="tooltip" title="" className="mr-4 text-nowrap"
-                  data-original-title={`${stats.fti} fails to install`}>
+            <span data-toggle="tooltip" title="" className="mr-4 text-nowrap pointer"
+                  data-original-title={`${stats.fti} fails to install`}
+                  onClick={this.handleClick("fti")}>
               <i className="fa fa-file-medical-alt mr-1" /> {stats.fti}
             </span>
-            <span data-toggle="tooltip" title="" className="text-nowrap"
-                  data-original-title={`${stats.orphans} packages orphaned`}>
+            <span data-toggle="tooltip" title="" className="text-nowrap pointer"
+                  data-original-title={`${stats.orphans} packages orphaned`}
+                  onClick={this.handleClick("orphaned")}>
               <i className="fa fa-user-slash mr-1" /> {stats.orphans}
             </span>
           </div>

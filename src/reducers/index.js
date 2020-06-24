@@ -1,4 +1,5 @@
 import ActionTypes from '../constants';
+import * as R from 'ramda';
 
 export const defaultOptions = {
     show_bugs: true,
@@ -119,6 +120,11 @@ export default (state = defaultState, action) => {
                     return state
             }
 
+        case ActionTypes.CHANGE_OPTION_BATCH:
+            return {
+                ...state,
+                options: R.mergeRight(state.options, action.payload)
+            }
 
         case ActionTypes.LOAD_OPTIONS:
             return {

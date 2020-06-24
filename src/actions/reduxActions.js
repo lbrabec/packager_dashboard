@@ -65,6 +65,20 @@ export const changeOption = payload => (dispatch, getState) => {
     }))
 }
 
+export const changeOptionBatch = payload => (dispatch, getState) => {
+    dispatch({
+        type:ActionTypes.CHANGE_OPTION_BATCH,
+        payload: payload
+    })
+
+    const { fasuser, options } = getState()
+
+    dispatch(saveOptions({
+        fasuser: fasuser,
+        options: options
+    }))
+}
+
 export const saveOptions = payload => dispatch => {
     dispatch({
         type: ActionTypes.SAVE_OPTIONS,
