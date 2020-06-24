@@ -24,12 +24,16 @@ export class Orphan extends PureComponent {
   render() {
     const { problematic_since, reason_tree, title } = this.props
     const fulltitle = "depends on orphaned packages"
-    const since = moment.utc(problematic_since)
+    const problematicSince = moment.utc(problematic_since)
+    const trouble = moment.utc(problematic_since).add(6, "w")
+    const now = moment().utc()
+
     const collapsibleData = (
       <span>
-        problematic since {since.format("MMM D YYYY, H:mm:ss z")}
+        problematic since {problematicSince.format("MMM D YYYY, H:mm:ss z")}
         <br />
-        will have trouble on {since.add(6, "w").format("MMM D YYYY, H:mm:ss z")}
+        {now.isBefore(trouble) ? "will have trouble on" : "has trouble since"}{" "}
+        {trouble.format("MMM D YYYY, H:mm:ss z")}
         <br />
         directly or indirectly depends on orphaned packages:
         <ul>
@@ -48,7 +52,11 @@ export class Orphan extends PureComponent {
           <WidgetTitle fulltitle={fulltitle}>{fulltitle}</WidgetTitle>
           <WidgetSubTitle>
             {this.state.collapsed ? (
-              `will have trouble ${since.add(6, "w").fromNow()}`
+              now.isBefore(trouble) ? (
+                `will have trouble ${trouble.fromNow()}`
+              ) : (
+                `has trouble since ${trouble.fromNow()}`
+              )
             ) : (
               <span>&nbsp;</span>
             )}
