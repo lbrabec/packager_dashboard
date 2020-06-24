@@ -109,12 +109,12 @@ class ModalOptions extends Component {
             <div className="font-weight-bold">Show updates</div>
           </OptionsSwitch>
 
-          <OptionsSwitch name="show_prs" value={show_prs} handler={this.handle("general")}>
-            <div className="font-weight-bold">Show PRs</div>
-          </OptionsSwitch>
-
           <OptionsSwitch name="show_overrides" value={show_overrides} handler={this.handle("general")}>
             <div className="font-weight-bold">Show overrides</div>
+          </OptionsSwitch>
+
+          <OptionsSwitch name="show_prs" value={show_prs} handler={this.handle("general")}>
+            <div className="font-weight-bold">Show PRs</div>
           </OptionsSwitch>
 
           <OptionsSwitch name="show_orphaned" value={show_orphaned} handler={this.handle("general")}>

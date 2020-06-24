@@ -89,17 +89,17 @@ class Stats extends PureComponent {
               className="mr-4"
             />
             <StatIcon
-              category="prs"
-              icon="fa-git"
-              count={stats.prs}
-              fulltitle={`${stats.prs} PRs`}
-              className="mr-4"
-            />
-            <StatIcon
               category="overrides"
               icon="fa-shapes"
               count={stats.overrides}
               fulltitle={`${stats.overrides} overrides`}
+              className="mr-4"
+            />
+            <StatIcon
+              category="prs"
+              icon="fa-git"
+              count={stats.prs}
+              fulltitle={`${stats.prs} PRs`}
               className="mr-4"
             />
             <StatIcon
