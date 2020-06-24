@@ -35,14 +35,6 @@ class Stats extends PureComponent {
     }
   }
 
-  handleClick(bogus) {
-
-  }
-
-  isMuted(x) {
-    return ""
-  }
-
   render() {
     const { static_info } = this.props.user_data
     const stats = this.stats()
