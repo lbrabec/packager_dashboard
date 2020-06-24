@@ -6,7 +6,7 @@ import * as U from "../utils"
 
 import { ReleasesBlock, BugStatusGrid, BugKeywordsGrid, GroupBlock } from "./ModalOptionsItems"
 import { ModalOptionsLayout } from "./ModalOptionsLayout"
-import { CustomCheckbox, GroupTriSwitch, OptionsSwitch } from "./ModalOptionsLayout"
+import { CustomCheckbox, OptionsSwitch } from "./ModalOptionsLayout"
 
 class ModalOptions extends Component {
   constructor(props) {

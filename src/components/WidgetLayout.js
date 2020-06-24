@@ -12,10 +12,30 @@ export class WidgetRow extends PureComponent {
   }
 }
 
-export class WidgetHead extends PureComponent {
+export class WidgetCollapsibleRow extends PureComponent {
   render() {
     return (
-      <div className="col-md">
+      <div
+        className="list-group-item p-1"
+        onClick={this.props.handler}
+        data-toggle="collapse"
+        data-target={`#${this.props.id}`}>
+        <div className="row align-items-center no-gutters">
+          {this.props.children}
+        </div>
+        <WidgetCollapsibleBlock id={this.props.id}>
+          {this.props.collapsibleData}
+        </WidgetCollapsibleBlock>
+      </div>
+    )
+  }
+}
+
+export class WidgetHead extends PureComponent {
+  render() {
+    const column = this.props.col || "col-md"
+    return (
+      <div className={column}>
         <div className="media">
           <span data-toggle="tooltip" title="" data-original-title={this.props.type}>
             <i className={"fa fa-fw " + this.props.icon}></i>
@@ -117,6 +137,34 @@ export class FTBadge extends PureComponent {
           <i className="fas fa-exclamation-circle"></i>&nbsp;{this.props.children}
         </span>
       </span>
+    )
+  }
+}
+
+export class WidgetChevron extends PureComponent {
+  render() {
+    return (
+      <div className="col-2 text-right pr-2 pl-0 pl-sm-0 pl-md-0 pl-lg-0 font-weight-bold text-muted mh-100">
+        {this.props.collapsed ? (
+          <i className="fas fa-chevron-down mr-2"></i>
+        ) : (
+          <i className="fas fa-chevron-up mr-2"></i>
+        )}
+      </div>
+    )
+  }
+}
+
+export class WidgetCollapsibleBlock extends PureComponent {
+  render() {
+    return (
+      <div className="row no-gutters pl-4">
+        <div
+          className="collapse small mt-n3 bg-white"
+          id={this.props.id}>
+            {this.props.children}
+        </div>
+      </div>
     )
   }
 }
