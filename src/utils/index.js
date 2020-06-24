@@ -86,3 +86,20 @@ export const valueOfInput = (t) => {
       return t.value
   }
 }
+
+export const onlyCategoryShown = (options, category) => {
+  return options[`show_${category}`] &&
+  R.compose(
+    R.all(R.identity),
+    R.map(category => !options[category]),
+    R.without(`show_${category}`),
+  )([
+    "show_bugs",
+    "show_updates",
+    "show_prs",
+    "show_overrides",
+    "show_orphaned",
+    "show_koschei",
+    "show_fti",
+  ])
+}
