@@ -22,7 +22,7 @@ class Widget extends PureComponent {
     const {
       title,
       bugs,
-      pull_requests,
+      prs,
       updates,
       overrides,
       koschei,
@@ -35,7 +35,7 @@ class Widget extends PureComponent {
     const updates_items = updates.map((update) => (
       <Update {...update} key={title + update.pretty_name} />
     ))
-    const pull_requests_items = pull_requests.map((pr) => <PR {...pr} key={"pr" + pr.title} />)
+    const pull_requests_items = prs.map((pr) => <PR {...pr} key={"pr" + pr.title} />)
     const overrides_items = overrides.map((override) => (
       <Override {...override} key={"override" + override.pretty_name} />
     ))

@@ -9,8 +9,7 @@ import * as R from "ramda"
 import { connect } from "react-redux"
 import { setUser, loadUser, loadOptions, loadReleases } from "../actions/reduxActions"
 import * as U from "../utils"
-
-const EMPTY_ARRAY = []
+import { showAllOptions } from '../reducers';
 
 class Dashboard extends Component {
   constructor(props) {
@@ -21,7 +20,6 @@ class Dashboard extends Component {
     }
 
     this.searchTimeout = undefined
-    this.packageSort = this.packageSort.bind(this)
   }
 
   componentDidMount() {
@@ -43,131 +41,6 @@ class Dashboard extends Component {
     this.searchTimeout = setTimeout(() => this.setState({ search: re }), 500)
   }
 
-  filterBugs(pkg) {
-    const { bzs } = this.props.user_data
-    const { releases, options } = this.props
-    const priorities_severities = ["unspecified", "low", "medium", "high", "urgent"]
-
-    if (bzs.status === 204 || !options.show_bugs) return EMPTY_ARRAY
-
-    return bzs.data[pkg].filter((bug) => {
-      if (
-        !U.showRelease(releases, options, bug) ||
-        !options[`show_bug_status_${bug.status}`] ||
-        !R.compose(
-          R.all(R.identity),
-          R.map(U.showOption(options.show_bug_kw))
-        )(bug.keywords)
-      ) return false
-
-      if (bug.priority_severity === "unspecified") return options.bug_include_unspecified
-      return (
-        priorities_severities.indexOf(bug.priority_severity) >=
-        priorities_severities.indexOf(options.bug_min_priority_severity)
-      )
-    })
-  }
-
-  filterPRs(pkg) {
-    const { prs } = this.props.user_data
-    const { releases, options } = this.props
-    if (prs.status === 204 || !options.show_prs) return EMPTY_ARRAY
-
-    return prs.data[pkg].filter((pr) => {
-      if (!U.showRelease(releases, options, pr)) return false
-
-      return true
-    })
-  }
-
-  filterUpdates(pkg) {
-    const { static_info } = this.props.user_data
-    const { releases, options } = this.props
-    if (!options.show_updates) return EMPTY_ARRAY
-
-    return static_info.data.updates[pkg].filter((update) => {
-      if (!U.showRelease(releases, options, update)) return false
-
-      return true
-    })
-  }
-
-  filterOverrides(pkg) {
-    const { static_info } = this.props.user_data
-    const { releases, options } = this.props
-    if (!options.show_overrides) return EMPTY_ARRAY
-
-    return static_info.data.overrides[pkg].filter((override) => {
-      if (!U.showRelease(releases, options, override)) return false
-
-      return true
-    })
-  }
-
-  filterKoschei(pkg) {
-    const { static_info } = this.props.user_data
-    const { releases, options } = this.props
-    if (!options.show_koschei) return EMPTY_ARRAY
-
-    return static_info.data.koschei[pkg]
-      .filter((k) => k.status === "failing")
-      .filter((k) => {
-        if (!U.showRelease(releases, options, k)) return false
-
-        return true
-      })
-  }
-
-  filterOrphan(pkg) {
-    const { static_info } = this.props.user_data
-    const { releases, options } = this.props
-    if (!options.show_orphaned) return { orphaned: false, orphaned_since: null }
-
-    return static_info.data.orphans[pkg]
-  }
-
-  filterFTI(pkg) {
-    const { static_info } = this.props.user_data
-    const { releases, options } = this.props
-    if (!options.show_fti) return EMPTY_ARRAY
-
-    return static_info.data.fails_to_install[pkg].filter((fti) => {
-      if (!U.showRelease(releases, options, fti)) return false
-
-      return true
-    })
-  }
-
-  packageSort(pkgs) {
-    // pkgs in format [{name, data: {bugs,...}}]
-
-    const { options } = this.props
-
-    switch (options.sort) {
-      case "name":
-        return R.sortBy((pkg) => pkg.name.toLowerCase(), pkgs)
-
-      case "cnt":
-        return R.sortBy((pkg) => -U.dataLen(pkg), pkgs)
-
-      case "priority":
-        return R.sortWith(
-          [
-            R.descend(
-              (pkg) =>
-                pkg.data.koschei.length + pkg.data.fti.length + (pkg.data.orphan.orphaned ? 1 : 0)
-            ),
-            R.ascend((pkg) => pkg.name.toLowerCase()),
-          ],
-          pkgs
-        )
-
-      // fallback, sort by name
-      default:
-        return R.sortBy((pkg) => pkg.name.toLowerCase(), pkgs)
-    }
-  }
-
   render() {
     if (
       this.props.fasuser === "" ||
@@ -177,7 +50,7 @@ class Dashboard extends Component {
       return <DashboardLoading />
     }
     const { bzs, prs, static_info } = this.props.user_data
-    const { options } = this.props
+    const { options, releases } = this.props
     const { show_groups } = options
 
     const all_group_packages = R.compose(
@@ -201,12 +74,32 @@ class Dashboard extends Component {
       }
     }
 
-    const excluded_packages = R.compose(
+    const filterCategory = U.filterCategory(options, releases, this.props.user_data)
+    const dontFilterCategory = U.filterCategory(showAllOptions, releases, this.props.user_data)
+
+    const excludedPackages = R.compose(
       R.uniq,
       R.flatten,
       R.values,
       R.pickBy((_, group) => show_groups[group] === "never")
     )(static_info.data.group_packages)
+
+    const packages = R.compose(
+      R.filter((pkg) => !excludedPackages.includes(pkg)),
+      R.uniq,
+      R.concat(static_info.data.primary_packages),
+      R.flatten,
+      R.values,
+      R.pickBy((_, group) => show_groups[group] === undefined || show_groups[group] === "always")
+    )(static_info.data.group_packages)
+
+    const filteredPackages = packages.map(U.packageObject(filterCategory))
+    const unfilteredPackages = static_info.data.packages.map(U.packageObject(dontFilterCategory))
+
+    const filteredCntPerCat = U.itemsCntPerCategory(filteredPackages)
+    const unfilteredCntPerCat = U.itemsCntPerCategory(unfilteredPackages)
+
+    const hiddenDueFiltering = U.hiddenDueFiltering(filteredCntPerCat, unfilteredCntPerCat)
 
     const package_cards = R.compose(
       R.map(
@@ -220,28 +113,11 @@ class Dashboard extends Component {
         ))
       ),
       U.balancedSplit,
-      this.packageSort,
+      U.packageSort(options),
+      R.filter(pkg => R.test(this.state.search, pkg.name)),
       R.filter((pkg) => U.dataLen(pkg) > 0),
-      R.map((pkg) => ({
-        name: pkg,
-        data: {
-          bugs: this.filterBugs(pkg),
-          pull_requests: this.filterPRs(pkg),
-          updates: this.filterUpdates(pkg),
-          overrides: this.filterOverrides(pkg),
-          koschei: this.filterKoschei(pkg),
-          orphan: this.filterOrphan(pkg),
-          fti: this.filterFTI(pkg),
-        },
-      })),
-      R.filter(R.test(this.state.search)),
-      R.filter((pkg) => !excluded_packages.includes(pkg)),
-      R.uniq,
-      R.concat(static_info.data.primary_packages),
-      R.flatten,
-      R.values,
-      R.pickBy((_, group) => show_groups[group] === undefined || show_groups[group] === "always")
-    )(static_info.data.group_packages)
+      U.filterHiddenCategories(options),
+    )(filteredPackages)
 
     return (
       <div className="App">
@@ -251,9 +127,11 @@ class Dashboard extends Component {
             <Stats
               shownPackages={package_cards[0].length + package_cards[1].length}
               isLoading={bzs.status !== 200 || prs.status !== 200 || static_info.status !== 200}
+              stats={filteredCntPerCat}
             />
-            <div className="container">
-              <ResponsiveMasonry items={package_cards} />
+            <ResponsiveMasonry items={package_cards} />
+            <div className="container text-center text-muted font-weight-bold py-4">
+               {hiddenDueFiltering? "Some packages or items are hidden due to the filtering options" : ""}
             </div>
           </div>
         </div>

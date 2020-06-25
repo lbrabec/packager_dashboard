@@ -1,43 +1,13 @@
 import React, { PureComponent } from "react"
 import { connect } from "react-redux"
 import { changeOptionBatch } from "../actions/reduxActions"
-import * as R from "ramda"
 import * as U from "../utils"
 import $ from "jquery"
 
 class Stats extends PureComponent {
-  stats() {
-    const { bzs, prs } = this.props.user_data
-    const { static_info } = this.props.user_data
-
-    const getAll = R.compose(R.flatten, R.values)
-
-    const bugs = bzs.status === 204 ? [] : getAll(bzs.data)
-
-    const pull_requests = prs.status === 204 ? [] : getAll(prs.data)
-
-    const updates = getAll(static_info.data.updates)
-    const overrides = getAll(static_info.data.overrides)
-    const koschei = getAll(static_info.data.koschei).filter((k) => k.status === "failing")
-    const orphans = getAll(static_info.data.orphans).filter(
-      (o) => o.orphaned || o.depends_on_orphaned
-    )
-    const fti = getAll(static_info.data.fails_to_install)
-
-    return {
-      bugs: bugs.length,
-      prs: pull_requests.length,
-      updates: updates.length,
-      overrides: overrides.length,
-      koschei: koschei.length,
-      orphans: orphans.length,
-      fti: fti.length,
-    }
-  }
-
   render() {
     const { static_info } = this.props.user_data
-    const stats = this.stats()
+    const { stats } = this.props
 
     const spinner = this.props.isLoading ? (
       <span className="ml-3 mr-2">
@@ -160,7 +130,9 @@ class _StatIcon extends PureComponent {
   }
 
   render() {
-    const isMuted = !this.props.options[`show_${this.props.category}`] ? "text-muted-more" : "text-muted"
+    const isMuted = !this.props.options[`show_${this.props.category}`]
+      ? "text-muted-more"
+      : "text-muted"
     const extraClasses = this.props.className || ""
     return (
       <span
@@ -175,16 +147,17 @@ class _StatIcon extends PureComponent {
   }
 }
 const StatIcon = connect((state) => ({
-  options: state.options
+  options: state.options,
 }))(_StatIcon)
 
 const mapStateToProps = (state) => {
-  const { user_data, fasuser, options } = state
+  const { user_data, fasuser, options, releases } = state
 
   return {
     user_data,
     fasuser,
     options,
+    releases,
   }
 }
 

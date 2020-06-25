@@ -28,6 +28,10 @@ export const defaultOptions = {
     show_releases: {},
 }
 
+// placeholder for now, but in the future
+// default options won't necessarily mean "show all"
+export const showAllOptions = defaultOptions
+
 const defaultState = {
     user_data: undefined,
     fasuser: "",
