@@ -71,8 +71,8 @@ class Widget extends PureComponent {
         <div className="list-group">
           {bugs_items}
           {updates_items}
-          {pull_requests_items}
           {overrides_items}
+          {pull_requests_items}
           {koschei_items}
           {fti_items}
           {orphan_item}
