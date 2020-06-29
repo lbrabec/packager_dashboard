@@ -25,7 +25,16 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <script src="%PUBLIC_URL%/env.js"></script>
+
+    <!--
+      for some reason apps.fp.o is sometimes returning the css file with content-type: text/html; charset=iso-8859-1
+      firefox rejects this file with error:
+      The resource from “...” was blocked due to MIME type (“text/html”) mismatch (X-Content-Type-Options: nosniff)
+      as workaround, until better solution is found, we'll use bundled fedora-bootstrap.css
     <link href="https://apps.fedoraproject.org/global/fedora-bootstrap-1.5.0/fedora-bootstrap.css" type="text/css" rel="stylesheet" />
+    -->
+    <link href="%PUBLIC_URL%/fedora-bootstrap.css" type="text/css" rel="stylesheet" />
+
     <script src="https://kit.fontawesome.com/dce3c8abe1.js" crossorigin="anonymous"></script>
     <title>Packager Dashboard</title>
   </head>
