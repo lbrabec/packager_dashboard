@@ -1,15 +1,16 @@
 import React, { Component } from "react"
-import Masthead from "./Masthead"
-import Footer from "./Footer"
+import DashboardLayout from "./DashboardLayout"
+import DashboardNonPackager from "./DashboardNonPackager"
 import Widget from "./Widget"
 import Stats from "./Stats"
+import ItemsInfo from "./ItemsInfo"
 import ResponsiveMasonry from "./ResponsiveMasonry"
 import DashboardLoading from "./DashboardLoading"
 import * as R from "ramda"
 import { connect } from "react-redux"
 import { setUser, loadUser, loadOptions, loadReleases } from "../actions/reduxActions"
 import * as U from "../utils"
-import { showAllOptions } from '../reducers';
+import { showAllOptions } from "../reducers"
 
 class Dashboard extends Component {
   constructor(props) {
@@ -49,6 +50,11 @@ class Dashboard extends Component {
     ) {
       return <DashboardLoading />
     }
+
+    if (this.props.user_data.static_info.data.packages.length === 0) {
+      return <DashboardNonPackager />
+    }
+
     const { bzs, prs, static_info } = this.props.user_data
     const { options, releases } = this.props
     const { show_groups } = options
@@ -99,7 +105,11 @@ class Dashboard extends Component {
     const filteredCntPerCat = U.itemsCntPerCategory(filteredPackages)
     const unfilteredCntPerCat = U.itemsCntPerCategory(unfilteredPackages)
 
-    const hiddenDueFiltering = U.hiddenDueFiltering(filteredCntPerCat, unfilteredCntPerCat)
+    const hiddenDueFiltering = U.hiddenDueFiltering(
+      options,
+      filteredCntPerCat,
+      unfilteredCntPerCat
+    )
 
     const package_cards = R.compose(
       R.map(
@@ -114,29 +124,24 @@ class Dashboard extends Component {
       ),
       U.balancedSplit,
       U.packageSort(options),
-      R.filter(pkg => R.test(this.state.search, pkg.name)),
+      R.filter((pkg) => R.test(this.state.search, pkg.name)),
       R.filter((pkg) => U.dataLen(pkg) > 0),
-      U.filterHiddenCategories(options),
+      U.filterHiddenCategories(options)
     )(filteredPackages)
 
     return (
-      <div className="App">
-        <Masthead searchHandler={this.searchHandler.bind(this)} />
-        <div className="bodycontent">
-          <div className="subheader">
-            <Stats
-              shownPackages={package_cards[0].length + package_cards[1].length}
-              isLoading={bzs.status !== 200 || prs.status !== 200 || static_info.status !== 200}
-              stats={filteredCntPerCat}
-            />
-            <ResponsiveMasonry items={package_cards} />
-            <div className="container text-center text-muted font-weight-bold py-4">
-               {hiddenDueFiltering? "Some packages or items are hidden due to the filtering options" : ""}
-            </div>
-          </div>
-        </div>
-        <Footer />
-      </div>
+      <DashboardLayout searchHandler={this.searchHandler.bind(this)}>
+        <Stats
+          shownPackages={package_cards[0].length + package_cards[1].length}
+          isLoading={bzs.status !== 200 || prs.status !== 200 || static_info.status !== 200}
+          stats={filteredCntPerCat}
+        />
+        <ResponsiveMasonry items={package_cards} />
+        <ItemsInfo
+          hiddenDueFiltering={hiddenDueFiltering}
+          shownPackages={package_cards[0].length + package_cards[1].length}
+        />
+      </DashboardLayout>
     )
   }
 }
@@ -153,3 +158,5 @@ const mapStateToProps = (state) => {
 }
 
 export default connect(mapStateToProps)(Dashboard)
+
+

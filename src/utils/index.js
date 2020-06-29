@@ -253,14 +253,14 @@ export const packageSort = (options) => (pkgs) => {
   }
 }
 
-export const hiddenDueFiltering = (filtered, unfiltered) =>
-  filtered.bugs < unfiltered.bugs ||
-  filtered.prs < unfiltered.prs ||
-  filtered.updates < unfiltered.updates ||
-  filtered.overrides < unfiltered.overrides ||
-  filtered.koschei < unfiltered.koschei ||
-  filtered.fti < unfiltered.fti ||
-  filtered.orphans < unfiltered.orphans
+export const hiddenDueFiltering = (options, filtered, unfiltered) =>
+  (options.show_bugs && filtered.bugs < unfiltered.bugs) ||
+  (options.show_prs && filtered.prs < unfiltered.prs) ||
+  (options.show_updates && filtered.updates < unfiltered.updates) ||
+  (options.show_overrides && filtered.overrides < unfiltered.overrides) ||
+  (options.show_koschei && filtered.koschei < unfiltered.koschei) ||
+  (options.show_fti && filtered.fti < unfiltered.fti) ||
+  (options.show_orphans && filtered.orphans < unfiltered.orphans)
 
 
 export const packageObject = (filterFunction) => (pkg) => ({

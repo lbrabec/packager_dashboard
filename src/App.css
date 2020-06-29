@@ -75,6 +75,10 @@ html, body {
   font-size: 5rem;
 }
 
+.non-packager {
+  margin-top: 20vh;
+}
+
 .well-error {
   width: 100%;
   background-color: #fff;
