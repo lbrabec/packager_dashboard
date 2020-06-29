@@ -1,14 +1,11 @@
 import React, { PureComponent } from "react"
-import {
-  WidgetRow,
-  WidgetHead,
-  WidgetTitle,
-  WidgetSubTitle,
-} from "./WidgetLayout"
+import { WidgetRow, WidgetHead, WidgetTitle, WidgetSubTitle } from "./WidgetLayout"
+import * as moment from "moment"
 
 export class Koschei extends PureComponent {
   render() {
     const title = `failing to build for ${this.props.release}`
+    const lastOk = moment.utc(this.props.last_success.time)
 
     return (
       <WidgetRow>
@@ -16,7 +13,9 @@ export class Koschei extends PureComponent {
           <WidgetTitle fulltitle={title}>
             <a href={this.props.url}>{title}</a>
           </WidgetTitle>
-          <WidgetSubTitle>&nbsp;</WidgetSubTitle>
+          <WidgetSubTitle>
+            The last <a href={this.props.last_success.url}>successful build</a> was {lastOk.fromNow()}
+          </WidgetSubTitle>
         </WidgetHead>
       </WidgetRow>
     )
