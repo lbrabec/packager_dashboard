@@ -16,7 +16,7 @@ class EntryForm extends Component {
 
   handleSubmit(e) {
     this.props.dispatch(setUser(this.input.current.value))
-    cookies.set("fasusername", this.input.current.value, { path: "/" })
+    cookies.set("fasusername", this.input.current.value, { path: "/", sameSite: 'lax' })
     e.preventDefault()
   }
 

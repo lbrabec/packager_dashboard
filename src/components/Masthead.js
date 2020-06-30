@@ -21,7 +21,7 @@ class Masthead extends PureComponent {
 
   logout() {
     $('[data-toggle="tooltip"]').tooltip('hide')
-    cookies.remove("fasusername")
+    cookies.remove("fasusername", { path: "/", sameSite: 'lax' })
     this.props.dispatch(unsetUser())
   }
 
