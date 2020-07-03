@@ -26,7 +26,7 @@ const priority_severity_color = (ps) => {
 
 export class Bug extends PureComponent {
   render() {
-    const reported = moment.utc(this.props.reported.replace(/:/g, ""))
+    const reported = moment.utc(this.props.reported)
 
     return (
       <WidgetRow>
