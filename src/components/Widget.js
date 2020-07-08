@@ -7,9 +7,10 @@ import { Override } from "./WidgetItemOverride"
 import { Koschei } from "./WidgetItemKoschei"
 import { FTI } from "./WidgetItemFTI"
 import { Orphan } from "./WidgetItemOrphan"
-import { OrphanBadge, FTBadge } from "./WidgetLayout"
+import { OrphanBadge, FTBadge, BBBadge } from "./WidgetLayout"
 import $ from "jquery"
 import * as R from "ramda"
+import * as moment from "moment"
 
 class Widget extends PureComponent {
   componentDidMount() {
@@ -31,7 +32,12 @@ class Widget extends PureComponent {
       orphan,
     } = this.props
 
-    const bugs_items = bugs.map((bug) => <Bug {...bug} key={bug.url} />)
+    const bugs_items = R.sortWith([
+      R.descend(bug => bug.keywords.includes("ProposedBlocker")? 1:0 +
+                       bug.keywords.includes("AcceptedBlocker")? 1:0
+      ),
+      R.descend(bug => moment.utc(bug.reported).unix())
+    ], bugs).map((bug) => <Bug {...bug} key={bug.url} />)
     const updates_items = updates.map((update) => (
       <Update {...update} key={title + update.pretty_name} />
     ))
@@ -54,6 +60,7 @@ class Widget extends PureComponent {
     const fti_src = fti.map(f => R.keys(f.reason).includes("src")).some(R.identity)
     const ftbfs_badge = (fti_src || koschei.length > 0) ? <FTBadge>FTBFS</FTBadge> : null
     const fti_badge = fti_no_src.length > 0 ? <FTBadge>FTI</FTBadge> : null
+    const pb_badge = bugs.map(bug => bug.keywords.includes("ProposedBlocker")).some(R.identity)? <BBBadge color="warning">Proposed Blocker</BBBadge> : null
 
     return (
       <div className="widget card py-3">
@@ -64,6 +71,7 @@ class Widget extends PureComponent {
               {orphan_badge}
               {ftbfs_badge}
               {fti_badge}
+              {pb_badge}
             </h5>
           </div>
           <div>{ownershipIcon}</div>

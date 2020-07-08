@@ -199,3 +199,20 @@ html, body {
 .text-muted-more {
   color: #9facb8 !important;
 }
+
+.proposed-blocker {
+
+}
+
+.proposed-blocker .media i.fa {
+  color: #ffc107;
+}
+
+.proposed-blocker a {
+}
+
+.proposed-blocker .comments {
+}
+
+.proposed-blocker small {
+}

@@ -27,9 +27,10 @@ const priority_severity_color = (ps) => {
 export class Bug extends PureComponent {
   render() {
     const reported = moment.utc(this.props.reported)
+    const isProposedB = this.props.keywords.includes("ProposedBlocker")
 
     return (
-      <WidgetRow>
+      <WidgetRow className={isProposedB? "proposed-blocker": ""}>
         <WidgetHead type="This is a bug" icon="fa-bug">
           <WidgetTitle fulltitle={this.props.title}>
             <a href={this.props.url}>{this.props.title}</a>
@@ -42,7 +43,7 @@ export class Bug extends PureComponent {
         <WidgetBadge type={badge_color(this.props.status.toLowerCase())}>
           {this.props.status}
         </WidgetBadge>
-        <WidgetIconDetail icon="fa-comment-o" alt="Number of comments" color="text-muted">
+        <WidgetIconDetail icon="fa-comment-o" alt="Number of comments" color="text-muted" className="comments">
           {this.props.comments}
         </WidgetIconDetail>
         {this.props.priority_severity === "unspecified" ? null : (

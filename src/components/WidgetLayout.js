@@ -5,7 +5,7 @@ import * as moment from "moment"
 export class WidgetRow extends PureComponent {
   render() {
     return (
-      <div className="list-group-item p-1">
+      <div className={`list-group-item p-1 ${this.props.className || ""}`}>
         <div className="row align-items-center no-gutters">{this.props.children}</div>
       </div>
     )
@@ -103,7 +103,7 @@ export class WidgetIconDetail extends PureComponent {
     return (
       <div
         className={
-          "col-auto min-width-3 pl-4 pl-sm-4 pl-md-4 pl-lg-0 font-weight-bold mr-3 " +
+          `col-auto min-width-3 pl-4 pl-sm-4 pl-md-4 pl-lg-0 font-weight-bold mr-3 ${this.props.className || ""} ` +
           this.props.color
         }>
         <div>
@@ -135,6 +135,18 @@ export class FTBadge extends PureComponent {
       <span className="ml-3 font-size-09 p-1 font-weight-normal badge badge-danger">
         <span className="font-weight-bold">
           <i className="fas fa-exclamation-circle"></i>&nbsp;{this.props.children}
+        </span>
+      </span>
+    )
+  }
+}
+
+export class BBBadge extends PureComponent {
+  render() {
+    return (
+      <span className={`ml-3 font-size-09 p-1 font-weight-normal badge badge-${this.props.color}`}>
+        <span className="font-weight-bold">
+          <i className="fas fa-bug"></i>&nbsp;{this.props.children}
         </span>
       </span>
     )
