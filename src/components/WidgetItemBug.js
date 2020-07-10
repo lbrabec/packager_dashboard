@@ -26,7 +26,7 @@ const priority_severity_color = (ps) => {
 
 export class Bug extends PureComponent {
   render() {
-    const reported = moment.utc(this.props.reported)
+    const modified = moment.utc(this.props.modified)
     const isProposedB = this.props.keywords.includes("ProposedBlocker")
 
     return (
@@ -36,8 +36,8 @@ export class Bug extends PureComponent {
             <a href={this.props.url}>{this.props.title}</a>
           </WidgetTitle>
           <WidgetSubTitle>
-            #{this.props.bug_id} opened
-            <span title={reported.toDate()}> {reported.fromNow()}</span> for {this.props.release}
+            #{this.props.bug_id} modified
+            <span title={modified.toDate()}> {modified.fromNow()}</span> for {this.props.release}
           </WidgetSubTitle>
         </WidgetHead>
         <WidgetBadge type={badge_color(this.props.status.toLowerCase())}>

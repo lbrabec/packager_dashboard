@@ -59,6 +59,7 @@ class ModalOptions extends Component {
               <option value="name">Package name</option>
               <option value="cnt">Issue count</option>
               <option value="priority">FTIs, FTBFSs and orphans first</option>
+              <option value="date">Packages with the most recent items first</option>
             </select>
           </div>
 

@@ -1,4 +1,6 @@
 import * as R from "ramda"
+import * as moment from "moment"
+
 
 export const dataLen = (pkg, includeOrphans = true) =>
   pkg.data.bugs.length +
@@ -225,6 +227,24 @@ export const filterFTI = (options, releases, user_data) => (pkg) => {
   })
 }
 
+const getMostRecent = (pkg) => {
+  const { bugs, prs, updates, overrides, koschei, orphan, fti } = pkg.data
+
+  const timestamp = (date) => moment.utc(date).unix()
+
+  const timestamps = [
+    bugs.map(bug => timestamp(bug.modified)),
+    prs.map(pr => timestamp(pr.last_updated)),
+    updates.map(update => timestamp(update.submission_date)),
+    overrides.map(override => timestamp(override.expiration_date)),
+    koschei.map(k => 0), // FIXME
+    [orphan.problematic_since? timestamp(orphan.problematic_since) : 0],
+    fti.map(f => 0), // FIXME
+  ].map((items) => Math.max(...items))
+
+  return Math.max(...timestamps)
+}
+
 export const packageSort = (options) => (pkgs) => {
   // pkgs in format [{name, data: {bugs,...}}]
 
@@ -243,6 +263,15 @@ export const packageSort = (options) => (pkgs) => {
               pkg.data.koschei.length + pkg.data.fti.length + (pkg.data.orphan.orphaned ? 1 : 0)
           ),
           R.ascend((pkg) => pkg.name.toLowerCase()),
+        ],
+        pkgs
+      )
+
+    case "date":
+      return R.sortWith(
+        [
+          R.descend(getMostRecent),
+          R.ascend((pkg) => pkg.name.toLowerCase())
         ],
         pkgs
       )
