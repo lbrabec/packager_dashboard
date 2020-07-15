@@ -237,7 +237,7 @@ const getMostRecent = (pkg) => {
     prs.map(pr => timestamp(pr.last_updated)),
     updates.map(update => timestamp(update.submission_date)),
     overrides.map(override => timestamp(override.expiration_date)),
-    koschei.map(k => 0), // FIXME
+    koschei.map(k => timestamp(k.last_success.time)),
     [orphan.problematic_since? timestamp(orphan.problematic_since) : 0],
     fti.map(f => 0), // FIXME
   ].map((items) => Math.max(...items))
