@@ -1,6 +1,8 @@
 ## Packager Dashboard
 
-To try Packager dashboard, see [our test instance](http://37.205.14.49:3000/).
+Packager Dashboard displays useful information for a Fedora packager. That includes open bugs, proposed updates, open pull requests, build failures and others.
+
+To try Packager dashboard, see the [public instance](https://packager.fedorainfracloud.org). As an example, you can display the output for [frantisekz](https://packager.fedorainfracloud.org/frantisekz) or [churchyard](https://packager.fedorainfracloud.org/churchyard).
 
 ### How to run
 
