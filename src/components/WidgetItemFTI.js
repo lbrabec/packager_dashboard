@@ -6,6 +6,7 @@ import {
   WidgetSubTitle,
   WidgetChevron,
 } from "./WidgetLayout"
+import * as U from "../utils"
 
 export class FTI extends PureComponent {
   constructor(props) {
@@ -22,6 +23,7 @@ export class FTI extends PureComponent {
 
   render() {
     const { isFTI, release, repo, title, reason } = this.props
+    const mergedReason = U.mergeIdenticalFTIReasons(reason)
     const fulltitle = `failing to ${isFTI ? "install" : "build"} for ${release} ${
       ["rawhide", "stable"].includes(repo) ? "" : repo
     }`
@@ -29,7 +31,7 @@ export class FTI extends PureComponent {
     const tooltip = isFTI
       ? "This is package fails to install"
       : `Missing build dependencies on ${release}`
-    const reasons_list = Object.entries(reason).map((r) => (
+    const reasons_list = Object.entries(mergedReason).map((r) => (
       <span key={title + r[0]}>
         <span className="font-weight-bold">{`${r[0]}: `}</span>
         <ul>
