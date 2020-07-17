@@ -22,7 +22,7 @@ export class Orphan extends PureComponent {
   }
 
   render() {
-    const { problematic_since, reason_tree, title } = this.props
+    const { problematic_since, direct_dependencies, remote_dependencies, title } = this.props
     const fulltitle = "depends on orphaned packages"
     const problematicSince = moment.utc(problematic_since)
     const trouble = moment.utc(problematic_since).add(6, "w")
@@ -34,13 +34,33 @@ export class Orphan extends PureComponent {
         <br />
         {now.isBefore(trouble) ? "will have trouble on" : "has trouble since"}{" "}
         {trouble.format("MMM D YYYY, H:mm:ss z")}
-        <br />
-        directly or indirectly depends on orphaned packages:
-        <ul>
-          {reason_tree.map((reason) => (
-            <li key={`orphan_reason_${title}_${reason}`}>{reason}</li>
-          ))}
-        </ul>
+        <br /><br />
+        {
+          direct_dependencies.length > 0?
+          (
+            <span>
+              directly depends on oprhaned packages:
+              <ul>
+                {direct_dependencies.map((dirdep) => (
+                  <li key={`orphan_dirdep_${title}_${dirdep}`}>{dirdep}</li>
+                ))}
+              </ul>
+            </span>
+          ) : null
+        }
+        {
+          remote_dependencies.length > 0?
+          (
+            <span>
+              remotely depends on oprhaned packages:
+              <ul>
+                {remote_dependencies.map((remdep) => (
+                  <li key={`orphan_remdep_${title}_${remdep}`}>{remdep}</li>
+                ))}
+              </ul>
+            </span>
+          ) : null
+        }
       </span>
     )
     return (
