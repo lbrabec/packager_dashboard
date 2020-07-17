@@ -2,7 +2,7 @@ import React, { Component, createRef } from "react"
 import { Redirect } from "react-router"
 import Cookies from "universal-cookie"
 import logo from "../logo.svg"
-
+import Footer from "./Footer"
 import { setUser } from "../actions/reduxActions"
 import { connect } from "react-redux"
 
@@ -33,25 +33,28 @@ class EntryForm extends Component {
     }
 
     return (
-      <div className="appEntryContainer">
-        <img src={logo} alt="Fedora Packager Dashboard" className="pb-4" />
+      <div className="App">
+        <div className="appEntryContainer">
+          <img src={logo} alt="Fedora Packager Dashboard" className="pb-4" />
 
-        <form className="form-inline" onSubmit={this.handleSubmit.bind(this)}>
-          <div className="form-group mb-2 pr-2">
-            <input
-              type="text"
-              className="form-control form-control-lg"
-              id="fasusernameInput"
-              placeholder="FAS Username or Group"
-              ref={this.input}
-              defaultValue=""
-            />
-          </div>
+          <form className="form-inline" onSubmit={this.handleSubmit.bind(this)}>
+            <div className="form-group mb-2 pr-2">
+              <input
+                type="text"
+                className="form-control form-control-lg"
+                id="fasusernameInput"
+                placeholder="FAS Username or Group"
+                ref={this.input}
+                defaultValue=""
+              />
+            </div>
 
-          <button type="submit" className="btn btn-primary btn-lg mb-2">
-            Go!
-          </button>
-        </form>
+            <button type="submit" className="btn btn-primary btn-lg mb-2">
+              Go!
+            </button>
+          </form>
+        </div>
+        <Footer />
       </div>
     )
   }

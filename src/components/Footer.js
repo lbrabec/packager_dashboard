@@ -56,7 +56,7 @@ class Footer extends PureComponent {
 }
 
 const mapStateToProps = (state) => {
-  const { last_synced } = state.user_data.static_info
+  const { last_synced } = state.user_data? state.user_data.static_info : {}
 
   return {
     last_synced,
