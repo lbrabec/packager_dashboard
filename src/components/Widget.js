@@ -51,7 +51,7 @@ class Widget extends PureComponent {
 
     const fti_no_src = R.compose(
       R.filter((r) => R.keys(r).length > 0),
-      R.map((f) => R.pickBy((v, k) => k !== "src", f.reason))
+      R.map((f) => R.pickBy((v, k) => k !== "src", f.problems))
     )(fti)
 
     const fti_items = fti.map((f) => <FTI title={title} {...f} key={"fti_" + title + f.release + f.repo} isFTI={fti_no_src.length > 0} />)
