@@ -22,8 +22,8 @@ export class FTI extends PureComponent {
   }
 
   render() {
-    const { isFTI, release, repo, title, reason } = this.props
-    const mergedReason = U.mergeIdenticalFTIReasons(reason)
+    const { isFTI, release, repo, title, problems } = this.props
+    const mergedProblems = U.mergeIdenticalFTIProblems(problems)
     const fulltitle = `failing to ${isFTI ? "install" : "build"} for ${release} ${
       ["rawhide", "stable"].includes(repo) ? "" : repo
     }`
@@ -31,7 +31,7 @@ export class FTI extends PureComponent {
     const tooltip = isFTI
       ? "This is package fails to install"
       : `Missing build dependencies on ${release}`
-    const reasons_list = Object.entries(mergedReason).map((r) => (
+    const reasons_list = Object.entries(mergedProblems).map((r) => (
       <span key={title + r[0]}>
         <span className="font-weight-bold">{`${r[0]}: `}</span>
         <ul>
@@ -50,7 +50,7 @@ export class FTI extends PureComponent {
         <WidgetHead type={tooltip} icon={icon} col="col-10">
           <WidgetTitle fulltitle={fulltitle}>{fulltitle}</WidgetTitle>
           <WidgetSubTitle>
-            {this.state.collapsed ? Object.keys(reason).join(", ") : <span>&nbsp;</span>}
+            {this.state.collapsed ? Object.keys(problems).join(", ") : <span>&nbsp;</span>}
           </WidgetSubTitle>
         </WidgetHead>
         <WidgetChevron collapsed={this.state.collapsed} />

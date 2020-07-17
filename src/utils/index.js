@@ -322,10 +322,11 @@ export const filterHiddenCategories = (options) => (packageObjects) => {
 
 const SEP = "@#$"
 
-export const mergeIdenticalFTIReasons = R.compose(
+export const mergeIdenticalFTIProblems = R.compose(
   R.mapObjIndexed((val, key, obj) => val.split(SEP)),
   R.invertObj,
   R.mapObjIndexed((val, key, obj) => val.join(", ")),
   R.invert,
   R.mapObjIndexed((val, key, obj) => R.sortBy(R.identity, val).join(SEP)),
+  R.mapObjIndexed((val, key, obj) => val.reason),
 )
