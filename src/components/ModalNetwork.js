@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 import { Network } from "vis-network"
+import "vis-network/styles/vis-network.min.css"
 import $ from "jquery"
 
 class ModalNetwork extends Component {
@@ -8,6 +9,9 @@ class ModalNetwork extends Component {
     const container = document.getElementById("network-canvas")
     const options = {
       autoResize: true,
+      interaction: {
+        navigationButtons: true
+      },
       height: "100%",
       width: "100%",
       nodes: {

@@ -220,8 +220,17 @@ html, body {
 #network-canvas {
   height: 81vh;
   width: 100%;
+  cursor: grab;
+}
+
+#network-canvas:active {
+  cursor: grabbing;
 }
 
 #network-canvas .vis-network:focus{
   outline: none;
+}
+
+.vis-button {
+  filter: grayscale(100%);
 }
