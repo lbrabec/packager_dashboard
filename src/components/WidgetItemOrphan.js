@@ -6,9 +6,13 @@ import {
   WidgetSubTitle,
   WidgetChevron,
 } from "./WidgetLayout"
+import * as R from "ramda"
 import * as moment from "moment"
+import $ from "jquery"
+import { connect } from "react-redux"
+import { setDepGraph } from "../actions/reduxActions"
 
-export class Orphan extends PureComponent {
+class _Orphan extends PureComponent {
   constructor(props) {
     super(props)
 
@@ -17,8 +21,22 @@ export class Orphan extends PureComponent {
     }
   }
 
-  collapseToggle() {
+  collapseToggle(e) {
     this.setState({ collapsed: !this.state.collapsed })
+    $(`#Orphan_reasons_tree_${this.props.title}`).collapse('toggle')
+    e.stopPropagation()
+  }
+
+  showNetwork(e){
+    const {title, vis_js} = this.props
+    this.props.dispatch(setDepGraph(vis_js))
+
+    $('#modal-network').modal('toggle');
+    $('#modal-network').on('shown.bs.modal', (event) => {
+      var modal = $(this)
+      modal.find('.modal-title').text('Dependency network for ' + title)
+    })
+    e.stopPropagation()
   }
 
   render() {
@@ -41,7 +59,7 @@ export class Orphan extends PureComponent {
             <span>
               directly depends on oprhaned packages:
               <ul>
-                {direct_dependencies.map((dirdep) => (
+                {R.sortBy((pkg) => pkg.toLowerCase(), direct_dependencies).map((dirdep) => (
                   <li key={`orphan_dirdep_${title}_${dirdep}`}>{dirdep}</li>
                 ))}
               </ul>
@@ -54,13 +72,17 @@ export class Orphan extends PureComponent {
             <span>
               remotely depends on oprhaned packages:
               <ul>
-                {remote_dependencies.map((remdep) => (
+                {R.sortBy((pkg) => pkg.toLowerCase(), remote_dependencies).map((remdep) => (
                   <li key={`orphan_remdep_${title}_${remdep}`}>{remdep}</li>
                 ))}
               </ul>
             </span>
           ) : null
         }
+        <button type="button" className="btn btn-primary btn-sm"
+                onClick={this.showNetwork.bind(this)}>
+          Show dependency network
+        </button>
       </span>
     )
     return (
@@ -87,3 +109,7 @@ export class Orphan extends PureComponent {
     )
   }
 }
+
+export const Orphan = connect((_) => {
+  return {}
+})(_Orphan)

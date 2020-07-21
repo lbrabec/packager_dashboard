@@ -40,7 +40,8 @@ const defaultState = {
         fedora: [],
         epel: []
     },
-    error: undefined
+    error: undefined,
+    depGraph: {nodes: [], edges: []},
 }
 
 
@@ -152,6 +153,12 @@ export default (state = defaultState, action) => {
             return {
                 ...state,
                 error: action.payload
+            }
+
+        case ActionTypes.SET_DEP_GRAPH:
+            return {
+                ...state,
+                depGraph: action.payload
             }
 
         default:

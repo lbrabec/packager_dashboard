@@ -6,11 +6,13 @@ import Stats from "./Stats"
 import ItemsInfo from "./ItemsInfo"
 import ResponsiveMasonry from "./ResponsiveMasonry"
 import DashboardLoading from "./DashboardLoading"
+import ModalNetwork from "./ModalNetwork"
 import * as R from "ramda"
 import { connect } from "react-redux"
 import { setUser, loadUser, loadOptions, loadReleases } from "../actions/reduxActions"
 import * as U from "../utils"
 import { showAllOptions } from "../reducers"
+
 
 class Dashboard extends Component {
   constructor(props) {
@@ -141,6 +143,7 @@ class Dashboard extends Component {
           hiddenDueFiltering={hiddenDueFiltering}
           shownPackages={package_cards[0].length + package_cards[1].length}
         />
+        <ModalNetwork />
       </DashboardLayout>
     )
   }

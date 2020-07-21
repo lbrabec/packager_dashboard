@@ -216,3 +216,12 @@ html, body {
 
 .proposed-blocker small {
 }
+
+#network-canvas {
+  height: 81vh;
+  width: 100%;
+}
+
+#network-canvas .vis-network:focus{
+  outline: none;
+}

@@ -6,6 +6,7 @@ import {
   WidgetSubTitle,
   WidgetChevron,
 } from "./WidgetLayout"
+import $ from "jquery"
 import * as U from "../utils"
 
 export class FTI extends PureComponent {
@@ -17,8 +18,10 @@ export class FTI extends PureComponent {
     }
   }
 
-  collapseToggle() {
+  collapseToggle(e) {
     this.setState({ collapsed: !this.state.collapsed })
+    $(`#FTI_reasons_${this.props.title}_${this.props.release.replace(/\s/g, "")}_${this.props.repo}`).collapse('toggle')
+    e.stopPropagation()
   }
 
   render() {

@@ -135,3 +135,8 @@ export const throwError = payload => ({
     type: ActionTypes.THROW_ERROR,
     payload: new Error(`${payload.error} ${payload.reason}`)
 })
+
+export const setDepGraph = payload => ({
+    type: ActionTypes.SET_DEP_GRAPH,
+    payload: payload
+})

@@ -18,8 +18,9 @@ export class WidgetCollapsibleRow extends PureComponent {
       <div
         className="list-group-item p-1"
         onClick={this.props.handler}
-        data-toggle="collapse"
-        data-target={`#${this.props.id}`}>
+        //data-toggle="collapse"
+        //data-target={`#${this.props.id}`}
+        >
         <div className="row align-items-center no-gutters">
           {this.props.children}
         </div>
