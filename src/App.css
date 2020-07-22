@@ -234,3 +234,9 @@ html, body {
 .vis-button {
   filter: grayscale(100%);
 }
+
+.tooltip .tooltip-inner {
+  font-family: monospace;
+  text-align: left !important;
+  max-width: 350px;
+}

@@ -57,7 +57,7 @@ class Dashboard extends Component {
       return <DashboardNonPackager />
     }
 
-    const { bzs, prs, static_info } = this.props.user_data
+    const { bzs, prs, static_info, package_versions } = this.props.user_data
     const { options, releases } = this.props
     const { show_groups } = options
 
@@ -120,6 +120,7 @@ class Dashboard extends Component {
             title={pkg.name}
             {...pkg.data}
             ownershipIcon={ownershipIcon(pkg.name)}
+            versions={package_versions.data[pkg.name]}
             key={pkg.name}
           />
         ))

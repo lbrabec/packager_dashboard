@@ -30,6 +30,7 @@ class Widget extends PureComponent {
       fti,
       ownershipIcon,
       orphan,
+      versions,
     } = this.props
 
     const bugs_items = R.sortWith([
@@ -65,12 +66,23 @@ class Widget extends PureComponent {
     const cve_bage = bugs.map(bug => bug.keywords.includes("Security") && bug.keywords.includes("SecurityTracking")).some(R.identity)?
       <BBBadge color="danger">CVE</BBBadge> : null
 
+    const versions_html = R.compose(
+      R.join(""),
+      R.map(rv => `${rv[0]}<ul>${rv[1].map(v=>`<li>${(v[0]+':').padEnd(8,"\u00A0")} ${v[1]}</li>`).join('')}</ul>`),
+      R.toPairs,
+      R.mapObjIndexed((val, key, obj) => R.toPairs(val)),
+      R.pickBy((v,k) => !R.isEmpty(v)),
+      R.mapObjIndexed((val, key, obj) => R.pickBy((v, k) => v!==null, val))
+    )(versions)
+
     return (
       <div className="widget card py-3">
         <div className="row no-gutters d-flex justify-content-between">
           <div>
             <h5 className="font-weight-bold d-flex align-items-center">
-              {title}
+              <span data-toggle="tooltip" title="" data-html="true" data-original-title={versions_html}>
+                {title}
+              </span>
               {orphan_badge}
               {ftbfs_badge}
               {fti_badge}
