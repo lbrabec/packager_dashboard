@@ -156,7 +156,8 @@ export const filterBugs = (options, releases, user_data) => (pkg) => {
     if (
       !showRelease(releases, options, bug) ||
       !options[`show_bug_status_${bug.status}`] ||
-      !R.compose(R.all(R.identity), R.map(showOption(options.show_bug_kw)))(bug.keywords)
+      !R.compose(R.all(R.identity), R.map(showOption(options.show_bug_kw)))(bug.keywords) ||
+      (options['show_cves_only'] && !(bug.keywords.includes("Security") && bug.keywords.includes("SecurityTracking")))
     )
       return false
 

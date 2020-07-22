@@ -3,6 +3,7 @@ import * as R from 'ramda';
 
 export const defaultOptions = {
     show_bugs: true,
+    show_cves_only: false,
     bug_min_priority_severity: "low",
     bug_include_unspecified: true,
 

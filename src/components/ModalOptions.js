@@ -31,6 +31,7 @@ class ModalOptions extends Component {
   render() {
     const {
       show_bugs,
+      show_cves_only,
       bug_min_priority_severity,
       bug_include_unspecified,
 
@@ -68,6 +69,15 @@ class ModalOptions extends Component {
           <OptionsSwitch name="show_bugs" value={show_bugs} handler={this.handle("general")}>
             <div className="font-weight-bold">Show bugs</div>
           </OptionsSwitch>
+
+          <div className="pl-as-switch mt-2">
+            <OptionsSwitch
+              name={"show_cves_only"}
+              value={show_cves_only}
+              handler={this.handle("general")}>
+              Show CVEs only
+            </OptionsSwitch>
+          </div>
 
           <div className="form-group pl-as-switch mt-2">
             <label htmlFor="bug_min_priority_severity">Min shown bug priority/severity</label>
