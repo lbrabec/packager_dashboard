@@ -60,7 +60,10 @@ class Widget extends PureComponent {
     const fti_src = fti.map(f => R.keys(f.reason).includes("src")).some(R.identity)
     const ftbfs_badge = (fti_src || koschei.length > 0) ? <FTBadge>FTBFS</FTBadge> : null
     const fti_badge = fti_no_src.length > 0 ? <FTBadge>FTI</FTBadge> : null
-    const pb_badge = bugs.map(bug => bug.keywords.includes("ProposedBlocker")).some(R.identity)? <BBBadge color="warning">Proposed Blocker</BBBadge> : null
+    const pb_badge = bugs.map(bug => bug.keywords.includes("ProposedBlocker")).some(R.identity)?
+      <BBBadge color="warning">Proposed Blocker</BBBadge> : null
+    const cve_bage = bugs.map(bug => bug.keywords.includes("Security") && bug.keywords.includes("SecurityTracking")).some(R.identity)?
+      <BBBadge color="danger">CVE</BBBadge> : null
 
     return (
       <div className="widget card py-3">
@@ -72,6 +75,7 @@ class Widget extends PureComponent {
               {ftbfs_badge}
               {fti_badge}
               {pb_badge}
+              {cve_bage}
             </h5>
           </div>
           <div>{ownershipIcon}</div>
