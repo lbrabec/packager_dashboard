@@ -19,6 +19,9 @@ const karma_color = (karma) => {
 export class Update extends PureComponent {
   render() {
     const created = moment.utc(this.props.submission_date)
+    const stable = moment.utc(this.props.stable_by_time)
+    const now = moment().utc()
+    const stableText = this.props.stable_by_time !== null? `, ${now.isBefore(stable)? "goes" : "went"} stable ${stable.fromNow()}` : null
 
     return (
       <WidgetRow>
@@ -28,7 +31,7 @@ export class Update extends PureComponent {
           </WidgetTitle>
           <WidgetSubTitle>
             created <span title={created.toDate()}> {created.fromNow()}</span>&nbsp;for{" "}
-            {this.props.release}
+            {this.props.release}{stableText}
           </WidgetSubTitle>
         </WidgetHead>
         <WidgetBadge type="warning">{this.props.status}</WidgetBadge>
