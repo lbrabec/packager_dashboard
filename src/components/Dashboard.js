@@ -122,6 +122,7 @@ class Dashboard extends Component {
             ownershipIcon={ownershipIcon(pkg.name)}
             versions={package_versions.data[pkg.name]}
             key={pkg.name}
+            cvesOnly={options.show_cves_only}
           />
         ))
       ),

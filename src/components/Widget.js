@@ -31,9 +31,13 @@ class Widget extends PureComponent {
       ownershipIcon,
       orphan,
       versions,
+      cvesOnly,
     } = this.props
 
     const bugs_items = R.sortWith([
+      cvesOnly?
+      R.descend(bug => ["unspecified", "low", "medium", "high", "urgent"].indexOf(bug.severity))
+      :
       R.descend(bug => bug.keywords.includes("ProposedBlocker")? 1:0 +
                        bug.keywords.includes("AcceptedBlocker")? 1:0
       ),
