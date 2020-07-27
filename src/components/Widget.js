@@ -7,7 +7,7 @@ import { Override } from "./WidgetItemOverride"
 import { Koschei } from "./WidgetItemKoschei"
 import { FTI } from "./WidgetItemFTI"
 import { Orphan } from "./WidgetItemOrphan"
-import { OrphanBadge, FTBadge, BBBadge } from "./WidgetLayout"
+import { OrphanBadge, FTBadge, BBBadge, OrphanImpactedBadge } from "./WidgetLayout"
 import $ from "jquery"
 import * as R from "ramda"
 import * as moment from "moment"
@@ -61,6 +61,7 @@ class Widget extends PureComponent {
 
     const fti_items = fti.map((f) => <FTI title={title} {...f} key={"fti_" + title + f.release + f.repo} isFTI={fti_no_src.length > 0} />)
     const orphan_badge = orphan.orphaned ? <OrphanBadge since={orphan.problematic_since} /> : null
+    const orphan_impacted_badge = orphan.depends_on_orphaned ? <OrphanImpactedBadge color="danger">Orphan impacted</OrphanImpactedBadge> : null
     const orphan_item = orphan.depends_on_orphaned? <Orphan {...orphan} title={title}/> : null
     const fti_src = fti.map(f => R.keys(f.reason).includes("src")).some(R.identity)
     const ftbfs_badge = (fti_src || koschei.length > 0) ? <FTBadge>FTBFS</FTBadge> : null
@@ -92,6 +93,7 @@ class Widget extends PureComponent {
               {fti_badge}
               {pb_badge}
               {cve_bage}
+              {orphan_impacted_badge}
             </h5>
           </div>
           <div>{ownershipIcon}</div>

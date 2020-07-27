@@ -130,6 +130,18 @@ export class OrphanBadge extends PureComponent {
   }
 }
 
+export class OrphanImpactedBadge extends PureComponent {
+  render() {
+    return (
+      <span className="ml-3 font-size-09 p-1 font-weight-normal badge badge-danger">
+        <span className="font-weight-bold">
+          <i className="fas fa-user-slash"></i>&nbsp;{this.props.children}
+        </span>
+      </span>
+    )
+  }
+}
+
 export class FTBadge extends PureComponent {
   render() {
     return (

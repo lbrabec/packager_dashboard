@@ -89,7 +89,7 @@ class _Orphan extends PureComponent {
         handler={this.collapseToggle.bind(this)}
         id={`Orphan_reasons_tree_${title}`}
         collapsibleData={collapsibleData}>
-        <WidgetHead type="This package depends on orphan(s)" icon="fa-baby" col="col-10">
+        <WidgetHead type="This package depends on orphan(s)" icon="fa-user-slash" col="col-10">
           <WidgetTitle fulltitle={fulltitle}>{fulltitle}</WidgetTitle>
           <WidgetSubTitle>
             {this.state.collapsed ? (
