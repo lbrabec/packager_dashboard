@@ -3,6 +3,7 @@ import { connect } from "react-redux"
 import { Network } from "vis-network"
 import "vis-network/styles/vis-network.min.css"
 import $ from "jquery"
+import * as R from "ramda"
 
 class ModalNetwork extends Component {
   draw() {
@@ -46,8 +47,17 @@ class ModalNetwork extends Component {
       },
       physics: false,
     }
-
-    var network = new Network(container, this.props.depGraph, options)
+    const data = {
+      nodes: this.props.depGraph.nodes.map((node) => ({
+        ...node,
+        color: {
+          border: this.props.depGraph.allOrphans.includes(node.label)? "#dc3545" : "#3c6eb4",
+          background: "white",
+        },
+      })),
+      edges: this.props.depGraph.edges
+    }
+    var network = new Network(container, data, options)
     network.redraw()
   }
 
@@ -71,8 +81,8 @@ class ModalNetwork extends Component {
         <div className="modal-dialog modal-xl" role="document">
           <div className="modal-content">
             <div className="modal-header d-flex align-items-center">
-              <h4 className="modal-title" id="optionsModalLabel">
-                Dependency network
+              <h4 className="modal-title" id="networkModalLabel">
+                Dependency network for {this.props.depGraph.forPkg}
               </h4>
               <button
                 type="button"

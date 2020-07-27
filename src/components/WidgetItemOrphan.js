@@ -28,14 +28,13 @@ class _Orphan extends PureComponent {
   }
 
   showNetwork(e){
-    const {title, vis_js} = this.props
-    this.props.dispatch(setDepGraph(vis_js))
-
+    const {title, vis_js, direct_dependencies, remote_dependencies} = this.props
+    this.props.dispatch(setDepGraph({
+      ...vis_js,
+      allOrphans: [...direct_dependencies, ...remote_dependencies],
+      forPkg: title,
+    }))
     $('#modal-network').modal('toggle');
-    $('#modal-network').on('shown.bs.modal', (event) => {
-      var modal = $(this)
-      modal.find('.modal-title').text('Dependency network for ' + title)
-    })
     e.stopPropagation()
   }
 
