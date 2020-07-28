@@ -53,6 +53,11 @@ class EntryForm extends Component {
               Go!
             </button>
           </form>
+          <div className="text-muted mt-3">
+            <a href="/helpmepls">
+              Need help?
+            </a>
+          </div>
         </div>
         <Footer />
       </div>

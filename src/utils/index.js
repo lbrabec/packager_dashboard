@@ -143,8 +143,8 @@ export const filterCategory = (options, releases, user_data) => {
   }
 }
 
-const EMPTY_ARRAY = []
-const NOT_ORPHAN = { orphaned: false, depends_on_orphaned: false, orphaned_since: null }
+export const EMPTY_ARRAY = []
+export const NOT_ORPHAN = { orphaned: false, depends_on_orphaned: false, orphaned_since: null }
 
 export const filterBugs = (options, releases, user_data) => (pkg) => {
   const { bzs } = user_data

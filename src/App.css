@@ -71,6 +71,12 @@ html, body {
   padding-bottom: 3rem;
 }
 
+.Help {
+  min-height: 100vh;
+  width: 100% !important;
+  background: #f3f3f3;
+}
+
 .Error h1 {
   font-size: 5rem;
 }
@@ -239,4 +245,14 @@ html, body {
   font-family: monospace;
   text-align: left !important;
   max-width: 350px;
+}
+
+.halp-me {
+  margin-top: 2.5rem;
+  font-size: 2.5rem;
+}
+
+svg:not(:root) {
+  width: auto;
+  height: 100%;
 }

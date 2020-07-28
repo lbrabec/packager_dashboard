@@ -9,6 +9,7 @@ import "../App.css"
 import EntryForm from "./EntryForm"
 import Dashboard from "./Dashboard"
 import Error from "./Error"
+import Help from "./Help"
 
 import { throwError } from "../actions/reduxActions"
 
@@ -25,6 +26,9 @@ class App extends Component {
         <Switch>
           <Route path="/" exact>
             <EntryForm />
+          </Route>
+          <Route path="/helpmepls" exact>
+            <Help />
           </Route>
           <Route path="/:fasuser" render={(props) => <Dashboard {...props} />}></Route>
         </Switch>
