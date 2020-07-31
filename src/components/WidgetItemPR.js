@@ -1,46 +1,133 @@
 import React, { PureComponent } from "react"
 import {
   WidgetRow,
+  WidgetCollapsibleRow,
   WidgetHead,
   WidgetTitle,
   WidgetSubTitle,
   WidgetBadge,
   WidgetIconDetail,
+  WidgetChevron,
 } from "./WidgetLayout"
+import $ from "jquery"
+import * as R from "ramda"
 import * as moment from "moment"
 
-const getBadge = (text, status) => {
-  if (!["success", "failure"].includes(status))
-    return null
-  else
+
+const getMixedBadge = (cis) => {
+  const results = R.compose(
+    R.toPairs,
+    R.pickBy((val, key) => ["succ", "fail"].includes(val)),
+    R.mapObjIndexed((val, key, obj) => val.slice(0,4)),
+    R.pickBy((val, key) => val !== null)
+  )(cis)
+
+  if (results.length === 0){
     return (
-      <WidgetBadge type={status === "success" ? "success" : "danger"}>
-        {text} {status === "success" ? <i className="fas fa-check-circle"></i> : <i className="fas fa-times-circle"></i>}
+      <div className="col-2">&nbsp;</div>
+    )
+  }
+
+  if (results.every((val) => val[1] === "succ")) {
+    return (
+      <WidgetBadge col="col-md-2" type="success">
+        PASS <i className="fas fa-check-circle"></i>
       </WidgetBadge>
     )
+  } else
+  if (results.every((val) => val[1] === "fail")) {
+    return (
+      <WidgetBadge col="col-md-2" type="danger">
+        FAIL <i className="fas fa-times-circle"></i>
+      </WidgetBadge>
+    )
+  } else {
+    return (
+      <WidgetBadge col="col-md-2" type="warning">
+        <span className="text-white">MIXED <i className="fas fa-exclamation-circle"></i></span>
+      </WidgetBadge>
+    )
+  }
+}
+
+const resultToBadge = (result) => {
+  if (result.startsWith("succ"))
+    return (
+      <span className="badge badge-success">{result}</span>
+    )
+  if (result.startsWith("fail"))
+  return (
+    <span className="badge badge-danger">{result}</span>
+  )
+
+  return (
+    <span className="badge badge-info">{result}</span>
+  )
 }
 
 export class PR extends PureComponent {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      collapsed: true,
+    }
+
+    this.pkg = this.props.url.split('/').slice(-3)[0].replace(/\./g,"_")
+    this.prid = this.props.url.split('/').slice(-1)[0]
+  }
+
+  collapseToggle(e) {
+    this.setState({ collapsed: !this.state.collapsed })
+    $(`#PR_${this.pkg}_${this.prid}`).collapse('toggle')
+    e.stopPropagation()
+  }
+
   render() {
     const created = moment.utc(this.props.date_created)
 
+    const data = (
+      <>
+          opened <span title={created.toDate()}> {created.fromNow()}</span>&nbsp;by{" "}
+              {this.props.author} for {this.props.release}
+        <div className="my-2">
+          {
+            R.compose(
+              R.map((ci) => (
+                <div className="row">
+                  <div className="col-6">{ci[0]}</div>
+                  <div className="col-6">{resultToBadge(ci[1])}</div>
+                </div>
+              )),
+              R.toPairs,
+              R.pickBy((val, key) => val !== null)
+            )(this.props.ci_status)
+          }
+        </div>
+      </>
+    )
+
     return (
-      <WidgetRow>
-        <WidgetHead type="This is a pull request" icon="fa-git">
+      <WidgetCollapsibleRow
+        handler={this.collapseToggle.bind(this)}
+        id={`PR_${this.pkg}_${this.prid}`}
+        collapsibleData={data}>
+        <WidgetHead type="This is a pull request" icon="fa-git" col="col-md">
           <WidgetTitle fulltitle={this.props.title}>
             <a href={this.props.url}>{this.props.title}</a>
           </WidgetTitle>
           <WidgetSubTitle>
-            opened <span title={created.toDate()}> {created.fromNow()}</span>&nbsp;by{" "}
-            {this.props.author} for {this.props.release}
+          {this.state.collapsed ? (
+            <>opened <span title={created.toDate()}> {created.fromNow()}</span>&nbsp;by{" "}
+            {this.props.author} for {this.props.release}</>
+          ) : (<span>&nbsp;</span>)
+          }
           </WidgetSubTitle>
         </WidgetHead>
-        {getBadge("KojiCI", this.props.ci_status["simple-koji-ci"])}
-        {getBadge("Zuul", this.props.ci_status.Zuul)}
-        <WidgetIconDetail icon="fa-comment-o" alt="Number of comments" color="text-muted">
-          {this.props.comments}
-        </WidgetIconDetail>
-      </WidgetRow>
+        {getMixedBadge(this.props.ci_status)}
+
+        <WidgetChevron collapsed={this.state.collapsed} col="col-md-1"/>
+      </WidgetCollapsibleRow>
     )
   }
 }

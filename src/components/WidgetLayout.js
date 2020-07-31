@@ -89,7 +89,7 @@ export class WidgetSubTitle extends PureComponent {
 export class WidgetBadge extends PureComponent {
   render() {
     return (
-      <div className="col-auto pl-4 pl-sm-4 pl-md-4 pl-lg-0 p-md-0">
+      <div className={`${this.props.col || "col-auto"} pl-4 pl-sm-4 pl-md-4 pl-lg-0 p-md-0`}>
         <span
           className={"mr-3 font-size-09 p-1 font-weight-normal badge badge-" + this.props.type}>
           <span className="font-weight-bold">{this.props.children}</span>
@@ -169,7 +169,7 @@ export class BBBadge extends PureComponent {
 export class WidgetChevron extends PureComponent {
   render() {
     return (
-      <div className="col-2 text-right pr-2 pl-0 pl-sm-0 pl-md-0 pl-lg-0 font-weight-bold text-muted mh-100">
+      <div className={`${this.props.col || "col-2"} text-right pr-2 pl-0 pl-sm-0 pl-md-0 pl-lg-0 font-weight-bold text-muted mh-100`}>
         {this.props.collapsed ? (
           <i className="fas fa-chevron-down mr-2"></i>
         ) : (
