@@ -20,10 +20,8 @@ export class WidgetCollapsibleRow extends PureComponent {
         onClick={this.props.handler}
         //data-toggle="collapse"
         //data-target={`#${this.props.id}`}
-        >
-        <div className="row align-items-center no-gutters">
-          {this.props.children}
-        </div>
+      >
+        <div className="row align-items-center no-gutters">{this.props.children}</div>
         <WidgetCollapsibleBlock id={this.props.id}>
           {this.props.collapsibleData}
         </WidgetCollapsibleBlock>
@@ -104,8 +102,9 @@ export class WidgetIconDetail extends PureComponent {
     return (
       <div
         className={
-          `col-auto min-width-3 pl-4 pl-sm-4 pl-md-4 pl-lg-0 font-weight-bold mr-3 ${this.props.className || ""} ` +
-          this.props.color
+          `col-auto min-width-3 pl-4 pl-sm-4 pl-md-4 pl-lg-0 font-weight-bold mr-3 ${
+            this.props.className || ""
+          } ` + this.props.color
         }>
         <div>
           <i className={"pr-1 fa " + this.props.icon} title={this.props.alt}></i>
@@ -116,16 +115,24 @@ export class WidgetIconDetail extends PureComponent {
   }
 }
 
+class BadgeBase extends PureComponent {
+  render() {
+    return (
+      <span className={`ml-3 font-size-09 p-1 font-weight-normal badge ${this.props.className}`}>
+        <span className="font-weight-bold">{this.props.children}</span>
+      </span>
+    )
+  }
+}
+
 export class OrphanBadge extends PureComponent {
   render() {
     const since = moment.utc(this.props.since)
 
     return (
-      <span className="ml-3 font-size-09 p-1 font-weight-normal badge badge-danger">
-        <span className="font-weight-bold">
-          <i className="fas fa-user-slash"></i>&nbsp;Orphaned&nbsp;{since.fromNow()}
-        </span>
-      </span>
+      <BadgeBase className="badge-danger">
+        <i className="fas fa-user-slash"></i>&nbsp;Orphaned&nbsp;{since.fromNow()}
+      </BadgeBase>
     )
   }
 }
@@ -133,11 +140,9 @@ export class OrphanBadge extends PureComponent {
 export class OrphanImpactedBadge extends PureComponent {
   render() {
     return (
-      <span className="ml-3 font-size-09 p-1 font-weight-normal badge badge-danger">
-        <span className="font-weight-bold">
-          <i className="fas fa-user-slash"></i>&nbsp;{this.props.children}
-        </span>
-      </span>
+      <BadgeBase className="badge-danger">
+        <i className="fas fa-user-slash"></i>&nbsp;Orphan impacted
+      </BadgeBase>
     )
   }
 }
@@ -145,11 +150,9 @@ export class OrphanImpactedBadge extends PureComponent {
 export class FTBadge extends PureComponent {
   render() {
     return (
-      <span className="ml-3 font-size-09 p-1 font-weight-normal badge badge-danger">
-        <span className="font-weight-bold">
-          <i className="fas fa-exclamation-circle"></i>&nbsp;{this.props.children}
-        </span>
-      </span>
+      <BadgeBase className="badge-danger">
+        <i className="fas fa-exclamation-circle"></i>&nbsp;{this.props.children}
+      </BadgeBase>
     )
   }
 }
@@ -157,11 +160,9 @@ export class FTBadge extends PureComponent {
 export class BBBadge extends PureComponent {
   render() {
     return (
-      <span className={`ml-3 font-size-09 p-1 font-weight-normal badge badge-${this.props.color}`}>
-        <span className="font-weight-bold">
-          <i className="fas fa-bug"></i>&nbsp;{this.props.children}
-        </span>
-      </span>
+      <BadgeBase className={`badge-${this.props.color}`}>
+        <i className="fas fa-bug"></i>&nbsp;{this.props.children}
+      </BadgeBase>
     )
   }
 }
@@ -169,7 +170,10 @@ export class BBBadge extends PureComponent {
 export class WidgetChevron extends PureComponent {
   render() {
     return (
-      <div className={`${this.props.col || "col-2"} text-right pr-2 pl-0 pl-sm-0 pl-md-0 pl-lg-0 font-weight-bold text-muted mh-100`}>
+      <div
+        className={`${
+          this.props.col || "col-2"
+        } text-right pr-2 pl-0 pl-sm-0 pl-md-0 pl-lg-0 font-weight-bold text-muted mh-100`}>
         {this.props.collapsed ? (
           <i className="fas fa-chevron-down mr-2"></i>
         ) : (
@@ -184,10 +188,8 @@ export class WidgetCollapsibleBlock extends PureComponent {
   render() {
     return (
       <div className="row no-gutters pl-4">
-        <div
-          className="collapse small mt-n3 bg-white"
-          id={this.props.id}>
-            {this.props.children}
+        <div className="collapse small mt-n3 bg-white" id={this.props.id}>
+          {this.props.children}
         </div>
       </div>
     )

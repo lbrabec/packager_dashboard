@@ -1,12 +1,10 @@
 import React, { PureComponent } from "react"
 import {
-  WidgetRow,
   WidgetCollapsibleRow,
   WidgetHead,
   WidgetTitle,
   WidgetSubTitle,
   WidgetBadge,
-  WidgetIconDetail,
   WidgetChevron,
 } from "./WidgetLayout"
 import $ from "jquery"

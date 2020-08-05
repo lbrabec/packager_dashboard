@@ -3,7 +3,6 @@ import { connect } from "react-redux"
 import { Network } from "vis-network"
 import "vis-network/styles/vis-network.min.css"
 import $ from "jquery"
-import * as R from "ramda"
 
 class ModalNetwork extends Component {
   draw() {
