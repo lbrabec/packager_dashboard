@@ -71,10 +71,10 @@ class Dashboard extends Component {
       if (all_group_packages.includes(pkg)) {
         if (static_info.data.primary_packages.includes(pkg)) {
           // primary and group ownership
-          return <i className="fas fa-user mr-1"></i>
+          return <i className="fas fa-user mr-1" title="package owned both directly and through group"></i>
         } else {
           // group ownership only
-          return <i className="fas fa-users mr-1"></i>
+          return <i className="fas fa-users mr-1" title="package owned through group only"></i>
         }
       } else {
         // primary ownership only
