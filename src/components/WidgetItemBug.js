@@ -49,7 +49,7 @@ export class Bug extends PureComponent {
         {this.props.priority_severity === "unspecified" ? null : (
           <WidgetIconDetail
             icon="fa-shield"
-            alt="Bug severity or priority"
+            alt={`${this.props.priority_severity} severity/priority`}
             color={priority_severity_color(this.props.priority_severity)}>
             {this.props.priority_severity[0].toUpperCase()}
           </WidgetIconDetail>
