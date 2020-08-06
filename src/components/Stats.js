@@ -90,7 +90,7 @@ class Stats extends PureComponent {
               category="orphaned"
               icon="fa-user-slash"
               count={stats.orphans}
-              fulltitle={`${stats.orphans} packages orphaned`}
+              fulltitle={`${stats.orphans} packages orphaned or orphan impacted`}
             />
           </div>
         </div>
