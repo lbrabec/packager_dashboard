@@ -63,7 +63,15 @@ class ModalNetwork extends Component {
   componentDidMount() {
     const that = this
     $("#modal-network").on("shown.bs.modal", (event) => {
+      $(document).on("keydown", (e) => {
+        if (e.key === "Escape" || e.key === "Esc" ) $("#modal-network").modal('hide')
+      })
+
       that.draw()
+    })
+
+    $("#modal-network").on("hidden.bs.modal", (event) => {
+      $(document).off("keydown")
     })
   }
 
