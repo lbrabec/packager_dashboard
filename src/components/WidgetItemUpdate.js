@@ -21,7 +21,7 @@ export class Update extends PureComponent {
     const created = moment.utc(this.props.submission_date)
     const stable = moment.utc(this.props.stable_by_time)
     const now = moment().utc()
-    const stableText = this.props.stable_by_time !== null? `, ${now.isBefore(stable)? "goes" : "went"} stable ${stable.fromNow()}` : null
+    const stableText = this.props.stable_by_time !== null? `, ${now.isBefore(stable)? "goes" : "should have gone"} stable ${stable.fromNow()}` : null
 
     return (
       <WidgetRow>
