@@ -255,9 +255,12 @@ class Help extends Component {
         <ModalNetwork />
         <div className="Help">
           <div className="container">
-            <div className="row">
-              <a href="/">
+            <div className="row d-flex justify-content-between align-items-center">
+              <a href="/" className="ml-2 ml-md-0">
                 <img src={logo} alt="Fedora Packager Dashboard" className="py-4" />
+              </a>
+              <a href="/" className="h4 mr-2 ml-md-0">
+                <i className="fa fa-times" />
               </a>
             </div>
             <h2 className="mt-4">What is this place?</h2>
