@@ -273,7 +273,7 @@ class Help extends Component {
                   at a single place in an easy to read and filter way.
                 </p>
                 <p>
-                  Not a package maintainer or feeling lost? Check the dashboadrs for some packagers
+                  Not a package maintainer or feeling lost? Check the dashboards for some packagers
                   and groups:
                 </p>
                   <ul>
@@ -500,7 +500,7 @@ class Help extends Component {
             </div>
             <hr />
             <h2>Bugs, PRs, Updates, etc</h2>
-            This sections show all the items you can encounter in the dashboard. Data shown bellow are for imaginary
+            This section shows all the items you can encounter in the dashboard. Data shown bellow are for imaginary
             package foobar and are artificial, made only for this help page. Hover over the package name, title,
             icons, ... to see tooltips.
             <div className="row mt-4">
@@ -559,7 +559,7 @@ class Help extends Component {
                 <h3>Koschei fails</h3>
                 <p>
                   Koschei fail means that package fails to build from source (FTBFS), this is
-                  indicated by the badge near the package name. Koschei item show release, link to the last
+                  indicated by the badge near the package name. Koschei item shows release, link to the last
                   successful build and time since.
                 </p>
                 <Widget
