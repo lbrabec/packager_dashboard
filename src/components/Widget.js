@@ -56,14 +56,14 @@ class Widget extends PureComponent {
 
     const fti_no_src = R.compose(
       R.filter((r) => R.keys(r).length > 0),
-      R.map((f) => R.pickBy((v, k) => k !== "src", f.problems))
+      R.map((f) => R.pickBy((v, k) => !k.startsWith("src"), f.problems))
     )(fti)
 
     const fti_items = fti.map((f) => <FTI title={title} {...f} key={"fti_" + title + f.release + f.repo} isFTI={fti_no_src.length > 0} />)
     const orphan_badge = orphan.orphaned ? <OrphanBadge since={orphan.problematic_since} /> : null
     const orphan_impacted_badge = orphan.depends_on_orphaned ? <OrphanImpactedBadge color="danger">Orphan impacted</OrphanImpactedBadge> : null
     const orphan_item = orphan.depends_on_orphaned? <Orphan {...orphan} title={title}/> : null
-    const fti_src = fti.map(f => R.keys(f.reason).includes("src")).some(R.identity)
+    const fti_src = fti.map(f => R.keys(f.problems).map(p => p.startsWith("src")).some(R.identity)).some(R.identity)
     const ftbfs_badge = (fti_src || koschei.length > 0) ? <FTBadge>FTBFS</FTBadge> : null
     const fti_badge = fti_no_src.length > 0 ? <FTBadge>FTI</FTBadge> : null
     const pb_badge = bugs.map(bug => bug.keywords.includes("ProposedBlocker")).some(R.identity)?
