@@ -256,7 +256,9 @@ class Help extends Component {
         <div className="Help">
           <div className="container">
             <div className="row">
-              <img src={logo} alt="Fedora Packager Dashboard" className="py-4" />
+              <a href="/">
+                <img src={logo} alt="Fedora Packager Dashboard" className="py-4" />
+              </a>
             </div>
             <h2 className="mt-4">What is this place?</h2>
             <div className="row mb-4">
