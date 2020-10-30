@@ -291,7 +291,7 @@ class Help extends Component {
 
                 <p>
                   Explore all the categories, try to use some filters or search for packages. Don't
-                  worry you, won't mess it for them. All options are saved client side in your
+                  worry, you won't mess it for them. All options are saved client side in your
                   browser.
                 </p>
               </div>
