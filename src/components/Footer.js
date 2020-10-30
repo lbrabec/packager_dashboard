@@ -38,6 +38,11 @@ class Footer extends PureComponent {
           </p>
           <p className="text-light text-center">
             <span>•</span>&nbsp;
+            <a href="/helpmepls" className="text-white-50">
+              Help
+            </a>
+            &nbsp;
+            <span>•</span>&nbsp;
             <a href="https://fedoraproject.org/wiki/Legal:Main" className="text-white-50">
               Legal
             </a>
