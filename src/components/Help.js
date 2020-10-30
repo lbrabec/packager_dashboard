@@ -260,7 +260,7 @@ class Help extends Component {
             </div>
             <h2 className="mt-4">What is this place?</h2>
             <div className="row mb-4">
-              <div className="col-12">
+              <div className="col-md-12">
                 <p>
                   Packager Dashboard is a service for Fedora package maintainers aiming to provide
                   all relevant data: FTBFS/FTI status (from both Bugzilla, Koschei and health
@@ -298,7 +298,7 @@ class Help extends Component {
             </div>
             <hr />
             <div className="row mb-4">
-              <div className="col-6">
+              <div className="col-md-6">
                 <h2 className="text-left">Icons and their meaning</h2>
 
                 <table className="table">
@@ -348,7 +348,7 @@ class Help extends Component {
                   </tbody>
                 </table>
               </div>
-              <div className="col-6 text-right">
+              <div className="col-md-6 text-right">
                 <h2 className="text-left">Search and filtering options</h2>
                 <div className="text-left">
                   In the top bar, there is:
@@ -499,7 +499,7 @@ class Help extends Component {
             package foobar and are artificial, made only for this help page. Hover over the package name, title,
             icons, ... to see tooltips.
             <div className="row mt-4">
-              <div className="col-6 pt-4">
+              <div className="col-md-6 pt-4">
                 <h3>Bug</h3>
                 <p>
                   The item shows bug summary, time from the last activity, release, number of
@@ -550,7 +550,7 @@ class Help extends Component {
                   cvesOnly={false}
                 />
               </div>
-              <div className="col-6">
+              <div className="col-md-6">
                 <h3>Koschei fails</h3>
                 <p>
                   Koschei fail means that package fails to build from source (FTBFS), this is
@@ -602,8 +602,8 @@ class Help extends Component {
               </div>
             </div>
             <div className="row mt-4">
-              <div className="col-6"></div>
-              <div className="col-6"></div>
+              <div className="col-md-6"></div>
+              <div className="col-md-6"></div>
             </div>
           </div>
         </div>
