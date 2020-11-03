@@ -53,7 +53,7 @@ const resultToBadge = (result) => {
     return (
       <span className="badge badge-success">{result}</span>
     )
-  if (result.startsWith("fail"))
+  if (result.startsWith("fail") || (result.startsWith("error")))
   return (
     <span className="badge badge-danger">{result}</span>
   )
