@@ -19,8 +19,12 @@ class Masthead extends PureComponent {
     }
   }
 
-  logout() {
+  hideToolips() {
     $('[data-toggle="tooltip"]').tooltip('hide')
+  }
+
+  logout() {
+    this.hideToolips()
     cookies.remove("fasusername", { path: "/", sameSite: 'lax' })
     this.props.dispatch(unsetUser())
   }
@@ -67,6 +71,12 @@ class Masthead extends PureComponent {
                     onChange={this.searchHandler.bind(this)}
                   />
                 </div>
+                <span data-toggle="tooltip" title="" data-original-title="Help" className="mr-4">
+                  <Link onClick={this.hideToolips.bind(this)} to="/helpmepls">
+                    <i className="fas fa-question-circle"></i>
+                  </Link>
+                </span>
+
                 <span data-toggle="tooltip" title="" data-original-title="Options" className="mr-4">
                   <a data-target="#options" data-toggle="modal">
                     <i className="fas fa-cog"></i>
