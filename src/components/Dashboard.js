@@ -3,13 +3,14 @@ import DashboardLayout from "./DashboardLayout"
 import DashboardNonPackager from "./DashboardNonPackager"
 import Widget from "./Widget"
 import Stats from "./Stats"
+import Timeline from "./Timeline"
 import ItemsInfo from "./ItemsInfo"
 import ResponsiveMasonry from "./ResponsiveMasonry"
 import DashboardLoading from "./DashboardLoading"
 import ModalNetwork from "./ModalNetwork"
 import * as R from "ramda"
 import { connect } from "react-redux"
-import { setUser, loadUser, loadOptions, loadReleases } from "../actions/reduxActions"
+import { setUser, loadUser, loadOptions, loadReleases, loadSchedule } from "../actions/reduxActions"
 import * as U from "../utils"
 import { showAllOptions } from "../reducers"
 
@@ -27,6 +28,8 @@ class Dashboard extends Component {
 
   componentDidMount() {
     this.props.dispatch(loadReleases())
+    this.props.dispatch(loadSchedule())
+
     this.props.dispatch(loadUser(this.props.match.params.fasuser))
 
     if (this.props.fasuser === "") {
@@ -58,8 +61,8 @@ class Dashboard extends Component {
     }
 
     const { bzs, prs, static_info, package_versions } = this.props.user_data
-    const { options, releases } = this.props
-    const { show_groups } = options
+    const { options, releases, } = this.props
+    const { show_groups, show_schedule } = options
 
     const all_group_packages = R.compose(
       R.uniq,
@@ -140,6 +143,7 @@ class Dashboard extends Component {
           isLoading={bzs.status !== 200 || prs.status !== 200 || static_info.status !== 200}
           stats={filteredCntPerCat}
         />
+        {show_schedule? <Timeline /> : null}
         <ResponsiveMasonry items={package_cards} />
         <ItemsInfo
           hiddenDueFiltering={hiddenDueFiltering}

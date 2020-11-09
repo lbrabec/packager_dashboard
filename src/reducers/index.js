@@ -2,6 +2,7 @@ import ActionTypes from '../constants';
 import * as R from 'ramda';
 
 export const defaultOptions = {
+    show_schedule: true,
     show_bugs: true,
     show_cves_only: false,
     bug_min_priority_severity: "low",
@@ -39,8 +40,10 @@ const defaultState = {
     options: defaultOptions,
     releases: {
         fedora: [],
-        epel: []
+        epel: [],
+        currentFedora: 0,
     },
+    schedule: [],
     error: undefined,
     depGraph: {nodes: [], edges: []},
 }
@@ -148,6 +151,12 @@ export default (state = defaultState, action) => {
             return {
                 ...state,
                 releases: action.payload
+            }
+
+        case ActionTypes.LOAD_SCHEDULE_RESP:
+            return {
+                ...state,
+                schedule: action.payload
             }
 
         case ActionTypes.THROW_ERROR:

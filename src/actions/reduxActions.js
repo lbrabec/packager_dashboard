@@ -120,10 +120,31 @@ export const loadReleases = payload => dispatch => {
             R.dropLast(1)
         )(data.fedora.values)
         const epel = R.map(release => `EPEL ${release}`, data.epel)
-
+        const currentFedora = R.defaultTo(data.fedora.rawhide, data.fedora.branched)
         dispatch({
             type: ActionTypes.LOAD_RELEASES_RESP,
-            payload: { fedora, epel }
+            payload: { fedora, epel, currentFedora }
+        })
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
+
+export const loadSchedule = payload => dispatch => {
+    dispatch({
+        type: ActionTypes.LOAD_SCHEDULE,
+        payload: payload
+    })
+
+    fetch(window.env.LANDINGPAGE_API)
+    .then(blob => blob.json())
+    .then(data => {
+        const schedule = data.schedule
+
+        dispatch({
+            type: ActionTypes.LOAD_SCHEDULE_RESP,
+            payload: schedule
         })
     })
     .catch((error) => {

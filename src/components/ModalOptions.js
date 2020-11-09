@@ -30,6 +30,7 @@ class ModalOptions extends Component {
 
   render() {
     const {
+      show_schedule,
       show_bugs,
       show_cves_only,
       bug_min_priority_severity,
@@ -47,6 +48,12 @@ class ModalOptions extends Component {
     return (
       <ModalOptionsLayout reset={() => this.props.dispatch(resetOptions(this.props.fasuser))}>
         <form>
+          <OptionsSwitch name="show_schedule" value={show_schedule} handler={this.handle("general")}>
+            <div className="font-weight-bold">Show Fedora release schedule</div>
+          </OptionsSwitch>
+
+          <hr />
+
           <ReleasesBlock releases={this.props.releases} handler={this.handle("release")} />
 
           <div className="form-group">
