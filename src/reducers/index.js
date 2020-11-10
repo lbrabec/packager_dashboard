@@ -44,6 +44,9 @@ const defaultState = {
         currentFedora: 0,
     },
     schedule: [],
+    caching_info: {
+        visits_required_every_n_days: 0,
+    },
     error: undefined,
     depGraph: {nodes: [], edges: []},
 }
@@ -157,6 +160,12 @@ export default (state = defaultState, action) => {
             return {
                 ...state,
                 schedule: action.payload
+            }
+
+        case ActionTypes.LOAD_CACHING_INFO_RESP:
+            return {
+                ...state,
+                caching_info: action.payload
             }
 
         case ActionTypes.THROW_ERROR:

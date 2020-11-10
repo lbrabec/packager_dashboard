@@ -10,7 +10,7 @@ import DashboardLoading from "./DashboardLoading"
 import ModalNetwork from "./ModalNetwork"
 import * as R from "ramda"
 import { connect } from "react-redux"
-import { setUser, loadUser, loadOptions, loadReleases, loadSchedule } from "../actions/reduxActions"
+import { setUser, loadUser, loadOptions, loadReleases, loadSchedule, loadCachingInfo } from "../actions/reduxActions"
 import * as U from "../utils"
 import { showAllOptions } from "../reducers"
 
@@ -29,6 +29,7 @@ class Dashboard extends Component {
   componentDidMount() {
     this.props.dispatch(loadReleases())
     this.props.dispatch(loadSchedule())
+    this.props.dispatch(loadCachingInfo())
 
     this.props.dispatch(loadUser(this.props.match.params.fasuser))
 
@@ -136,14 +137,27 @@ class Dashboard extends Component {
       U.filterHiddenCategories(options)
     )(filteredPackages)
 
+    const isLoading = bzs.status !== 200 || prs.status !== 200 || static_info.status !== 200
+
     return (
       <DashboardLayout searchHandler={this.searchHandler.bind(this)}>
         <Stats
           shownPackages={package_cards[0].length + package_cards[1].length}
-          isLoading={bzs.status !== 200 || prs.status !== 200 || static_info.status !== 200}
+          isLoading={isLoading}
           stats={filteredCntPerCat}
         />
-        {show_schedule? <Timeline /> : null}
+        {isLoading ?
+          <div className="container mt-4">
+            <div className="alert alert-primary alert-dismissible fade show" role="alert">
+              It appears you are newcomer or haven't visited the Fedora Packager Dashboard in the last {this.props.caching_info.visits_required_every_n_days} days.
+              Loading could take up to a few minutes, depending on number of packages you are maintaining.
+              <button type="button" className="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          </div>
+          : null}
+        {show_schedule ? <Timeline /> : null}
         <ResponsiveMasonry items={package_cards} />
         <ItemsInfo
           hiddenDueFiltering={hiddenDueFiltering}
@@ -156,13 +170,14 @@ class Dashboard extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { user_data, fasuser, options, releases } = state
+  const { user_data, fasuser, options, releases, caching_info } = state
 
   return {
     user_data,
     fasuser,
     options,
     releases,
+    caching_info,
   }
 }
 

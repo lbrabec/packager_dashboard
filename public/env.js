@@ -7,3 +7,4 @@ window.env = {
 window.env['PACKAGER_DASHBOARD_API'] = window.env.API + 'packager_dashboard/'
 window.env['RELEASES_API'] = window.env.API + 'releases'
 window.env['LANDINGPAGE_API'] = window.env.API + 'landing_page'
+window.env['CACHING_INFO_API'] = window.env.API + 'packager_dashboard_caching'

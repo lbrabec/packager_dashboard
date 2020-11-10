@@ -152,6 +152,25 @@ export const loadSchedule = payload => dispatch => {
     });
 }
 
+export const loadCachingInfo = payload => dispatch => {
+    dispatch({
+        type: ActionTypes.LOAD_CACHING_INFO,
+        payload: payload
+    })
+
+    fetch(window.env.CACHING_INFO_API)
+    .then(blob => blob.json())
+    .then(data => {
+        dispatch({
+            type: ActionTypes.LOAD_CACHING_INFO_RESP,
+            payload: data
+        })
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
+
 export const throwError = payload => ({
     type: ActionTypes.THROW_ERROR,
     payload: new Error(`${payload.error} ${payload.reason}`)
