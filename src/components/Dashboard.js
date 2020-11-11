@@ -24,6 +24,7 @@ class Dashboard extends Component {
     }
 
     this.searchTimeout = undefined
+    this.refreshInterval = undefined
   }
 
   componentDidMount() {
@@ -64,6 +65,16 @@ class Dashboard extends Component {
     const { bzs, prs, static_info, package_versions } = this.props.user_data
     const { options, releases, } = this.props
     const { show_groups, show_schedule } = options
+
+    const isLoading = bzs.status !== 200 || prs.status !== 200 || static_info.status !== 200
+    if (!isLoading){
+      if (this.refreshInterval === undefined){
+        console.log(`Spawning periodic refersh, interval is ${window.env.REFRESH_INTERVAL/1000} seconds.`)
+        this.refreshInterval = setInterval(() => {
+          this.props.dispatch(loadUser(this.props.match.params.fasuser))
+        }, window.env.REFRESH_INTERVAL)
+      }
+    }
 
     const all_group_packages = R.compose(
       R.uniq,
@@ -136,8 +147,6 @@ class Dashboard extends Component {
       R.filter((pkg) => U.dataLen(pkg) > 0),
       U.filterHiddenCategories(options)
     )(filteredPackages)
-
-    const isLoading = bzs.status !== 200 || prs.status !== 200 || static_info.status !== 200
 
     return (
       <DashboardLayout searchHandler={this.searchHandler.bind(this)}>
