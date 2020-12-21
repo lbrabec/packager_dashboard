@@ -380,7 +380,7 @@ class Help extends Component {
                           <input
                             className={"form-control "}
                             type="search"
-                            placeholder="Search"
+                            placeholder="Search (regex)"
                             aria-label="Search"
                           />
                         </div>

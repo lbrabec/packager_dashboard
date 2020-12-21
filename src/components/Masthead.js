@@ -66,7 +66,7 @@ class Masthead extends PureComponent {
                   <input
                     className={"form-control " + this.state.style}
                     type="search"
-                    placeholder="Search"
+                    placeholder="Search (regex)"
                     aria-label="Search"
                     onChange={this.searchHandler.bind(this)}
                   />
