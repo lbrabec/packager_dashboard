@@ -20,7 +20,7 @@ class Dashboard extends Component {
     super(props)
 
     this.state = {
-      search: RegExp(""),
+      searchAST: {},
     }
 
     this.searchTimeout = undefined
@@ -42,11 +42,12 @@ class Dashboard extends Component {
     this.props.dispatch(loadOptions(this.props.match.params.fasuser))
   }
 
-  searchHandler(re) {
+  searchHandler(AST) {
     // debounce the setState
     clearTimeout(this.searchTimeout)
     //const value = e.target.value
-    this.searchTimeout = setTimeout(() => this.setState({ search: re }), 500)
+    console.log(AST)
+    this.searchTimeout = setTimeout(() => this.setState({ searchAST: AST }), 500)
   }
 
   render() {
@@ -143,7 +144,8 @@ class Dashboard extends Component {
       ),
       U.balancedSplit,
       U.packageSort(options),
-      R.filter((pkg) => R.test(this.state.search, pkg.name)),
+      //R.filter((pkg) => R.test(this.state.search, pkg.name)),
+      R.filter((pkg) => U.searchMatch(this.state.searchAST, pkg.name)),
       R.filter((pkg) => U.dataLen(pkg) > 0),
       U.filterHiddenCategories(options)
     )(filteredPackages)

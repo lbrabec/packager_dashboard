@@ -4,6 +4,7 @@ import { Link } from "react-router-dom"
 import Cookies from "universal-cookie"
 import { connect } from "react-redux"
 import { unsetUser } from "../actions/reduxActions"
+import { Parser } from "../utils/searchparser"
 
 import ModalOptions from "./ModalOptions"
 
@@ -33,9 +34,11 @@ class Masthead extends PureComponent {
     // Don't fail when malformed regexp str is provided
     // indicate it by red color in search input
     try {
-      const re = RegExp(e.target.value)
+      //const re = RegExp(e.target.value)
       this.setState({ style: "" })
-      this.props.searchHandler(re)
+      //this.props.searchHandler(re)
+      const AST = Parser.parse(e.target.value)
+      this.props.searchHandler(AST)
     } catch (err) {
       // Gotta Catch 'Em All!
       this.setState({ style: "text-danger" })

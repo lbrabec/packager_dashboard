@@ -1,5 +1,6 @@
 import * as R from "ramda"
 import * as moment from "moment"
+import { Parser } from "./searchparser"
 
 
 export const dataLen = (pkg, includeOrphans = true) =>
@@ -331,3 +332,24 @@ export const mergeIdenticalFTIProblems = R.compose(
   R.mapObjIndexed((val, key, obj) => R.sortBy(R.identity, val).join(SEP)),
   R.mapObjIndexed((val, key, obj) => val.reason),
 )
+
+const _searchMatch = (AST, pkg_name) => {
+  switch(AST.o) {
+    case "OR":
+      return _searchMatch(AST.l, pkg_name) || _searchMatch(AST.r, pkg_name)
+    case "AND":
+      return _searchMatch(AST.l, pkg_name) && _searchMatch(AST.r, pkg_name)
+    case "NOT":
+      return !_searchMatch(AST.v, pkg_name)
+    case "STR":
+      return pkg_name.includes(AST.v)
+    case "REGEX":
+      return R.test(new RegExp(AST.v), pkg_name)
+  }
+}
+
+export const searchMatch = (AST, pkg_name) => {
+  if (R.isEmpty(AST)) return true
+
+  return _searchMatch(AST, pkg_name)
+}
