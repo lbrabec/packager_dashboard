@@ -139,6 +139,10 @@ html, body {
   color: #294b7b !important;
 }
 
+.masthead .search {
+  width: 280px;
+}
+
 .pl-as-switch {
   padding-left: 2.25rem;
 }

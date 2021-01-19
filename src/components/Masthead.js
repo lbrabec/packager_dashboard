@@ -64,32 +64,34 @@ class Masthead extends PureComponent {
           </nav>
           <nav className="navbar-expand-md navbar-light">
             <div className="collapse navbar-collapse" id="navbarContent">
-              <div className="d-flex flex-row align-items-center">
-                <div className="mr-4 mt-1 mt-sm-0">
+              <div className="d-flex flex-row flex-wrap align-items-center">
+                <div className="mr-4 mt-2 mt-md-0">
                   <input
-                    className={"form-control " + this.state.style}
+                    className={"search form-control " + this.state.style}
                     type="search"
-                    placeholder="Search (regex)"
+                    placeholder="Search (r/regex/ && boolean, see help)"
                     aria-label="Search"
                     onChange={this.searchHandler.bind(this)}
                   />
                 </div>
-                <span data-toggle="tooltip" title="" data-original-title="Help" className="mr-4">
-                  <Link onClick={this.hideToolips.bind(this)} to="/helpmepls">
-                    <i className="fas fa-question-circle"></i>
-                  </Link>
-                </span>
+                <div className="ml-1 ml-md-0 mt-1 ml-md-0">
+                  <span data-toggle="tooltip" title="" data-original-title="Help" className="mr-4">
+                    <Link onClick={this.hideToolips.bind(this)} to="/helpmepls">
+                      <i className="fas fa-question-circle"></i>
+                    </Link>
+                  </span>
 
-                <span data-toggle="tooltip" title="" data-original-title="Options" className="mr-4">
-                  <a data-target="#options" data-toggle="modal">
-                    <i className="fas fa-cog"></i>
-                  </a>
-                </span>
-                <span data-toggle="tooltip" title="" data-original-title="Change user/group">
-                  <Link onClick={this.logout.bind(this)} to="/">
-                    <i className="fas fa-sign-out-alt"></i>
-                  </Link>
-                </span>
+                  <span data-toggle="tooltip" title="" data-original-title="Options" className="mr-4">
+                    <a data-target="#options" data-toggle="modal">
+                      <i className="fas fa-cog"></i>
+                    </a>
+                  </span>
+                  <span data-toggle="tooltip" title="" data-original-title="Change user/group">
+                    <Link onClick={this.logout.bind(this)} to="/">
+                      <i className="fas fa-sign-out-alt"></i>
+                    </Link>
+                  </span>
+                </div>
               </div>
             </div>
           </nav>

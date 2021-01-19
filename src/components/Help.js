@@ -11,11 +11,11 @@ const bugs = [
     bug_id: 123456,
     comments: 69,
     keywords: ["Reopened"],
-    modified: moment().utc().subtract(1, 'week').format("YYYY-MM-DD HH:mm:ss"), //"2018-08-10 12:48:19",
+    modified: moment().utc().subtract(1, "week").format("YYYY-MM-DD HH:mm:ss"), //"2018-08-10 12:48:19",
     priority: "urgent",
     priority_severity: "urgent",
     release: "Fedora 32",
-    reported: moment().utc().subtract(1, 'week').format("YYYY-MM-DD HH:mm:ss"), //"2014-10-24 15:40:09",
+    reported: moment().utc().subtract(1, "week").format("YYYY-MM-DD HH:mm:ss"), //"2014-10-24 15:40:09",
     severity: "unspecified",
     status: "ASSIGNED",
     title: "Title of this bug is quite long, it will be trimmed. Full title is shown in tooltip.",
@@ -29,9 +29,9 @@ const updates = [
     karma: 1,
     pretty_name: "foobar-12.3.fc31",
     release: "Fedora 31",
-    stable_by_time: moment().utc().add(4, 'days').format("YYYY-MM-DD HH:mm:ss"),
+    stable_by_time: moment().utc().add(4, "days").format("YYYY-MM-DD HH:mm:ss"),
     status: "testing",
-    submission_date: moment().utc().subtract(3, 'days').format("YYYY-MM-DD HH:mm:ss"),
+    submission_date: moment().utc().subtract(3, "days").format("YYYY-MM-DD HH:mm:ss"),
     updateid: "FEDORA-2020-b93b9312bc",
     url: "https://bodhi.fedoraproj…s/FEDORA-2020-b93b9312bc",
   },
@@ -39,10 +39,10 @@ const updates = [
 
 const overrides = [
   {
-    expiration_date: moment().utc().add(8, 'days').format("YYYY-MM-DD HH:mm:ss"),
+    expiration_date: moment().utc().add(8, "days").format("YYYY-MM-DD HH:mm:ss"),
     pretty_name: "foobar-0.8.0-1.fc31~bootstrap",
     release: "Fedora 31",
-    submission_date: moment().utc().subtract(2, 'days').format("YYYY-MM-DD HH:mm:ss"),
+    submission_date: moment().utc().subtract(2, "days").format("YYYY-MM-DD HH:mm:ss"),
     url: "https://bodhi.fedoraproj…c-0.8.0-1.fc31~bootstrap",
   },
 ]
@@ -55,8 +55,8 @@ const prs = [
       FedoraCI: "success",
     },
     comments: 11,
-    date_created: moment().utc().subtract(1, 'month').format("YYYY-MM-DD HH:mm:ss"),
-    last_updated: moment().utc().subtract(2, 'weeks').format("YYYY-MM-DD HH:mm:ss"),
+    date_created: moment().utc().subtract(1, "month").format("YYYY-MM-DD HH:mm:ss"),
+    last_updated: moment().utc().subtract(2, "weeks").format("YYYY-MM-DD HH:mm:ss"),
     release: "Fedora Rawhide",
     title: "Fix foobar spec file",
     url: "https://src.fedoraprojec…udcompare/pull-request/1",
@@ -66,7 +66,7 @@ const prs = [
 const koschei = [
   {
     last_success: {
-      time: moment().utc().subtract(2, 'weeks').format("YYYY-MM-DD HH:mm:ss.SSSSSSZ"),
+      time: moment().utc().subtract(2, "weeks").format("YYYY-MM-DD HH:mm:ss.SSSSSSZ"),
       url: "https://koji.fedoraproje…uildinfo?buildID=1433125",
     },
     release: "Fedora 32",
@@ -149,7 +149,7 @@ const orphan = {
   direct_dependencies: ["bar"],
   dot_graph: '"";',
   orphaned: true,
-  problematic_since: moment().utc().subtract(1, 'day').format("YYYY-MM-DDTHH:mm:ss"),
+  problematic_since: moment().utc().subtract(1, "day").format("YYYY-MM-DDTHH:mm:ss"),
   remote_dependencies: ["baz"],
   vis_js: {
     edges: [
@@ -210,42 +210,38 @@ const version = {
 }
 
 function Venn(props) {
-  return (    
-    <div style={{"width": 100, margin: "auto"}} className="my-2">
-    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 309 208">
-      <g
-        fillOpacity="1"
-        stroke="#373a3c"
-        strokeDasharray="none"
-        strokeMiterlimit="4"
-        strokeOpacity="1"
-        transform="translate(-37.782 -37.398)"
-      >
-        <circle
-          cx="180"
-          cy="180"
-          r="120"
-          fill={props.a}
-          strokeWidth="6"
-          transform="matrix(.84256 0 0 .84073 -10.244 -10.524)"
-        ></circle>
-        <circle
-          cx="300"
-          cy="180"
-          r="120"
-          fill={props.b}
-          strokeWidth="6"
-          transform="matrix(.84256 0 0 .84073 -10.244 -10.524)"
-        ></circle>
-        <path
-          fill={props.union}
-          strokeWidth="5.05"
-          d="M191.971 53.436c31.283 18.022 50.554 51.328 50.554 87.372s-19.27 69.35-50.554 87.371c-31.282-18.022-50.553-51.327-50.553-87.371s19.27-69.35 50.553-87.372"
-        ></path>
-      </g>
-    </svg>
+  return (
+    <div style={{ width: 100, margin: "auto" }} className="my-2">
+      <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 309 208">
+        <g
+          fillOpacity="1"
+          stroke="#373a3c"
+          strokeDasharray="none"
+          strokeMiterlimit="4"
+          strokeOpacity="1"
+          transform="translate(-37.782 -37.398)">
+          <circle
+            cx="180"
+            cy="180"
+            r="120"
+            fill={props.a}
+            strokeWidth="6"
+            transform="matrix(.84256 0 0 .84073 -10.244 -10.524)"></circle>
+          <circle
+            cx="300"
+            cy="180"
+            r="120"
+            fill={props.b}
+            strokeWidth="6"
+            transform="matrix(.84256 0 0 .84073 -10.244 -10.524)"></circle>
+          <path
+            fill={props.union}
+            strokeWidth="5.05"
+            d="M191.971 53.436c31.283 18.022 50.554 51.328 50.554 87.372s-19.27 69.35-50.554 87.371c-31.282-18.022-50.553-51.327-50.553-87.371s19.27-69.35 50.553-87.372"></path>
+        </g>
+      </svg>
     </div>
-  );
+  )
 }
 
 class Help extends Component {
@@ -276,23 +272,23 @@ class Help extends Component {
                   Not a package maintainer or feeling lost? Check the dashboards for some packagers
                   and groups:
                 </p>
-                  <ul>
-                    <li>
-                      <a href="/python-sig" target="_blank">
-                        Python SIG
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/churchyard" target="_blank">
-                        Miro Hroncok
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/frantisekz" target="_blank">
-                        Frantisek Zatloukal
-                      </a>
-                    </li>
-                  </ul>
+                <ul>
+                  <li>
+                    <a href="/python-sig" target="_blank">
+                      Python SIG
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/churchyard" target="_blank">
+                      Miro Hroncok
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/frantisekz" target="_blank">
+                      Frantisek Zatloukal
+                    </a>
+                  </li>
+                </ul>
 
                 <p>
                   Explore all the categories, try to use some filters or search for packages. Don't
@@ -358,9 +354,41 @@ class Help extends Component {
                 <div className="text-left">
                   In the top bar, there is:
                   <ul>
-                    <li>
+                    <li className="pb-2">
                       search input to filter packages by their name, you can use regular
-                      expressions
+                      expressions and boolean logic:
+                      <table>
+                        <tr>
+                          <td>
+                            <span className="text-monospace">&&</span>
+                          </td>
+                          <td>
+                            logical <span className="font-italic">and</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <span className="text-monospace">||</span>
+                          </td>
+                          <td>
+                            logical <span className="font-italic">or</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <span className="text-monospace">!</span>
+                          </td>
+                          <td>negation</td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <span className="text-monospace pr-4">r/^py.*/</span>
+                          </td>
+                          <td>regex</td>
+                        </tr>
+                      </table>
+                      Parentheses also work and you can do complex search expressions such as:<br/>
+                      <span className="text-monospace">(rust || golang) && !(bitbucket || github)</span>
                     </li>
                     <li>
                       <i className="fas fa-cog"></i> button, click opens filtering options
@@ -380,7 +408,7 @@ class Help extends Component {
                           <input
                             className={"form-control "}
                             type="search"
-                            placeholder="Search (regex)"
+                            placeholder="rpm && !r/^python/"
                             aria-label="Search"
                           />
                         </div>
@@ -465,50 +493,61 @@ class Help extends Component {
             </div>
             <hr />
             <h2>Group items visibility settings</h2>
-            There is an option to set the visibility of packages according to ownership.
-            This example uses following color coding:
+            There is an option to set the visibility of packages according to ownership. This
+            example uses following color coding:
             <ul>
               <li>
-                <span style={{"font-weight": "bold","color": "#3c6eb4"}}>blue color</span> for packages owned directly by you
+                <span style={{ "font-weight": "bold", color: "#3c6eb4" }}>blue color</span> for
+                packages owned directly by you
               </li>
               <li>
-                <span style={{"font-weight": "bold","color": "#DC3545"}}>red color</span> for packages owned through group
+                <span style={{ "font-weight": "bold", color: "#DC3545" }}>red color</span> for
+                packages owned through group
               </li>
               <li>
-                <span style={{"font-weight": "bold","color": "#8C527D"}}>purple color</span> for packages owned directly and through group
+                <span style={{ "font-weight": "bold", color: "#8C527D" }}>purple color</span> for
+                packages owned directly and through group
               </li>
             </ul>
             <div className="row mt-4">
               <div className="col-4 text-center">
-                <i className="fas fa-users mr-1"></i><br />
-                Include all packages maintained by this group regardless of my direct package relationship
-                <Venn a="#3c6eb4" b="#DC3545" union="#8C527D"/>
+                <i className="fas fa-users mr-1"></i>
+                <br />
+                Include all packages maintained by this group regardless of my direct package
+                relationship
+                <Venn a="#3c6eb4" b="#DC3545" union="#8C527D" />
                 <em>"I want to see everything."</em>
               </div>
               <div className="col-4 text-center">
-                <i className="fas fa-user mr-1"></i><br />
-                Include packages that I directly maintain regardless of their relationship to this group
-                <Venn a="#3c6eb4" b="#f3f3f3" union="#8C527D"/>
+                <i className="fas fa-user mr-1"></i>
+                <br />
+                Include packages that I directly maintain regardless of their relationship to this
+                group
+                <Venn a="#3c6eb4" b="#f3f3f3" union="#8C527D" />
                 <em>"I don't care about groups, show my packages."</em>
               </div>
               <div className="col-4 text-center">
-                <i className="fas fa-eye-slash"></i><br />
-                Exclude all packages maintained by this group regardless of my direct package relationship
-                <Venn a="#3c6eb4" b="#f3f3f3" union="#f3f3f3"/>
+                <i className="fas fa-eye-slash"></i>
+                <br />
+                Exclude all packages maintained by this group regardless of my direct package
+                relationship
+                <Venn a="#3c6eb4" b="#f3f3f3" union="#f3f3f3" />
                 <em>"Hide packages from that group."</em>
               </div>
             </div>
             <hr />
             <h2>Bugs, PRs, Updates, etc</h2>
-            This section shows all the items you can encounter in the dashboard. Data shown bellow are for imaginary
-            package foobar and are artificial, made only for this help page. Hover over the package name, title,
-            icons, ... to see tooltips.
+            This section shows all the items you can encounter in the dashboard. Data shown bellow
+            are for imaginary package foobar and are artificial, made only for this help page.
+            Hover over the package name, title, icons, ... to see tooltips.
             <div className="row mt-4">
               <div className="col-md-6 pt-4">
                 <h3>Bug</h3>
                 <p>
                   The item shows bug summary, time from the last activity, release, number of
-                  comments, bug status (new, assigned, ...) and priority/severity of the bug (L&nbsp;-&nbsp;                  low, M&nbsp;-&nbsp;medium, H&nbsp;-&nbsp;high, U&nbsp;-&nbsp;urgent)
+                  comments, bug status (new, assigned, ...) and priority/severity of the bug
+                  (L&nbsp;-&nbsp; low, M&nbsp;-&nbsp;medium, H&nbsp;-&nbsp;high,
+                  U&nbsp;-&nbsp;urgent)
                 </p>
                 <Widget
                   title={pkg.name}
@@ -520,8 +559,8 @@ class Help extends Component {
 
                 <h3 className="mt-4">Update</h3>
                 <p>
-                  Update item shows the update's name, time since it was created, Fedora release and time to stable (if
-                  applicable), current repo, numbers of comments and karma.
+                  Update item shows the update's name, time since it was created, Fedora release
+                  and time to stable (if applicable), current repo, numbers of comments and karma.
                 </p>
                 <Widget
                   title={pkg.name}
@@ -532,7 +571,10 @@ class Help extends Component {
                 />
 
                 <h3 className="mt-4">Overrides</h3>
-                <p>Override item shows override's title, time since it was created, Fedora release and time to expiry.</p>
+                <p>
+                  Override item shows override's title, time since it was created, Fedora release
+                  and time to expiry.
+                </p>
                 <Widget
                   title={pkg.name}
                   {...{ ...pkg.data, overrides: overrides }}
@@ -543,8 +585,8 @@ class Help extends Component {
 
                 <h3 className="mt-4">Pull-requests</h3>
                 <p>
-                  Pull-request shows pull-request's title, time since it was created, author, Fedora release and generalized
-                  result. This item is expandable (denoted by{" "}
+                  Pull-request shows pull-request's title, time since it was created, author,
+                  Fedora release and generalized result. This item is expandable (denoted by{" "}
                   <i className="fas fa-chevron-down"></i>), expansion shows per CI results.
                 </p>
                 <Widget
@@ -559,8 +601,8 @@ class Help extends Component {
                 <h3>Koschei fails</h3>
                 <p>
                   Koschei fail means that package fails to build from source (FTBFS), this is
-                  indicated by the badge near the package name. Koschei item shows release, link to the last
-                  successful build and time since.
+                  indicated by the badge near the package name. Koschei item shows release, link to
+                  the last successful build and time since.
                 </p>
                 <Widget
                   title={pkg.name}
@@ -574,9 +616,8 @@ class Help extends Component {
                 <p>
                   Fedora-health-check fail means that package fails to install on a given
                   architecture (e.g. missing dependencies). Item shows release and list of arches.
-                  This item is expandable (denoted by{" "}
-                  <i className="fas fa-chevron-down"></i>), expansion shows problematic dependencies
-                  per arch.
+                  This item is expandable (denoted by <i className="fas fa-chevron-down"></i>),
+                  expansion shows problematic dependencies per arch.
                   <br />
                 </p>
                 <Widget
@@ -589,13 +630,14 @@ class Help extends Component {
 
                 <h3 className="mt-4">Orphan impacted package</h3>
                 <p>
-                  Orphaned and orphan impacted packages are denoted by the badge near the package name. For
-                  orphan impacted packages the item shows remaining time until troubles occur (the package
-                  will start missing dependencies, because of the orphaning process, either directly or
-                  indirectly). Item can be expanded (denoted by{" "} <i className="fas fa-chevron-down"></i>)
-                  to show problematic dependencies (both direct and remote). Clicking on "show dependency network"
-                  opens modal window with dependency graph. Package bar directly affects the foobar package
-                  by being orphaned, and the package baz is an example of the indirect impact.
+                  Orphaned and orphan impacted packages are denoted by the badge near the package
+                  name. For orphan impacted packages the item shows remaining time until troubles
+                  occur (the package will start missing dependencies, because of the orphaning
+                  process, either directly or indirectly). Item can be expanded (denoted by{" "}
+                  <i className="fas fa-chevron-down"></i>) to show problematic dependencies (both
+                  direct and remote). Clicking on "show dependency network" opens modal window with
+                  dependency graph. Package bar directly affects the foobar package by being
+                  orphaned, and the package baz is an example of the indirect impact.
                 </p>
                 <Widget
                   title={pkg.name}
