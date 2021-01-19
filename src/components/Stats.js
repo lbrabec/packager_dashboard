@@ -41,6 +41,12 @@ class Stats extends PureComponent {
               data-original-title={`${this.props.shownPackages} packages shown`}>
               <i className="fas fa-eye mr-1" /> {this.props.shownPackages}
             </span>
+            {this.props.server_error?
+            <span className="text-danger ml-3 mr-2">
+              <i class="fas fa-exclamation-circle mr-1"></i>
+              Unable to reach server
+            </span>
+            : null}
             {spinner}
           </div>
           <div className="col-md-6 text-left text-md-right mt-3 mt-md-0">
@@ -151,13 +157,14 @@ const StatIcon = connect((state) => ({
 }))(_StatIcon)
 
 const mapStateToProps = (state) => {
-  const { user_data, fasuser, options, releases } = state
+  const { user_data, fasuser, options, releases, server_error } = state
 
   return {
     user_data,
     fasuser,
     options,
     releases,
+    server_error,
   }
 }
 

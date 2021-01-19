@@ -31,6 +31,7 @@ export const loadUser = payload => (dispatch, getState) => {
             forUser: payload,
             data: data
         }))
+        dispatch(setServerError(false))
 
         // retry after 10s if fetched data not complete
         // and user has not changed meanwhile
@@ -43,7 +44,10 @@ export const loadUser = payload => (dispatch, getState) => {
     })
     .catch((error) => {
         console.error('Error:', error);
-        dispatch(throwError({error: error, reason: ActionTypes.LOAD_USER}))
+        //dispatch(throwError({error: error, reason: ActionTypes.LOAD_USER}))
+        //server-side error, retry in 60s
+        dispatch(setServerError(true))
+        setTimeout(() => dispatch(loadUser(payload)), 60000)
     });
 }
 
@@ -178,5 +182,10 @@ export const throwError = payload => ({
 
 export const setDepGraph = payload => ({
     type: ActionTypes.SET_DEP_GRAPH,
+    payload: payload
+})
+
+export const setServerError = payload => ({
+    type: ActionTypes.SET_SERVER_ERROR,
     payload: payload
 })

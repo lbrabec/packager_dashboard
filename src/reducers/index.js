@@ -48,6 +48,7 @@ const defaultState = {
         visits_required_every_n_days: 0,
     },
     error: undefined,
+    server_error: false,
     depGraph: {nodes: [], edges: []},
 }
 
@@ -178,6 +179,12 @@ export default (state = defaultState, action) => {
             return {
                 ...state,
                 depGraph: action.payload
+            }
+
+        case ActionTypes.SET_SERVER_ERROR:
+            return {
+                ...state,
+                server_error: action.payload
             }
 
         default:

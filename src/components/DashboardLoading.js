@@ -8,8 +8,8 @@ class DashboardLoading extends Component {
           <div className="appEntryContainer">
             <h1>
               <i className="fas fa-spinner fa-spin"></i>
-              {this.props.children}
             </h1>
+            {this.props.children}
           </div>
           <Footer />
         </div>

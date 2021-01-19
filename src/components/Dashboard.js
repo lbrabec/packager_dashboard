@@ -56,7 +56,12 @@ class Dashboard extends Component {
       this.props.user_data === undefined || // mind the order (lazy eval)
       this.props.user_data.static_info.status !== 200
     ) {
-      return <DashboardLoading />
+      return <DashboardLoading>
+        {this.props.server_error?
+        <h4 className="pt-4 text-muted">Unable to reach server, retrying in 60 seconds</h4>
+        :
+        null}
+      </DashboardLoading>
     }
 
     if (this.props.user_data.static_info.data.packages.length === 0) {
@@ -67,7 +72,8 @@ class Dashboard extends Component {
     const { options, releases, } = this.props
     const { show_groups, show_schedule } = options
 
-    const isLoading = bzs.status !== 200 || prs.status !== 200 || static_info.status !== 200
+    const isLoading = this.props.server_error ||
+                      bzs.status !== 200 || prs.status !== 200 || static_info.status !== 200
     if (!isLoading){
       if (this.refreshInterval === undefined){
         console.log(`Spawning periodic refersh, interval is ${window.env.REFRESH_INTERVAL/1000} seconds.`)
@@ -157,7 +163,7 @@ class Dashboard extends Component {
           isLoading={isLoading}
           stats={filteredCntPerCat}
         />
-        {isLoading ?
+        {isLoading && !this.props.server_error ?
           <div className="container mt-4">
             <div className="alert alert-primary alert-dismissible fade show" role="alert">
               It appears you are newcomer or haven't visited the Fedora Packager Dashboard in the last {this.props.caching_info.visits_required_every_n_days} days.
@@ -181,7 +187,7 @@ class Dashboard extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { user_data, fasuser, options, releases, caching_info } = state
+  const { user_data, fasuser, options, releases, caching_info, server_error } = state
 
   return {
     user_data,
@@ -189,6 +195,7 @@ const mapStateToProps = (state) => {
     options,
     releases,
     caching_info,
+    server_error,
   }
 }
 
