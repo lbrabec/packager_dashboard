@@ -1,4 +1,4 @@
-FROM node:8 as react-build
+FROM node:10 as react-build
 WORKDIR /app
 COPY . ./
 RUN chmod -v +x ./start.sh
