@@ -2,8 +2,10 @@ import React, { Component, createRef } from "react"
 import { Redirect } from "react-router"
 import Cookies from "universal-cookie"
 import logo from "../logo.svg"
+import Logo from "./Logo"
+import StgAlert from "./StgAlert"
 import Footer from "./Footer"
-import { setUser } from "../actions/reduxActions"
+import { setUser, loadEnvironment } from "../actions/reduxActions"
 import { connect } from "react-redux"
 
 const cookies = new Cookies()
@@ -21,6 +23,8 @@ class EntryForm extends Component {
   }
 
   componentDidMount() {
+    this.props.dispatch(loadEnvironment())
+
     if (cookies.get("fasusername") !== undefined) {
       console.log("found fasuser in cookies...")
       this.props.dispatch(setUser(cookies.get("fasusername")))
@@ -35,7 +39,7 @@ class EntryForm extends Component {
     return (
       <div className="App">
         <div className="appEntryContainer">
-          <img src={logo} alt="Fedora Packager Dashboard" className="pb-4" />
+          <Logo className="pb-4"/>
 
           <form className="form-inline" onSubmit={this.handleSubmit.bind(this)}>
             <div className="form-group mb-2 pr-2">
@@ -58,6 +62,7 @@ class EntryForm extends Component {
               Need help?
             </a>
           </div>
+          <StgAlert className="w-400px"/>
         </div>
         <Footer />
       </div>

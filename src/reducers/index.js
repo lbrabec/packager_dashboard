@@ -50,6 +50,7 @@ const defaultState = {
     error: undefined,
     server_error: false,
     depGraph: {nodes: [], edges: []},
+    environment: "prod",
 }
 
 
@@ -185,6 +186,12 @@ export default (state = defaultState, action) => {
             return {
                 ...state,
                 server_error: action.payload
+            }
+
+        case ActionTypes.LOAD_ENVIRONMENT_RESP:
+            return {
+                ...state,
+                environment: action.payload
             }
 
         default:

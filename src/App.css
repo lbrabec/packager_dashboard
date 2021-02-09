@@ -274,3 +274,7 @@ svg:not(:root) {
   text-align: center;
   vertical-align: top;
 }
+
+.w-400px {
+  width: 400px;
+}

@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import DashboardLayout from "./DashboardLayout"
 import DashboardNonPackager from "./DashboardNonPackager"
 import Widget from "./Widget"
+import StgAlert from "./StgAlert"
 import Stats from "./Stats"
 import Timeline from "./Timeline"
 import ItemsInfo from "./ItemsInfo"
@@ -10,7 +11,7 @@ import DashboardLoading from "./DashboardLoading"
 import ModalNetwork from "./ModalNetwork"
 import * as R from "ramda"
 import { connect } from "react-redux"
-import { setUser, loadUser, loadOptions, loadReleases, loadSchedule, loadCachingInfo } from "../actions/reduxActions"
+import { setUser, loadUser, loadOptions, loadReleases, loadSchedule, loadCachingInfo, loadEnvironment } from "../actions/reduxActions"
 import * as U from "../utils"
 import { showAllOptions } from "../reducers"
 
@@ -28,6 +29,7 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
+    this.props.dispatch(loadEnvironment())
     this.props.dispatch(loadReleases())
     this.props.dispatch(loadSchedule())
     this.props.dispatch(loadCachingInfo())
@@ -158,6 +160,7 @@ class Dashboard extends Component {
 
     return (
       <DashboardLayout searchHandler={this.searchHandler.bind(this)}>
+        <StgAlert />
         <Stats
           shownPackages={package_cards[0].length + package_cards[1].length}
           isLoading={isLoading}
@@ -187,7 +190,7 @@ class Dashboard extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { user_data, fasuser, options, releases, caching_info, server_error } = state
+  const { user_data, fasuser, options, releases, caching_info, server_error, environment } = state
 
   return {
     user_data,
@@ -196,6 +199,7 @@ const mapStateToProps = (state) => {
     releases,
     caching_info,
     server_error,
+    environment,
   }
 }
 

@@ -189,3 +189,24 @@ export const setServerError = payload => ({
     type: ActionTypes.SET_SERVER_ERROR,
     payload: payload
 })
+
+export const loadEnvironment = payload => dispatch => {
+    dispatch({
+        type: ActionTypes.LOAD_ENVIRONMENT,
+        payload: payload
+    })
+
+    fetch(window.env.DEPLOYMENT_ENV)
+    .then(blob => blob.json())
+    .then(data => {
+        const deployment_env = data.deployment_env
+
+        dispatch({
+            type: ActionTypes.LOAD_ENVIRONMENT_RESP,
+            payload: deployment_env
+        })
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}

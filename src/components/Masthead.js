@@ -1,5 +1,4 @@
 import React, { PureComponent } from "react"
-import logo from "../logo.svg"
 import { Link } from "react-router-dom"
 import Cookies from "universal-cookie"
 import { connect } from "react-redux"
@@ -7,6 +6,7 @@ import { unsetUser } from "../actions/reduxActions"
 import { Parser } from "../utils/searchparser"
 
 import ModalOptions from "./ModalOptions"
+import Logo from "./Logo"
 
 import $ from "jquery"
 
@@ -49,7 +49,9 @@ class Masthead extends PureComponent {
     return (
       <div className="masthead navbar py-1 px-0 px-md-2">
         <div className="container px-1 px-md-2">
-          <img src={logo} alt="Fedora Packager Dashboard" />
+          <span>
+            <Logo />
+          </span>
           <nav className="navbar-expand-md navbar-light">
             <button
               className="navbar-toggler"
