@@ -1,16 +1,13 @@
-FROM node:10 as react-build
+FROM quay.io/bitnami/node:10 as react-build
 WORKDIR /app
 COPY . ./
-RUN chmod -v +x ./start.sh
 RUN yarn
 RUN yarn build
+RUN sed -i "s#SUBDIR: '.*',#SUBDIR: '${SUBDIR:-/}',#" /app/build/env.js && \
+    sed -i "s#API: '.*'#API: '${API:-https://packager-dashboard.stg.fedoraproject.org/api/v1/}'#" /app/build/env.js
 
 
-FROM nginx:alpine
-RUN sed -i.bak 's/^user/#user/' /etc/nginx/nginx.conf
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-COPY --from=react-build /app/build /usr/share/nginx/html
-RUN chmod g+rwx /var/cache/nginx /var/run /var/log/nginx /usr/share/nginx/html
-COPY --from=react-build /app/start.sh /start.sh
+FROM quay.io/bitnami/nginx
+COPY nginx.conf /opt/bitnami/nginx/conf/server_blocks/nginx_packager_dashboard.conf
+COPY --from=react-build /app/build /app
 EXPOSE 8000
-CMD ["/start.sh"]
