@@ -16,7 +16,7 @@ export class Override extends PureComponent {
       <WidgetRow>
         <WidgetHead type="This is an override" icon="fa-shapes">
           <WidgetTitle>
-            <a href={this.props.url}>{this.props.pretty_name}</a>
+            <a target="_blank" rel="noopener noreferrer" href={this.props.url}>{this.props.pretty_name}</a>
           </WidgetTitle>
           <WidgetSubTitle>
             created <span title={created.toDate()}> {created.fromNow()}</span>&nbsp;for{" "}

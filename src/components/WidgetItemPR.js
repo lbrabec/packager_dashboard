@@ -112,7 +112,7 @@ export class PR extends PureComponent {
         collapsibleData={data}>
         <WidgetHead type="This is a pull request" icon="fa-git" col="col-md">
           <WidgetTitle fulltitle={this.props.title}>
-            <a href={this.props.url}>{this.props.title}</a>
+            <a target="_blank" rel="noopener noreferrer" href={this.props.url}>{this.props.title}</a>
           </WidgetTitle>
           <WidgetSubTitle>
           {this.state.collapsed ? (

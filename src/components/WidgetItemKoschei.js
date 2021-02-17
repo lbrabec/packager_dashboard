@@ -11,10 +11,10 @@ export class Koschei extends PureComponent {
       <WidgetRow>
         <WidgetHead type="This is package fails to build" icon="fa-wrench">
           <WidgetTitle fulltitle={title}>
-            <a href={this.props.url}>{title}</a>
+            <a target="_blank" rel="noopener noreferrer" href={this.props.url}>{title}</a>
           </WidgetTitle>
           <WidgetSubTitle>
-            The last <a href={this.props.last_success.url}>successful build</a> was {lastOk.fromNow()}
+            The last <a target="_blank" rel="noopener noreferrer" href={this.props.last_success.url}>successful build</a> was {lastOk.fromNow()}
           </WidgetSubTitle>
         </WidgetHead>
       </WidgetRow>

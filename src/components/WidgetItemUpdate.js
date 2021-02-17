@@ -27,7 +27,7 @@ export class Update extends PureComponent {
       <WidgetRow>
         <WidgetHead type="This is an enhancement update" icon="fa-bolt">
           <WidgetTitle fulltitle={this.props.pretty_name}>
-            <a href={this.props.url}>{this.props.pretty_name}</a>
+            <a target="_blank" rel="noopener noreferrer" href={this.props.url}>{this.props.pretty_name}</a>
           </WidgetTitle>
           <WidgetSubTitle>
             created <span title={created.toDate()}> {created.fromNow()}</span>&nbsp;for{" "}

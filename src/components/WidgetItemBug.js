@@ -33,7 +33,7 @@ export class Bug extends PureComponent {
       <WidgetRow className={isProposedB? "proposed-blocker": ""}>
         <WidgetHead type="This is a bug" icon="fa-bug">
           <WidgetTitle fulltitle={this.props.title}>
-            <a href={this.props.url}>{this.props.title}</a>
+            <a target="_blank" rel="noopener noreferrer" href={this.props.url}>{this.props.title}</a>
           </WidgetTitle>
           <WidgetSubTitle>
             #{this.props.bug_id} modified
