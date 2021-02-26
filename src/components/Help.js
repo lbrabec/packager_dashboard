@@ -437,8 +437,8 @@ class Help extends Component {
                 <h2 className="mt-4 text-left">Stats and tooltips</h2>
                 <p className="text-left">
                   On the top right, there are stats for each category (bugs, PRs, etc.). You can
-                  hover over the icons to see detailed tooltip or you can click the icon, to show
-                  only items from that category. Click again on the active filter, to reset it.
+                  hover over an icon to see a detailed tooltip, or you can click the icon to show
+                  only items from that category. Click again on the active filter to reset it.
                 </p>
                 <span
                   data-toggle="tooltip"
@@ -537,7 +537,7 @@ class Help extends Component {
             </div>
             <hr />
             <h2>Bugs, PRs, Updates, etc</h2>
-            This section shows all the items you can encounter in the dashboard. Data shown bellow
+            This section shows all the items you can encounter in the dashboard. Data shown below
             are for imaginary package foobar and are artificial, made only for this help page.
             Hover over the package name, title, icons, ... to see tooltips.
             <div className="row mt-4">
@@ -600,9 +600,9 @@ class Help extends Component {
               <div className="col-md-6">
                 <h3>Koschei fails</h3>
                 <p>
-                  Koschei fail means that package fails to build from source (FTBFS), this is
-                  indicated by the badge near the package name. Koschei item shows release, link to
-                  the last successful build and time since.
+                  Koschei fail means the package fails to build from source (FTBFS), as indicated
+                  by the badge near the package name. The Koschei item shows release, link to
+                  the last successful build, and time since that build.
                 </p>
                 <Widget
                   title={pkg.name}
@@ -614,10 +614,10 @@ class Help extends Component {
 
                 <h3 className="mt-4">Fedora-health-check fails</h3>
                 <p>
-                  Fedora-health-check fail means that package fails to install on a given
+                  Fedora-health-check fail means the package fails to install on a given
                   architecture (e.g. missing dependencies). Item shows release and list of arches.
-                  This item is expandable (denoted by <i className="fas fa-chevron-down"></i>),
-                  expansion shows problematic dependencies per arch.
+                  This item is expandable (denoted by <i className="fas fa-chevron-down"></i>).
+                  The expansion shows problematic dependencies per arch.
                   <br />
                 </p>
                 <Widget
@@ -635,8 +635,8 @@ class Help extends Component {
                   occur (the package will start missing dependencies, because of the orphaning
                   process, either directly or indirectly). Item can be expanded (denoted by{" "}
                   <i className="fas fa-chevron-down"></i>) to show problematic dependencies (both
-                  direct and remote). Clicking on "show dependency network" opens modal window with
-                  dependency graph. Package bar directly affects the foobar package by being
+                  direct and remote). Clicking on "show dependency network" opens a modal window with
+                  a dependency graph. Package bar directly affects the foobar package by being
                   orphaned, and the package baz is an example of the indirect impact.
                 </p>
                 <Widget

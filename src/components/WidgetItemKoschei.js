@@ -9,7 +9,7 @@ export class Koschei extends PureComponent {
 
     return (
       <WidgetRow>
-        <WidgetHead type="This is package fails to build" icon="fa-wrench">
+        <WidgetHead type="This package fails to build" icon="fa-wrench">
           <WidgetTitle fulltitle={title}>
             <a target="_blank" rel="noopener noreferrer" href={this.props.url}>{title}</a>
           </WidgetTitle>

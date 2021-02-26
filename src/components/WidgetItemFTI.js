@@ -32,7 +32,7 @@ export class FTI extends PureComponent {
     }`
     const icon = isFTI ? "fa-file-medical-alt" : "fa-wrench"
     const tooltip = isFTI
-      ? "This is package fails to install"
+      ? "This package fails to install"
       : `Missing build dependencies on ${release}`
     const reasons_list = Object.entries(mergedProblems).map((r) => (
       <span key={title + r[0]}>

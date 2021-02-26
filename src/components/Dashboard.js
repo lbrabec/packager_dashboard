@@ -169,7 +169,7 @@ class Dashboard extends Component {
         {isLoading && !this.props.server_error ?
           <div className="container mt-4">
             <div className="alert alert-primary alert-dismissible fade show" role="alert">
-              It appears you are newcomer or haven't visited the Fedora Packager Dashboard in the last {this.props.caching_info.visits_required_every_n_days} days.
+              It appears you are a newcomer or haven't visited the Fedora Packager Dashboard in the last {this.props.caching_info.visits_required_every_n_days} days.
               Loading could take up to a few minutes, depending on number of packages you are maintaining.
               <button type="button" className="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
