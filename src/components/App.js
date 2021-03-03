@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { Route, Switch } from "react-router"
+import { Route, Switch, Redirect } from "react-router"
 import { BrowserRouter } from "react-router-dom"
 
 import { connect } from "react-redux"
@@ -21,12 +21,19 @@ class App extends Component {
   }
 
   render() {
+    fetch("/version.json")
+    .then(blob => blob.json())
+    .then(data => {
+      console.log(data)
+    })
+
     return this.props.error === undefined ? (
       <BrowserRouter basename={window.env.SUBDIR}>
         <Switch>
           <Route path="/" exact>
             <EntryForm />
           </Route>
+          <Route path="/version.json" onEnter={() => window.location.reload()} />
           <Route path="/helpmepls" exact>
             <Help />
           </Route>

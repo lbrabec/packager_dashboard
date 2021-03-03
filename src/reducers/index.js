@@ -51,6 +51,10 @@ const defaultState = {
     server_error: false,
     depGraph: {nodes: [], edges: []},
     environment: "prod",
+    version: {
+        active: 0,
+        latest: 0
+    }
 }
 
 
@@ -192,6 +196,18 @@ export default (state = defaultState, action) => {
             return {
                 ...state,
                 environment: action.payload
+            }
+
+        case ActionTypes.GET_VERSION_RESP:
+            return {
+                ...state,
+                version: state.version.active === 0? {
+                    active: action.payload,
+                    latest: action.payload
+                }:{
+                    ...state.version,
+                    latest: action.payload
+                }
             }
 
         default:

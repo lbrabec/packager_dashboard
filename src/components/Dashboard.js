@@ -3,6 +3,7 @@ import DashboardLayout from "./DashboardLayout"
 import DashboardNonPackager from "./DashboardNonPackager"
 import Widget from "./Widget"
 import StgAlert from "./StgAlert"
+import VersionAlert from "./VersionAlert"
 import Stats from "./Stats"
 import Timeline from "./Timeline"
 import ItemsInfo from "./ItemsInfo"
@@ -11,7 +12,7 @@ import DashboardLoading from "./DashboardLoading"
 import ModalNetwork from "./ModalNetwork"
 import * as R from "ramda"
 import { connect } from "react-redux"
-import { setUser, loadUser, loadOptions, loadReleases, loadSchedule, loadCachingInfo, loadEnvironment } from "../actions/reduxActions"
+import { setUser, loadUser, loadOptions, loadReleases, loadSchedule, loadCachingInfo, loadEnvironment, getVersion } from "../actions/reduxActions"
 import * as U from "../utils"
 import { showAllOptions } from "../reducers"
 
@@ -26,6 +27,7 @@ class Dashboard extends Component {
 
     this.searchTimeout = undefined
     this.refreshInterval = undefined
+    this.getVersionInterval = undefined
   }
 
   componentDidMount() {
@@ -84,6 +86,13 @@ class Dashboard extends Component {
           this.props.dispatch(loadUser(this.props.match.params.fasuser))
         }, window.env.REFRESH_INTERVAL)
       }
+    }
+
+    if (this.getVersionInterval === undefined) {
+      console.log(`Spawning periodic version check, interval is ${window.env.REFRESH_INTERVAL/1000} seconds.`)
+      this.getVersionInterval = setInterval(() => {
+        this.props.dispatch(getVersion())
+      }, window.env.REFRESH_INTERVAL)
     }
 
     const all_group_packages = R.compose(
@@ -162,6 +171,7 @@ class Dashboard extends Component {
     return (
       <DashboardLayout searchHandler={this.searchHandler.bind(this)}>
         <StgAlert />
+        <VersionAlert />
         <Stats
           shownPackages={package_cards[0].length + package_cards[1].length}
           isLoading={isLoading}

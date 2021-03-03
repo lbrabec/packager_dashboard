@@ -210,3 +210,22 @@ export const loadEnvironment = payload => dispatch => {
         console.error('Error:', error);
     });
 }
+
+export const getVersion = payload => dispatch => {
+    dispatch({
+        type: ActionTypes.GET_VERSION,
+        payload: payload
+    })
+
+    fetch(window.env.VERSION)
+    .then(blob => blob.json())
+    .then(data => {
+        dispatch({
+            type: ActionTypes.GET_VERSION_RESP,
+            payload: data.version
+        })
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
