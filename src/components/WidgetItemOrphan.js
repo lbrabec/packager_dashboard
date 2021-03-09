@@ -23,7 +23,7 @@ class _Orphan extends PureComponent {
 
   collapseToggle(e) {
     this.setState({ collapsed: !this.state.collapsed })
-    $(`#Orphan_reasons_tree_${this.props.title}`).collapse('toggle')
+    $(`#Orphan_reasons_tree_${this.props.title.replace(/\./g,'-')}`).collapse('toggle')
     e.stopPropagation()
   }
 
@@ -40,6 +40,7 @@ class _Orphan extends PureComponent {
 
   render() {
     const { problematic_since, direct_dependencies, remote_dependencies, title } = this.props
+    const titleSafe = title.replace(/\./g,'-') // dot in element IDs causes problems...
     const fulltitle = "depends on orphaned packages"
     const problematicSince = moment.utc(problematic_since)
     const trouble = moment.utc(problematic_since).add(6, "w")
@@ -59,7 +60,7 @@ class _Orphan extends PureComponent {
               directly depends on oprhaned packages:
               <ul>
                 {R.sortBy((pkg) => pkg.toLowerCase(), direct_dependencies).map((dirdep) => (
-                  <li key={`orphan_dirdep_${title}_${dirdep}`}>{dirdep}</li>
+                  <li key={`orphan_dirdep_${titleSafe}_${dirdep}`}>{dirdep}</li>
                 ))}
               </ul>
             </span>
@@ -72,7 +73,7 @@ class _Orphan extends PureComponent {
               remotely depends on oprhaned packages:
               <ul>
                 {R.sortBy((pkg) => pkg.toLowerCase(), remote_dependencies).map((remdep) => (
-                  <li key={`orphan_remdep_${title}_${remdep}`}>{remdep}</li>
+                  <li key={`orphan_remdep_${titleSafe}_${remdep}`}>{remdep}</li>
                 ))}
               </ul>
             </span>
@@ -87,7 +88,7 @@ class _Orphan extends PureComponent {
     return (
       <WidgetCollapsibleRow
         handler={this.collapseToggle.bind(this)}
-        id={`Orphan_reasons_tree_${title}`}
+        id={`Orphan_reasons_tree_${titleSafe}`}
         collapsibleData={collapsibleData}>
         <WidgetHead type="This package depends on orphan(s)" icon="fa-user-slash" col="col-10">
           <WidgetTitle fulltitle={fulltitle}>{fulltitle}</WidgetTitle>
