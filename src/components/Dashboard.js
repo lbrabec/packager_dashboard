@@ -26,8 +26,13 @@ class Dashboard extends Component {
     }
 
     this.searchTimeout = undefined
-    this.refreshInterval = undefined
-    this.getVersionInterval = undefined
+    this.refreshInterval = {
+      loadUser: undefined,
+      loadSchedule: undefined,
+      loadReleases: undefined,
+      loadCachingInfo: undefined,
+      getVersion: undefined
+    }
   }
 
   componentDidMount() {
@@ -52,6 +57,15 @@ class Dashboard extends Component {
     //const value = e.target.value
     console.log(AST)
     this.searchTimeout = setTimeout(() => this.setState({ searchAST: AST }), 500)
+  }
+
+  setRefresh(what, func) {
+    if (this.refreshInterval[what] === undefined) {
+      console.log(`Spawning periodic refersh for ${what}, interval is ${window.env.REFRESH_INTERVAL/1000} seconds.`)
+      this.refreshInterval[what] = setInterval(() => {
+        this.props.dispatch(func())
+      }, window.env.REFRESH_INTERVAL)
+    }
   }
 
   render() {
@@ -79,21 +93,17 @@ class Dashboard extends Component {
 
     const isLoading = this.props.server_error ||
                       bzs.status !== 200 || prs.status !== 200 || static_info.status !== 200
-    if (!isLoading){
-      if (this.refreshInterval === undefined){
-        console.log(`Spawning periodic refersh, interval is ${window.env.REFRESH_INTERVAL/1000} seconds.`)
-        this.refreshInterval = setInterval(() => {
-          this.props.dispatch(loadUser(this.props.match.params.fasuser))
-        }, window.env.REFRESH_INTERVAL)
-      }
-    }
 
-    if (this.getVersionInterval === undefined) {
-      console.log(`Spawning periodic version check, interval is ${window.env.REFRESH_INTERVAL/1000} seconds.`)
-      this.getVersionInterval = setInterval(() => {
-        this.props.dispatch(getVersion())
-      }, window.env.REFRESH_INTERVAL)
+
+    if (!isLoading){
+      // loading user can take some time, start refresh only
+      // when the first load is finished
+      this.setRefresh('loadUser', loadUser)
     }
+    this.setRefresh('loadSchedule', loadSchedule)
+    this.setRefresh('loadReleases', loadReleases)
+    this.setRefresh('loadCachingInfo', loadCachingInfo)
+    this.setRefresh('getVersion', getVersion)
 
     const all_group_packages = R.compose(
       R.uniq,
