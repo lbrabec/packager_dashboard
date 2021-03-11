@@ -18,9 +18,9 @@ export class ModalOptionsLayout extends Component {
               <h4 className="modal-title" id="optionsModalLabel">
                 Options
               </h4>
-              <a className="ml-3" onClick={this.props.reset}>
+              <button className="btn btn-link ml-3" onClick={this.props.reset}>
                 Reset
-              </a>
+              </button>
               <button
                 type="button"
                 className="close"

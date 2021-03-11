@@ -12,10 +12,6 @@ const shorterSummary = (summary) => {
 }
 
 class Timeline extends Component {
-    constructor(props) {
-        super(props)
-    }
-
     render() {
         const line = this.props.schedule.map((milestone) => {
             return (
@@ -78,13 +74,13 @@ class Line extends Component {
 
 const mapStateToProps = (state) => {
     const { schedule, releases } = state
-  
+
     return {
       schedule,
       currentFedora: releases.currentFedora
     }
   }
-  
+
 export default connect(mapStateToProps)(Timeline)
 
 

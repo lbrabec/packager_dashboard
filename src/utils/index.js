@@ -1,6 +1,5 @@
 import * as R from "ramda"
 import * as moment from "moment"
-import { Parser } from "./searchparser"
 
 
 export const dataLen = (pkg, includeOrphans = true) =>
@@ -345,6 +344,8 @@ const _searchMatch = (AST, pkg_name) => {
       return pkg_name.includes(AST.v)
     case "REGEX":
       return R.test(new RegExp(AST.v), pkg_name)
+    default:
+      return true; // this should not happen
   }
 }
 

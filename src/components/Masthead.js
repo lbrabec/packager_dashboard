@@ -84,10 +84,11 @@ class Masthead extends PureComponent {
                   </span>
 
                   <span data-toggle="tooltip" title="" data-original-title="Options" className="mr-4">
-                    <a data-target="#options" data-toggle="modal">
+                    <button type="button" className="btn btn-link mt-n2" data-target="#options" data-toggle="modal">
                       <i className="fas fa-cog"></i>
-                    </a>
+                    </button>
                   </span>
+
                   <span data-toggle="tooltip" title="" data-original-title="Change user/group">
                     <Link onClick={this.logout.bind(this)} to="/">
                       <i className="fas fa-sign-out-alt"></i>

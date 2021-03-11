@@ -135,7 +135,18 @@ html, body {
   cursor: pointer;
 }
 
+.masthead button {
+  font-size: 1.5em;
+  color: #3c6eb4 !important;
+  cursor: pointer;
+  padding: 0;
+}
+
 .masthead a:hover {
+  color: #294b7b !important;
+}
+
+.masthead button:hover {
   color: #294b7b !important;
 }
 
@@ -200,6 +211,15 @@ html, body {
 .modal-header a {
   font-size: 0.75rem !important;
   padding-top: 3px;
+}
+
+.modal-header button {
+  font-size: 0.75rem !important;
+  padding-top: 3px;
+}
+
+.modal-header button:hover {
+  text-decoration: none;
 }
 
 .pointer {

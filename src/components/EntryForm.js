@@ -1,7 +1,6 @@
 import React, { Component, createRef } from "react"
 import { Redirect } from "react-router"
 import Cookies from "universal-cookie"
-import logo from "../logo.svg"
 import Logo from "./Logo"
 import StgAlert from "./StgAlert"
 import Footer from "./Footer"

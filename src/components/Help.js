@@ -417,15 +417,15 @@ class Help extends Component {
                           title=""
                           data-original-title="Options"
                           className="mr-4">
-                          <a data-target="#options" data-toggle="modal">
+                          <button type="button" className="btn btn-link" data-target="#options" data-toggle="modal">
                             <i className="fas fa-cog"></i>
-                          </a>
+                          </button>
                         </span>
                         <span
                           data-toggle="tooltip"
                           title=""
                           data-original-title="Change user/group">
-                          <a href="" onClick={(e) => e.preventDefault()}>
+                          <a href="/" onClick={(e) => e.preventDefault()}>
                             <i className="fas fa-sign-out-alt"></i>
                           </a>
                         </span>
