@@ -13,7 +13,7 @@ class Error extends Component {
           </h1>
           <h3>Oops! something went wrong!</h3>
           <h3 className="mb-4">
-            Please, report this issue to{" "}
+            Please, try to reload this page and, if it didn't help, report this issue to{" "}
             <a
               href="https://pagure.io/fedora-qa/packager_dashboard/issues"
               target="_blank"
