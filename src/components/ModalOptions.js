@@ -31,6 +31,7 @@ class ModalOptions extends Component {
   render() {
     const {
       show_schedule,
+      show_calendars,
       show_bugs,
       show_cves_only,
       bug_min_priority_severity,
@@ -51,6 +52,14 @@ class ModalOptions extends Component {
           <OptionsSwitch name="show_schedule" value={show_schedule} handler={this.handle("general")}>
             <div className="font-weight-bold">Show Fedora release schedule</div>
           </OptionsSwitch>
+
+          {
+            this.props.has_calendars?
+              <OptionsSwitch name="show_calendars" value={show_calendars} handler={this.handle("general")}>
+                <div className="font-weight-bold">Show Package Calendars</div>
+              </OptionsSwitch>
+            : null
+          }
 
           <hr />
 
@@ -164,6 +173,14 @@ const mapStateToProps = (state) => {
       state.user_data === undefined || state.user_data.static_info.status !== 200
         ? []
         : R.keys(state.user_data.static_info.data.group_packages),
+    has_calendars:
+      state.user_data === undefined
+      ? false
+      : R.compose(
+          R.length,
+          R.keys,
+          R.filter(p => !R.isNil(p))
+        )(state.user_data.static_info.data.calendars),
   }
 }
 

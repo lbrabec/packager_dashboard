@@ -32,6 +32,4 @@ _ "whitespace"
   = [ \\t\\n\\r]*
 `
 
-console.log(grammar)
-
 export const Parser = generate(grammar)

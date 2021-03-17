@@ -117,18 +117,6 @@ html, body {
   }
 }
 
-@media (min-width: 576px) {
-  .card-columns {
-      column-count: 1;
-  }
-}
-
-@media (min-width: 768px) {
-  .card-columns {
-      column-count: 2;
-  }
-}
-
 .masthead a {
   font-size: 1.5em;
   color: #3c6eb4 !important;
@@ -297,4 +285,40 @@ svg:not(:root) {
 
 .w-400px {
   width: 400px;
+}
+
+.package-calendars .card-columns {
+  font-size: 0.8em !important;
+}
+
+.package-calendar-events {
+  font-weight: normal;
+}
+
+.package-calendar-date {
+  width: 5rem;
+  vertical-align: top;
+}
+
+.package-calendar-dateinfo {
+  font-weight: normal;
+}
+
+@media (min-width: 576px) {
+  .package-calendars .card-columns {
+      column-count: 1;
+  }
+}
+
+@media (min-width: 768px) {
+  .package-calendars .card-columns {
+      column-count: 4;
+  }
+}
+
+.text-ellipsis {
+  max-width: 10rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

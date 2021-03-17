@@ -7,6 +7,7 @@ import ServiceAlerts from "./ServiceAlerts"
 import VersionAlert from "./VersionAlert"
 import Stats from "./Stats"
 import Timeline from "./Timeline"
+import PackageCalendars from "./PackageCalendars"
 import ItemsInfo from "./ItemsInfo"
 import ResponsiveMasonry from "./ResponsiveMasonry"
 import DashboardLoading from "./DashboardLoading"
@@ -91,7 +92,7 @@ class Dashboard extends Component {
     const { bzs, prs, static_info } = this.props.user_data
     const { package_versions } = static_info.data
     const { options, releases, } = this.props
-    const { show_groups, show_schedule } = options
+    const { show_groups, show_schedule, show_calendars } = options
 
     const isLoading = this.props.server_error ||
                       bzs.status !== 200 || prs.status !== 200 || static_info.status !== 200
@@ -203,6 +204,7 @@ class Dashboard extends Component {
           </div>
           : null}
         {show_schedule ? <Timeline /> : null}
+        {show_calendars ? <PackageCalendars /> : null}
         <ResponsiveMasonry items={package_cards} />
         <ItemsInfo
           hiddenDueFiltering={hiddenDueFiltering}
