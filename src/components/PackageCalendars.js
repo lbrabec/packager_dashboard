@@ -46,6 +46,10 @@ class PackageCalendars extends Component {
   }
 
   render() {
+    if (!this.props.show_calendars) {
+      return null
+    }
+
     const transormedCalendars = transormCalendars(this.props.calendars)
     if (transormedCalendars.length === 0) {
       return null
@@ -94,6 +98,7 @@ class PackageCalendars extends Component {
 
 const mapStateToProps = (state) => {
   const { user_data } = state
+  const { show_calendars } = state.options
 
   if (user_data === undefined) {
     return {
@@ -104,7 +109,8 @@ const mapStateToProps = (state) => {
   const { calendars } = user_data.static_info.data
 
   return {
-    calendars
+    calendars,
+    show_calendars
   }
 }
 

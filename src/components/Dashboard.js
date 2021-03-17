@@ -5,6 +5,7 @@ import Widget from "./Widget"
 import StgAlert from "./StgAlert"
 import ServiceAlerts from "./ServiceAlerts"
 import VersionAlert from "./VersionAlert"
+import NewcomerAlert from "./NewcomerAlert"
 import Stats from "./Stats"
 import Timeline from "./Timeline"
 import PackageCalendars from "./PackageCalendars"
@@ -92,7 +93,7 @@ class Dashboard extends Component {
     const { bzs, prs, static_info } = this.props.user_data
     const { package_versions } = static_info.data
     const { options, releases, } = this.props
-    const { show_groups, show_schedule, show_calendars } = options
+    const { show_groups } = options
 
     const isLoading = this.props.server_error ||
                       bzs.status !== 200 || prs.status !== 200 || static_info.status !== 200
@@ -192,19 +193,9 @@ class Dashboard extends Component {
           isLoading={isLoading}
           stats={filteredCntPerCat}
         />
-        {isLoading && !this.props.server_error ?
-          <div className="container mt-4">
-            <div className="alert alert-primary alert-dismissible fade show" role="alert">
-              It appears you are a newcomer or haven't visited the Fedora Packager Dashboard in the last {this.props.caching_info.visits_required_every_n_days} days.
-              Loading could take up to a few minutes, depending on number of packages you are maintaining.
-              <button type="button" className="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-          </div>
-          : null}
-        {show_schedule ? <Timeline /> : null}
-        {show_calendars ? <PackageCalendars /> : null}
+        <NewcomerAlert show={isLoading && !this.props.server_error} />
+        <Timeline />
+        <PackageCalendars />
         <ResponsiveMasonry items={package_cards} />
         <ItemsInfo
           hiddenDueFiltering={hiddenDueFiltering}
