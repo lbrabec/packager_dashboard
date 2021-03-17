@@ -3,6 +3,7 @@ import DashboardLayout from "./DashboardLayout"
 import DashboardNonPackager from "./DashboardNonPackager"
 import Widget from "./Widget"
 import StgAlert from "./StgAlert"
+import ServiceAlerts from "./ServiceAlerts"
 import VersionAlert from "./VersionAlert"
 import Stats from "./Stats"
 import Timeline from "./Timeline"
@@ -12,7 +13,7 @@ import DashboardLoading from "./DashboardLoading"
 import ModalNetwork from "./ModalNetwork"
 import * as R from "ramda"
 import { connect } from "react-redux"
-import { setUser, loadUser, loadOptions, loadReleases, loadSchedule, loadCachingInfo, loadEnvironment, getVersion } from "../actions/reduxActions"
+import { setUser, loadUser, loadOptions, loadReleases, loadSchedule, loadCachingInfo, loadEnvironment, getVersion, loadServiceAlerts } from "../actions/reduxActions"
 import * as U from "../utils"
 import { showAllOptions } from "../reducers"
 
@@ -40,6 +41,7 @@ class Dashboard extends Component {
     this.props.dispatch(loadReleases())
     this.props.dispatch(loadSchedule())
     this.props.dispatch(loadCachingInfo())
+    this.props.dispatch(loadServiceAlerts())
 
     this.props.dispatch(loadUser(this.props.match.params.fasuser))
 
@@ -104,6 +106,7 @@ class Dashboard extends Component {
     this.setRefresh('loadReleases', loadReleases)
     this.setRefresh('loadCachingInfo', loadCachingInfo)
     this.setRefresh('getVersion', getVersion)
+    this.setRefresh('loadServiceAlerts', loadServiceAlerts)
 
     const all_group_packages = R.compose(
       R.uniq,
@@ -182,6 +185,7 @@ class Dashboard extends Component {
       <DashboardLayout searchHandler={this.searchHandler.bind(this)}>
         <StgAlert />
         <VersionAlert />
+        <ServiceAlerts />
         <Stats
           shownPackages={package_cards[0].length + package_cards[1].length}
           isLoading={isLoading}

@@ -229,3 +229,22 @@ export const getVersion = payload => dispatch => {
         console.error('Error:', error);
     });
 }
+
+export const loadServiceAlerts = payload => dispatch => {
+    dispatch({
+        type: ActionTypes.LOAD_SERVICE_ALERTS,
+        payload: payload
+    })
+
+    fetch(window.env.SERVICE_MESSAGES)
+    .then(blob => blob.json())
+    .then(data => {
+        dispatch({
+            type: ActionTypes.LOAD_SERVICE_ALERTS_RESP,
+            payload: data
+        })
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}

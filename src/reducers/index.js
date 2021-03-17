@@ -54,7 +54,8 @@ const defaultState = {
     version: {
         active: 0,
         latest: 0
-    }
+    },
+    service_messages: [],
 }
 
 
@@ -208,6 +209,12 @@ export default (state = defaultState, action) => {
                     ...state.version,
                     latest: action.payload
                 }
+            }
+
+        case ActionTypes.LOAD_SERVICE_ALERTS_RESP:
+            return {
+                ...state,
+                service_messages: action.payload
             }
 
         default:
