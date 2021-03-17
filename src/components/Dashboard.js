@@ -43,6 +43,7 @@ class Dashboard extends Component {
     this.props.dispatch(loadReleases())
     this.props.dispatch(loadSchedule())
     this.props.dispatch(loadCachingInfo())
+    this.props.dispatch(getVersion())
     this.props.dispatch(loadServiceAlerts())
 
     this.props.dispatch(loadUser(this.props.match.params.fasuser))
