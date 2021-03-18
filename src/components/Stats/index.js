@@ -1,8 +1,10 @@
 import React, { PureComponent } from "react"
 import { connect } from "react-redux"
-import { changeOptionBatch } from "../actions/reduxActions"
-import * as U from "../utils"
+import { changeOptionBatch } from "../../actions/reduxActions"
+import * as U from "../../utils"
 import $ from "jquery"
+
+import "./stats.css"
 
 class Stats extends PureComponent {
   render() {

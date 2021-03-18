@@ -1,0 +1,24 @@
+.appEntryContainer {
+  height: 100vh !important;
+  min-height: 100vh;
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: #f3f3f3;
+  flex-direction: column;
+}
+
+.appEntryContainer img {
+  height: 5em;
+}
+
+@media screen and (max-width: 375px) {
+  .appEntryContainer img {
+    width: 25em;
+  }
+}
+
+.w-400px {
+  width: 400px;
+}

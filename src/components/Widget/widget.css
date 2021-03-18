@@ -1,0 +1,42 @@
+.widget-title {
+  max-width: 280px;
+  color: #3c6eb4;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 1200px) {
+  .widget-title {
+    max-width: 250px;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .widget-title {
+    max-width: 150px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .widget-title {
+    max-width: 290px;
+    width: 290px !important;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .widget-title {
+    max-width: 300px;
+  }
+}
+
+.card {
+  border: none;
+  background: none;
+  display: inline-block;
+  width: 100%;
+}
+
+
+.proposed-blocker .media i.fa {
+  color: #ffc107;
+}

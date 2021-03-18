@@ -1,0 +1,25 @@
+.Error {
+  min-height: 100vh;
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: #f3f3f3;
+  flex-direction: column;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+.Error h1 {
+  font-size: 5rem;
+}
+
+.well-error {
+  width: 100%;
+  background-color: #fff;
+  font-family: monospace;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  overflow-x: auto;
+}

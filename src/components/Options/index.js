@@ -1,14 +1,15 @@
-import React, { Component } from "react"
-import { changeOption, resetOptions } from "../actions/reduxActions"
+import React, { PureComponent } from "react"
 import { connect } from "react-redux"
 import * as R from "ramda"
-import * as U from "../utils"
+import * as U from "../../utils"
 
-import { ReleasesBlock, BugStatusGrid, BugKeywordsGrid, GroupBlock } from "./ModalOptionsItems"
-import { ModalOptionsLayout } from "./ModalOptionsLayout"
-import { CustomCheckbox, OptionsSwitch } from "./ModalOptionsLayout"
+import { ReleasesBlock, BugStatusGrid, BugKeywordsGrid, GroupBlock } from "./OptionsItems"
+import { CustomCheckbox, OptionsSwitch } from "./OptionsLayout"
+import { changeOption, resetOptions } from "../../actions/reduxActions"
+import "./options.css"
 
-class ModalOptions extends Component {
+
+class Options extends PureComponent {
   constructor(props) {
     super(props)
 
@@ -46,20 +47,41 @@ class ModalOptions extends Component {
       show_fti,
     } = this.props.options
 
+    const className = "pd-options " + (this.props.show ? "pd-options-shown" : "pd-options-hidden")
+
     return (
-      <ModalOptionsLayout reset={() => this.props.dispatch(resetOptions(this.props.fasuser))}>
+      <div className={className}>
+        <div className="d-flex justify-content-between">
+          <span>
+            <span style={{ fontSize: "1.5em" }}>Options</span>
+            <button
+              className="btn btn-link mt-n1 ml-3 pd-options-reset"
+              onClick={() => this.props.dispatch(resetOptions(this.props.fasuser))}>
+              Reset
+            </button>
+          </span>
+          <button className="close" onClick={this.props.showHandler}>
+            &times;
+          </button>
+        </div>
+
+        <hr />
         <form>
-          <OptionsSwitch name="show_schedule" value={show_schedule} handler={this.handle("general")}>
+          <OptionsSwitch
+            name="show_schedule"
+            value={show_schedule}
+            handler={this.handle("general")}>
             <div className="font-weight-bold">Show Fedora release schedule</div>
           </OptionsSwitch>
 
-          {
-            this.props.has_calendars?
-              <OptionsSwitch name="show_calendars" value={show_calendars} handler={this.handle("general")}>
-                <div className="font-weight-bold">Show Package Calendars</div>
-              </OptionsSwitch>
-            : null
-          }
+          {this.props.has_calendars ? (
+            <OptionsSwitch
+              name="show_calendars"
+              value={show_calendars}
+              handler={this.handle("general")}>
+              <div className="font-weight-bold">Show Package Calendars</div>
+            </OptionsSwitch>
+          ) : null}
 
           <hr />
 
@@ -136,7 +158,10 @@ class ModalOptions extends Component {
             <div className="font-weight-bold">Show updates</div>
           </OptionsSwitch>
 
-          <OptionsSwitch name="show_overrides" value={show_overrides} handler={this.handle("general")}>
+          <OptionsSwitch
+            name="show_overrides"
+            value={show_overrides}
+            handler={this.handle("general")}>
             <div className="font-weight-bold">Show overrides</div>
           </OptionsSwitch>
 
@@ -144,7 +169,10 @@ class ModalOptions extends Component {
             <div className="font-weight-bold">Show PRs</div>
           </OptionsSwitch>
 
-          <OptionsSwitch name="show_orphaned" value={show_orphaned} handler={this.handle("general")}>
+          <OptionsSwitch
+            name="show_orphaned"
+            value={show_orphaned}
+            handler={this.handle("general")}>
             <div className="font-weight-bold">Show orphanned</div>
           </OptionsSwitch>
 
@@ -159,12 +187,12 @@ class ModalOptions extends Component {
           <hr />
           <GroupBlock groups={this.props.groups} handler={this.handle("group")} />
         </form>
-      </ModalOptionsLayout>
+      </div>
     )
   }
 }
 
-const mapStateToProps = (state) => {
+export default connect((state) => {
   return {
     fasuser: state.fasuser,
     options: state.options,
@@ -175,13 +203,11 @@ const mapStateToProps = (state) => {
         : R.keys(state.user_data.static_info.data.group_packages),
     has_calendars:
       state.user_data === undefined
-      ? false
-      : R.compose(
-          R.length,
-          R.keys,
-          R.filter(p => !R.isNil(p))
-        )(state.user_data.static_info.data.calendars),
+        ? false
+        : R.compose(
+            R.length,
+            R.keys,
+            R.filter((p) => !R.isNil(p))
+          )(state.user_data.static_info.data.calendars),
   }
-}
-
-export default connect(mapStateToProps)(ModalOptions)
+})(Options)

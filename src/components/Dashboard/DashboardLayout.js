@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react"
-import Masthead from "./Masthead"
-import Footer from "./Footer"
+import Masthead from "../Masthead"
+import Footer from "../Footer"
 import { connect } from "react-redux"
 
 class DashboardLayout extends PureComponent {

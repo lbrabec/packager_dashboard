@@ -1,6 +1,8 @@
 import React, { Component } from "react"
 import { useMediaQuery } from "react-responsive"
 
+import "./responsivemasonry.css"
+
 const Mobile = ({ children }) => {
   const isMobile = useMediaQuery({ maxWidth: 767 })
   return isMobile ? children : null

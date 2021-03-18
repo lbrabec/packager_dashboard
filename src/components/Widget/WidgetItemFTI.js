@@ -7,7 +7,7 @@ import {
   WidgetChevron,
 } from "./WidgetLayout"
 import $ from "jquery"
-import * as U from "../utils"
+import * as U from "../../utils"
 
 export class FTI extends PureComponent {
   constructor(props) {

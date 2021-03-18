@@ -1,6 +1,8 @@
 import React, { Component } from "react"
 import * as R from "ramda"
 
+import "./error.css"
+
 class Error extends Component {
   render() {
     console.log(this.props.error)

@@ -10,7 +10,7 @@ import * as R from "ramda"
 import * as moment from "moment"
 import $ from "jquery"
 import { connect } from "react-redux"
-import { setDepGraph } from "../actions/reduxActions"
+import { setDepGraph } from "../../actions/reduxActions"
 
 class _Orphan extends PureComponent {
   constructor(props) {

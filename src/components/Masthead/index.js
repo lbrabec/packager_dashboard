@@ -2,13 +2,16 @@ import React, { PureComponent } from "react"
 import { Link } from "react-router-dom"
 import Cookies from "universal-cookie"
 import { connect } from "react-redux"
-import { unsetUser } from "../actions/reduxActions"
-import { Parser } from "../utils/searchparser"
+import { unsetUser } from "../../actions/reduxActions"
+import { Parser } from "../../utils/searchparser"
 
-import ModalOptions from "./ModalOptions"
-import Logo from "./Logo"
+import Options from "../Options"
+import Logo from "../Logo"
 
 import $ from "jquery"
+
+import "./masthead.css"
+
 
 const cookies = new Cookies()
 
@@ -17,6 +20,7 @@ class Masthead extends PureComponent {
     super(props)
     this.state = {
       style: "",
+      showOptions: false,
     }
   }
 
@@ -43,6 +47,10 @@ class Masthead extends PureComponent {
       // Gotta Catch 'Em All!
       this.setState({ style: "text-danger" })
     }
+  }
+
+  optionsHandler(e) {
+    this.setState({showOptions: !this.state.showOptions})
   }
 
   render() {
@@ -84,7 +92,7 @@ class Masthead extends PureComponent {
                   </span>
 
                   <span data-toggle="tooltip" title="" data-original-title="Options" className="mr-4">
-                    <button type="button" className="btn btn-link mt-n2" data-target="#options" data-toggle="modal">
+                    <button type="button" className="btn btn-link mt-n2" data-target="#optionsX" data-toggle="modal" onClick={this.optionsHandler.bind(this)}>
                       <i className="fas fa-cog"></i>
                     </button>
                   </span>
@@ -98,8 +106,7 @@ class Masthead extends PureComponent {
               </div>
             </div>
           </nav>
-
-          <ModalOptions />
+          <Options show={this.state.showOptions} showHandler={this.optionsHandler.bind(this)}/>
         </div>
       </div>
     )

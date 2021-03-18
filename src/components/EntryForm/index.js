@@ -1,11 +1,13 @@
 import React, { Component, createRef } from "react"
 import { Redirect } from "react-router"
 import Cookies from "universal-cookie"
-import Logo from "./Logo"
-import StgAlert from "./StgAlert"
-import Footer from "./Footer"
-import { setUser, loadEnvironment } from "../actions/reduxActions"
+import Logo from "../Logo"
+import { StgAlert } from "../Alerts"
+import Footer from "../Footer"
+import { setUser, loadEnvironment } from "../../actions/reduxActions"
 import { connect } from "react-redux"
+
+import "./entryform.css"
 
 const cookies = new Cookies()
 

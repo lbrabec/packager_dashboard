@@ -1,0 +1,33 @@
+.pd-options {
+    position: fixed;
+    right: 0px;
+    top: 50px;
+    width: 350;
+    height: 100%;
+    max-height: calc(100% - 50px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    background-color: #ffffff;
+    z-index: 1049;
+    transition-delay: 0;
+    transition-property: transform;
+    transition-duration: 0.3s;
+    transition-timing-function: ease-out;
+    padding: 1em;
+}
+
+.pd-options-hidden {
+    transform: translate(100%,0)scale(1);
+}
+
+.pd-options-shown {
+    transform: translate(0,0);
+}
+
+.pd-options .pd-options-reset {
+    font-size: 1em ;
+}
+
+.pd-options .pl-as-switch {
+    padding-left: 2.25rem;
+  }

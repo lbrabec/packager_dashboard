@@ -1,0 +1,9 @@
+.subheader {
+  background: #f3f3f3;
+  border-bottom: 1px solid #ddd;
+  min-height: calc(100vh - 40px);
+}
+
+.non-packager {
+  margin-top: 20vh;
+}
