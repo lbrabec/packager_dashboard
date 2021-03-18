@@ -69,7 +69,11 @@ class PackageCalendars extends Component {
               <td className="package-calendar-events">
                 {R.keys(c[1]).map(event =>
                   <div className={this.state.expanded? "pb-1" : "pb-1 text-ellipsis"} key={`event_${event}`}>
-                    {event}
+                    {
+                      c[1][event].url !== "null" // due to conversion above, null got converted to "null"
+                      ? <a href={c[1][event].url} target="_blank" rel="noopener noreferrer">{event}</a>
+                      : {event}
+                    }
                   </div>)}
               </td>
             </tr>
