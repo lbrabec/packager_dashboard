@@ -1,0 +1,30 @@
+.masthead {
+  border-bottom: 1px solid #ccc;
+  box-shadow: 0 0 10px 2px #ddd;
+  position: relative;
+}
+
+.masthead a {
+  font-size: 1.5em;
+  color: #3c6eb4 !important;
+  cursor: pointer;
+}
+
+.masthead button {
+  font-size: 1.5em;
+  color: #3c6eb4 !important;
+  cursor: pointer;
+  padding: 0;
+}
+
+.masthead a:hover {
+  color: #294b7b !important;
+}
+
+.masthead button:hover {
+  color: #294b7b !important;
+}
+
+.masthead .search {
+  width: 280px;
+}

@@ -4,6 +4,8 @@ import { Network } from "vis-network"
 import "vis-network/styles/vis-network.min.css"
 import $ from "jquery"
 
+import "./modalnetwork.css"
+
 class ModalNetwork extends Component {
   draw() {
     const container = document.getElementById("network-canvas")

@@ -2,8 +2,8 @@ import React, { PureComponent } from "react"
 import { connect } from "react-redux"
 import * as R from "ramda"
 
-import logo from "../logo.svg"
-import logo_stg from "../logo_stg.svg"
+import logo from "./logo.svg"
+import logo_stg from "./logo_stg.svg"
 
 
 class Logo extends PureComponent {

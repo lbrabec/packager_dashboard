@@ -4,8 +4,6 @@ import { BrowserRouter } from "react-router-dom"
 
 import { connect } from "react-redux"
 
-import "../App.css"
-
 import EntryForm from "./EntryForm"
 import Dashboard from "./Dashboard"
 import Error from "./Error"
@@ -21,12 +19,6 @@ class App extends Component {
   }
 
   render() {
-    fetch("/version.json")
-    .then(blob => blob.json())
-    .then(data => {
-      console.log(data)
-    })
-
     return this.props.error === undefined ? (
       <BrowserRouter basename={window.env.SUBDIR}>
         <Switch>

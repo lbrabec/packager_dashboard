@@ -10,3 +10,18 @@ code {
     monospace;
 }
 
+html, body {
+  height: 100%;
+  padding-right: 0 !important;
+  overflow: visible;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.tooltip .tooltip-inner {
+  font-family: monospace;
+  text-align: left !important;
+  max-width: 350px;
+}

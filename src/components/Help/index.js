@@ -1,10 +1,12 @@
 import React, { Component } from "react"
-import logo from "../logo.svg"
-import Footer from "./Footer"
-import Widget from "./Widget"
-import ModalNetwork from "./ModalNetwork"
-import * as U from "../utils"
+import Logo from "../Logo"
+import Footer from "../Footer"
+import Widget from "../Widget"
+import ModalNetwork from "../ModalNetwork"
+import * as U from "../../utils"
 import * as moment from "moment"
+
+import "./help.css"
 
 const bugs = [
   {
@@ -253,7 +255,7 @@ class Help extends Component {
           <div className="container">
             <div className="row d-flex justify-content-between align-items-center">
               <a href="/" className="ml-2 ml-md-0">
-                <img src={logo} alt="Fedora Packager Dashboard" className="py-4" />
+                <Logo className="py-4" />
               </a>
               <a href="/" className="h4 mr-2 ml-md-0">
                 <i className="fa fa-times" />

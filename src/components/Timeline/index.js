@@ -1,6 +1,8 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 
+import "./timeline.css"
+
 const shorterSummary = (summary) => {
   summary = summary.toLowerCase()
   if (summary.includes("branch")) return "Branch from Rawhide"

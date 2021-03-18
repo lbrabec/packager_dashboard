@@ -12,6 +12,8 @@ import $ from "jquery"
 import * as R from "ramda"
 import * as moment from "moment"
 
+import "./widget.css"
+
 class Widget extends PureComponent {
   componentDidMount() {
     $(function () {

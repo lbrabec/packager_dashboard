@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 import * as R from "ramda"
-import { CustomCheckbox, GroupTriSwitch } from "./ModalOptionsLayout"
+import { CustomCheckbox, GroupTriSwitch } from "./OptionsLayout"
 
 class _ReleasesBlock extends Component {
   render() {
