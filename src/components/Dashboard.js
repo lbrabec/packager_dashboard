@@ -64,11 +64,11 @@ class Dashboard extends Component {
     this.searchTimeout = setTimeout(() => this.setState({ searchAST: AST }), 500)
   }
 
-  setRefresh(what, func) {
+  setRefresh(what, func, param=undefined) {
     if (this.refreshInterval[what] === undefined) {
       console.log(`Spawning periodic refersh for ${what}, interval is ${window.env.REFRESH_INTERVAL/1000} seconds.`)
       this.refreshInterval[what] = setInterval(() => {
-        this.props.dispatch(func())
+        this.props.dispatch(func(param))
       }, window.env.REFRESH_INTERVAL)
     }
   }
@@ -103,7 +103,7 @@ class Dashboard extends Component {
     if (!isLoading){
       // loading user can take some time, start refresh only
       // when the first load is finished
-      this.setRefresh('loadUser', loadUser)
+      this.setRefresh('loadUser', loadUser, this.props.match.params.fasuser)
     }
     this.setRefresh('loadSchedule', loadSchedule)
     this.setRefresh('loadReleases', loadReleases)
