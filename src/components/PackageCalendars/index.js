@@ -86,7 +86,7 @@ class PackageCalendars extends Component {
                         {event}
                       </a>
                     ) : (
-                      { event }
+                      event
                     )}
                   </div>
                 ))}
