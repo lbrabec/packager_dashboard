@@ -16,6 +16,10 @@
     padding: 1em;
 }
 
+.pd-options a {
+    font-size: 1em !important;
+}
+
 .pd-options-hidden {
     transform: translate(100%,0)scale(1);
 }

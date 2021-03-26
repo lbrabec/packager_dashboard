@@ -1,7 +1,7 @@
 import React, { Component } from "react"
-import { Route, Switch } from "react-router"
+import { Route, Switch, Redirect } from "react-router"
 import { BrowserRouter } from "react-router-dom"
-
+import Cookies from "universal-cookie"
 import { connect } from "react-redux"
 
 import EntryForm from "./EntryForm"
@@ -9,7 +9,9 @@ import Dashboard from "./Dashboard"
 import Error from "./Error"
 import Help from "./Help"
 
-import { throwError } from "../actions/reduxActions"
+import { throwError, saveToken } from "../actions/reduxActions"
+
+const cookies = new Cookies()
 
 class App extends Component {
   componentDidCatch(error, info) {
@@ -29,6 +31,14 @@ class App extends Component {
           <Route path="/helpmepls" exact>
             <Help />
           </Route>
+          <Route path='/callback' render={(props) => {
+            const query = new URLSearchParams(props.location.search)
+            const token = query.get("oidc_token")
+            console.log("received token: " + token)
+            this.props.dispatch(saveToken(token))
+            cookies.set("token", token, { path: "/", sameSite: 'lax' })
+            return <Redirect to="/" />
+          }} />
           <Route path="/:fasuser" render={(props) => <Dashboard {...props} />}></Route>
         </Switch>
       </BrowserRouter>

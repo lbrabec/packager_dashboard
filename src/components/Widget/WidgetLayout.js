@@ -36,7 +36,7 @@ export class WidgetHead extends PureComponent {
     return (
       <div className={column}>
         <div className="media">
-          <span data-toggle="tooltip" title="" data-original-title={this.props.type}>
+          <span data-toggle="tooltip" title="" data-original-title={this.props.type} className={this.props.private?"private":""}>
             <i className={"fa fa-fw " + this.props.icon}></i>
           </span>
           <div className="media-body ml-2">{this.props.children}</div>

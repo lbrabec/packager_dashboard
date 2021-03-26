@@ -1,4 +1,5 @@
 import React, { Component } from "react"
+import Cookies from "universal-cookie"
 import DashboardLayout from "./DashboardLayout"
 import DashboardNonPackager from "./DashboardNonPackager"
 import DashboardLoading from "./DashboardLoading"
@@ -13,10 +14,12 @@ import ModalNetwork from "../ModalNetwork"
 import * as R from "ramda"
 import { connect } from "react-redux"
 import { setUser, loadUser, loadOptions, loadReleases, loadSchedule,
-         loadCachingInfo, loadEnvironment, getVersion, loadServiceAlerts } from "../../actions/reduxActions"
+         loadCachingInfo, loadEnvironment, getVersion, loadServiceAlerts, loadLinkedUser, saveToken } from "../../actions/reduxActions"
 import * as U from "../../utils"
 import { showAllOptions } from "../../reducers"
 import "./dashboard.css"
+
+const cookies = new Cookies()
 
 class Dashboard extends Component {
   constructor(props) {
@@ -37,12 +40,18 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
+    if (cookies.get("token") !== undefined) {
+      console.log("found token in cookies...")
+      this.props.dispatch(saveToken(cookies.get("token")))
+    }
+
     this.props.dispatch(loadEnvironment())
     this.props.dispatch(loadReleases())
     this.props.dispatch(loadSchedule())
     this.props.dispatch(loadCachingInfo())
     this.props.dispatch(getVersion())
     this.props.dispatch(loadServiceAlerts())
+    this.props.dispatch(loadLinkedUser())
 
     this.props.dispatch(loadUser(this.props.match.params.fasuser))
 

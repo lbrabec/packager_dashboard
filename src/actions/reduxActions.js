@@ -24,7 +24,7 @@ export const loadUser = payload => (dispatch, getState) => {
         payload: payload
     });
 
-    fetch(window.env.PACKAGER_DASHBOARD_API + payload)
+    fetch(window.env.PACKAGER_DASHBOARD_API + payload, {credentials: 'include'})
     .then(blob => blob.json())
     .then(data => {
         dispatch(loadUserResp({
@@ -248,3 +248,27 @@ export const loadServiceAlerts = payload => dispatch => {
         console.error('Error:', error);
     });
 }
+
+export const loadLinkedUser = payload => dispatch => {
+    dispatch({
+        type: ActionTypes.LOAD_LINKED_USER,
+        payload: payload
+    })
+
+    fetch(window.env.LINKED_USER, {credentials: 'include'})
+    .then(blob => blob.json())
+    .then(data => {
+        dispatch({
+            type: ActionTypes.LOAD_LINKED_USER_RESP,
+            payload: data
+        })
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
+
+export const saveToken = payload => ({
+    type: ActionTypes.SAVE_TOKEN,
+    payload: payload
+})

@@ -66,6 +66,16 @@ class Options extends PureComponent {
         </div>
 
         <hr />
+        <div className="d-flex justify-content-between">
+          {
+           this.props.linked_user.is_authenticated
+           ?
+           <>FAS account linked: {this.props.linked_user.user} <a href={window.env.UNLINK_USER}>unlink</a></>
+           :
+           <a href={window.env.LINK_USER}>Link FAS account</a>
+          }
+        </div>
+        <hr />
         <form>
           <OptionsSwitch
             name="show_schedule"
@@ -195,6 +205,7 @@ class Options extends PureComponent {
 export default connect((state) => {
   return {
     fasuser: state.fasuser,
+    linked_user: state.linked_user,
     options: state.options,
     releases: state.releases,
     groups:

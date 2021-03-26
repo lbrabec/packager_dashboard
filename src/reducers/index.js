@@ -38,6 +38,11 @@ export const showAllOptions = defaultOptions
 const defaultState = {
     user_data: undefined,
     fasuser: "",
+    linked_user: {
+        is_authenticated: false,
+        user: ''
+    },
+    token: '',
     options: defaultOptions,
     releases: {
         fedora: [],
@@ -216,6 +221,19 @@ export default (state = defaultState, action) => {
             return {
                 ...state,
                 service_messages: action.payload
+            }
+
+        case ActionTypes.LOAD_LINKED_USER_RESP:
+            return {
+                ...state,
+                linked_user: action.payload
+            }
+
+
+        case ActionTypes.SAVE_TOKEN:
+            return {
+                ...state,
+                token: action.payload
             }
 
         default:
