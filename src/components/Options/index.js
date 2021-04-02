@@ -173,7 +173,7 @@ class Options extends PureComponent {
             name="show_orphaned"
             value={show_orphaned}
             handler={this.handle("general")}>
-            <div className="font-weight-bold">Show orphanned</div>
+            <div className="font-weight-bold">Show orphaned</div>
           </OptionsSwitch>
 
           <OptionsSwitch name="show_koschei" value={show_koschei} handler={this.handle("general")}>
