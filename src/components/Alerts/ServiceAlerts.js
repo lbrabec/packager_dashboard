@@ -13,14 +13,15 @@ class ServiceAlerts extends PureComponent {
     const dissmissedMessages = R.defaultTo([], JSON.parse(localStorage.getItem('dismissedMessages')))
     const messages = R.compose(
       R.map(message => (
-        <div className={"alert alert-" + message.severity + " alert-dismissible fade show mt-4"} role="alert" key={`message_${message.id}`}>
-          <span className="font-weight-bold">
-            {message.text}
-
-            <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={(e) => this.dismissHandler(message.id)}>
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </span>
+        <div className="container pt-4">
+          <div className={"alert alert-" + message.severity + " alert-dismissible fade show"} role="alert" key={`message_${message.id}`}>
+            <span className="font-weight-bold">
+              {message.text}
+              <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={(e) => this.dismissHandler(message.id)}>
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </span>
+          </div>
         </div>
       )),
       R.filter(m => !dissmissedMessages.includes(m.id))
@@ -28,9 +29,7 @@ class ServiceAlerts extends PureComponent {
 
 
     return (
-      <div className="container">
-        {messages}
-      </div>
+        messages
     )
   }
 }
