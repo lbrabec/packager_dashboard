@@ -73,9 +73,21 @@ class Widget extends PureComponent {
     const cve_bage = bugs.map(bug => bug.keywords.includes("Security") && bug.keywords.includes("SecurityTracking")).some(R.identity)?
       <BBBadge color="danger">CVE</BBBadge> : null
 
+    const orderPrefix = rv => {
+      if(rv.startsWith("Fedora ELN")){
+        return "2"
+      } else
+      if(rv.startsWith("Fedora")) {
+        return "1"
+      } else {
+        // EPEL and fallback
+        return "3"
+      }
+    }
     const versions_html = R.compose(
       R.join(""),
       R.map(rv => `${rv[0]}<ul>${rv[1].map(v=>`<li>${(v[0]+':').padEnd(8,"\u00A0")} ${v[1]}</li>`).join('')}</ul>`),
+      R.sortBy(rv => orderPrefix(rv[0]) + rv[0]),
       R.toPairs,
       R.mapObjIndexed((val, key, obj) => R.toPairs(val)),
       R.pickBy((v,k) => !R.isEmpty(v)),
