@@ -13,5 +13,5 @@ window.env['DEPLOYMENT_ENV'] = window.env.API + 'deployment_env'
 window.env['VERSION'] = '/version.json'
 window.env['SERVICE_MESSAGES'] = window.env.API + 'motd/service_messages'
 window.env['LINKED_USER'] = window.env.API + 'current_user'
-window.env['LINK_USER'] = window.env.API + 'oidc_login?redirect=' + window.location.origin + '/callback'
-window.env['UNLINK_USER'] = window.env.API + 'oidc_logout?redirect=' + window.location.origin
+window.env['LINK_USER'] = window.env.API + 'oidc_login?redirect=' + window.location.origin + window.location.pathname
+window.env['UNLINK_USER'] = window.env.API + 'oidc_logout?redirect=' + window.location.origin + window.location.pathname
