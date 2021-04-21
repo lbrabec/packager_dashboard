@@ -70,7 +70,9 @@ class Options extends PureComponent {
           {
            this.props.linked_user.is_authenticated
            ?
-           <>FAS account linked: {this.props.linked_user.user} <a href={window.env.UNLINK_USER}>unlink</a></>
+           <>Linked FAS: {this.props.linked_user.user}
+           {!this.props.linked_user.fas_groups.includes("packager")? " (not a packager)" : null}
+           <a href={window.env.UNLINK_USER}>unlink</a></>
            :
            <a href={window.env.LINK_USER}>Link FAS account</a>
           }

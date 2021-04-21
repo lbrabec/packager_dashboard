@@ -40,7 +40,8 @@ const defaultState = {
     fasuser: "",
     linked_user: {
         is_authenticated: false,
-        user: ''
+        user: '',
+        fas_groups: [],
     },
     token: '',
     options: defaultOptions,

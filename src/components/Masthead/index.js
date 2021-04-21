@@ -21,6 +21,7 @@ class Masthead extends PureComponent {
     this.state = {
       style: "",
       showOptions: false,
+      cookied_user: undefined,
     }
   }
 
@@ -49,16 +50,28 @@ class Masthead extends PureComponent {
     }
   }
 
+  componentDidMount(){
+    this.setState({cookied_user: cookies.get("fasusername")})
+  }
+
   optionsHandler(e) {
     this.setState({showOptions: !this.state.showOptions})
   }
 
   render() {
+    const logoLink = this.props.linked_user.is_authenticated?
+    <a href={`/${this.props.linked_user.user}`}><Logo /></a>
+    :
+    this.state.cookied_user !== undefined ?
+      <a href={`/${this.state.cookied_user}`}><Logo /></a>
+      :
+      <Logo />
+
     return (
       <div className="masthead navbar py-1 px-0 px-md-2">
         <div className="container px-1 px-md-2">
           <span>
-            <Logo />
+            { logoLink }
           </span>
           <nav className="navbar-expand-md navbar-light">
             <button
@@ -113,8 +126,10 @@ class Masthead extends PureComponent {
   }
 }
 
-const mapStateToProps = (_) => {
-  return {}
+const mapStateToProps = (state) => {
+  return {
+    linked_user: state.linked_user,
+  }
 }
 
 export default connect(mapStateToProps)(Masthead)
