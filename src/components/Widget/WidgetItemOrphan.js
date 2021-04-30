@@ -57,7 +57,7 @@ class _Orphan extends PureComponent {
           direct_dependencies.length > 0?
           (
             <span>
-              directly depends on oprhaned packages:
+              directly depends on orphaned packages:
               <ul>
                 {R.sortBy((pkg) => pkg.toLowerCase(), direct_dependencies).map((dirdep) => (
                   <li key={`orphan_dirdep_${titleSafe}_${dirdep}`}>{dirdep}</li>
@@ -70,7 +70,7 @@ class _Orphan extends PureComponent {
           remote_dependencies.length > 0?
           (
             <span>
-              remotely depends on oprhaned packages:
+              remotely depends on orphaned packages:
               <ul>
                 {R.sortBy((pkg) => pkg.toLowerCase(), remote_dependencies).map((remdep) => (
                   <li key={`orphan_remdep_${titleSafe}_${remdep}`}>{remdep}</li>
