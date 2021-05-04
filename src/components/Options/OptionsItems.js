@@ -111,6 +111,18 @@ class _BugKeywordsGrid extends Component {
             </CustomCheckbox>
           </div>
         </div>
+        <div className="row">
+          <div className="col-4">
+            <CustomCheckbox
+              name="ABRT"
+              handler={handler}
+              value={R.defaultTo(true, options.show_bug_kw["ABRT"])}>
+              ABRT
+            </CustomCheckbox>
+          </div>
+          <div className="col-8">
+          </div>
+        </div>
       </div>
     )
   }
