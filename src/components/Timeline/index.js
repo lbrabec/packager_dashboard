@@ -4,12 +4,13 @@ import { connect } from "react-redux"
 import "./timeline.css"
 
 const shorterSummary = (summary) => {
-  summary = summary.toLowerCase()
-  if (summary.includes("branch")) return "Branch from Rawhide"
-  if (summary.includes("beta") && summary.includes("freeze")) return "Beta freeze"
-  if (summary.includes("beta") && summary.includes("release")) return "Beta release"
-  if (summary.includes("final") && summary.includes("freeze")) return "Final freeze"
-  if (summary.includes("final") && summary.includes("release")) return "Final release"
+  const summary_l = summary.toLowerCase()
+  if (summary_l.includes("branch")) return "Branch from Rawhide"
+  if (summary_l.includes("beta") && summary_l.includes("freeze")) return "Beta freeze"
+  if (summary_l.includes("beta") && summary_l.includes("release")) return "Beta release"
+  if (summary_l.includes("final") && summary_l.includes("freeze")) return "Final freeze"
+  if (summary_l.includes("final") && summary_l.includes("release")) return "Final release"
+  if (summary_l.includes("eol")) return summary
   return "Rawhide"
 }
 
@@ -28,7 +29,7 @@ class Timeline extends Component {
 
     const dates = this.props.schedule.map((milestone) => {
       return (
-        <td key={"dates" + milestone.summary} width="183">
+        <td key={"dates" + milestone.summary} width="158">
           {milestone.summary === "Rawhide" ? "" : milestone.date}
         </td>
       )
@@ -36,7 +37,7 @@ class Timeline extends Component {
 
     const schedule = this.props.schedule.map((milestone) => {
       return (
-        <td key={"schedule" + milestone.summary} width="183">
+        <td key={"schedule" + milestone.summary} width="158">
           {shorterSummary(milestone.summary)}
         </td>
       )
@@ -67,7 +68,7 @@ class Line extends Component {
       strokeWidth: "3",
     }
     return (
-      <svg width="183" height="20" version="1.1">
+      <svg width="158" height="20" version="1.1">
         <line x1="0" y1="50%" x2="100%" y2="50%" style={lineStyle} />
         <circle cx="50%" cy="50%" r="4" style={lineStyle} fill="#f3f3f3" />
       </svg>
