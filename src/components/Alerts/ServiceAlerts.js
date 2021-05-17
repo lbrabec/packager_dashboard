@@ -13,7 +13,7 @@ class ServiceAlerts extends PureComponent {
     const dissmissedMessages = R.defaultTo([], JSON.parse(localStorage.getItem('dismissedMessages')))
     const messages = R.compose(
       R.map(message => (
-        <div className="container pt-4">
+        <div className="container pt-4" key={`serviceAlert_${message.id}`}>
           <div className={"alert alert-" + message.severity + " alert-dismissible fade show"} role="alert" key={`message_${message.id}`}>
             <span className="font-weight-bold">
               {message.text}
