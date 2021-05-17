@@ -34,7 +34,7 @@ class EntryForm extends Component {
 
   render() {
     if (this.props.fasuser !== "") {
-      return <Redirect to={"/" + this.props.fasuser} />
+      return <Redirect to={"/user/" + this.props.fasuser} />
     }
 
     return (

@@ -6,6 +6,7 @@ import { connect } from "react-redux"
 
 import EntryForm from "./EntryForm"
 import Dashboard from "./Dashboard"
+import DashboardPackage from "./Dashboard/DashboardPackage"
 import Error from "./Error"
 import Help from "./Help"
 
@@ -27,6 +28,12 @@ class App extends Component {
           <Route path="/" exact>
             <EntryForm />
           </Route>
+          <Route path="/package/:fasuser" render={(props)=> {
+            return <Dashboard {...props} isPackage={true}/>
+          }}/>
+          <Route path="/packages" render={(props)=> {
+            return <DashboardPackage {...props}/>
+          }}/>
           <Route path="/version.json" onEnter={() => window.location.reload()} />
           <Route path="/helpmepls" exact>
             <Help />
@@ -39,17 +46,18 @@ class App extends Component {
             cookies.set("token", token, { path: "/", sameSite: 'lax' })
             return <Redirect to="/" />
           }} />
-          <Route path="/:fasuser" render={(props) => {
+          <Route path="/user/:fasuser" render={(props) => {
+            console.log("aaaaa")
             const query = new URLSearchParams(props.location.search)
             const token = query.get("oidc_token")
             if(token !== null) {
               console.log("received token: " + token)
               this.props.dispatch(saveToken(token))
               cookies.set("token", token, { path: "/", sameSite: 'lax' })
-              // redirect to drop url params (i.e. to not to have oidc_token i address bar)
+              // redirect to drop url params (i.e. to not to have oidc_token in address bar)
               return <Redirect to={window.location.pathname} />
             }
-            return <Dashboard {...props} />
+            return <Dashboard {...props}  isPackage={false}/>
 
           }}></Route>
         </Switch>

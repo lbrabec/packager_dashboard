@@ -88,15 +88,23 @@ class Masthead extends PureComponent {
           <nav className="navbar-expand-md navbar-light">
             <div className="collapse navbar-collapse" id="navbarContent">
               <div className="d-flex flex-row flex-wrap align-items-center">
-                <div className="mr-4 mt-2 mt-md-0">
-                  <input
-                    className={"search form-control " + this.state.style}
-                    type="search"
-                    placeholder="Search (r/regex/ && boolean, see help)"
-                    aria-label="Search"
-                    onChange={this.searchHandler.bind(this)}
-                  />
-                </div>
+                {
+                  this.props.searchHandler!==undefined ?
+                  (
+                    <div className="mr-4 mt-2 mt-md-0">
+                      <input
+                        className={"search form-control " + this.state.style}
+                        type="search"
+                        placeholder="Search (r/regex/ && boolean, see help)"
+                        aria-label="Search"
+                        onChange={this.searchHandler.bind(this)}
+                      />
+                    </div>
+                  ) :
+                  (
+                    null
+                  )
+                }
                 <div className="ml-1 ml-md-0 mt-1 ml-md-0">
                   <span data-toggle="tooltip" title="" data-original-title="Help" className="mr-4">
                     <Link onClick={this.hideToolips.bind(this)} to="/helpmepls">

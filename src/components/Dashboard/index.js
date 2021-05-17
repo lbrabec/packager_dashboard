@@ -52,8 +52,7 @@ class Dashboard extends Component {
     this.props.dispatch(getVersion())
     this.props.dispatch(loadServiceAlerts())
     this.props.dispatch(loadLinkedUser())
-
-    this.props.dispatch(loadUser(this.props.match.params.fasuser))
+    this.props.dispatch(loadUser(({what: this.props.match.params.fasuser, isPackage: this.props.isPackage})))
 
     if (this.props.fasuser === "") {
       // dispatch action so the user parserd from url is stored
@@ -110,7 +109,7 @@ class Dashboard extends Component {
     if (!isLoading){
       // loading user can take some time, start refresh only
       // when the first load is finished
-      this.setRefresh('loadUser', loadUser, this.props.match.params.fasuser)
+      this.setRefresh('loadUser', loadUser, ({what: this.props.match.params.fasuser, isPackage: this.props.isPackage}))
     }
     this.setRefresh('loadSchedule', loadSchedule)
     this.setRefresh('loadReleases', loadReleases)

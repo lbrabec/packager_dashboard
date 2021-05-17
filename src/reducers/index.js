@@ -63,6 +63,8 @@ const defaultState = {
         latest: 0
     },
     service_messages: [],
+    all_fedora_packages: [],
+    one_package: undefined,
 }
 
 
@@ -236,6 +238,19 @@ export default (state = defaultState, action) => {
                 ...state,
                 token: action.payload
             }
+
+        case ActionTypes.LOAD_PACKAGES_RESP:
+            return {
+                ...state,
+                all_fedora_packages: action.payload
+            }
+
+        case ActionTypes.LOAD_ONE_PACKAGE_RESP:
+            return {
+                ...state,
+                one_package: action.payload
+            }
+
 
         default:
             return state

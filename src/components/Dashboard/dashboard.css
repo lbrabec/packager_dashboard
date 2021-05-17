@@ -7,3 +7,21 @@
 .non-packager {
   margin-top: 20vh;
 }
+
+.suggestions {
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: #fff;
+  border-color: rgb(183, 198, 218);
+  border-radius: 4 4 4 4;
+  border-width: 1px;
+  border-style: solid;
+}
+
+.suggestions ul {
+  padding-left: 0;
+}
+
+.suggestions ul li {
+  padding-left: 1em;
+}
