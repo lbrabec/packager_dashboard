@@ -15,7 +15,7 @@ import * as moment from "moment"
 const getMixedBadge = (cis) => {
   const results = R.compose(
     R.toPairs,
-    R.pickBy((val, key) => ["succ", "fail"].includes(val)),
+    R.pickBy((val, key) => ["succ", "fail", "erro"].includes(val)),
     R.mapObjIndexed((val, key, obj) => val.slice(0,4)),
     R.pickBy((val, key) => val !== null)
   )(cis)
