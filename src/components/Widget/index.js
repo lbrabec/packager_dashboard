@@ -40,8 +40,10 @@ class Widget extends PureComponent {
       cvesOnly?
       R.descend(bug => ["unspecified", "low", "medium", "high", "urgent"].indexOf(bug.severity))
       :
-      R.descend(bug => bug.keywords.includes("ProposedBlocker")? 1:0 +
-                       bug.keywords.includes("AcceptedBlocker")? 1:0
+      R.descend(bug => bug.keywords.includes("ProposedBlocker")? 2:0 +
+                       bug.keywords.includes("AcceptedBlocker")? 2:0 +
+                       bug.keywords.includes("ProposedFE")? 1:0 +
+                       bug.keywords.includes("AcceptedFE")? 1:0
       ),
       R.descend(bug => moment.utc(bug.reported).unix())
     ], bugs).map((bug) => <Bug {...bug} key={bug.url} />)
@@ -68,8 +70,11 @@ class Widget extends PureComponent {
     const fti_src = fti.map(f => R.keys(f.problems).map(p => p.startsWith("src")).some(R.identity)).some(R.identity)
     const ftbfs_badge = (fti_src || koschei.length > 0) ? <FTBadge>FTBFS</FTBadge> : null
     const fti_badge = fti_no_src.length > 0 ? <FTBadge>FTI</FTBadge> : null
-    const pb_badge = bugs.map(bug => bug.keywords.includes("ProposedBlocker")).some(R.identity)?
-      <BBBadge color="warning">Proposed Blocker</BBBadge> : null
+
+    const bug_badges = ["Proposed FE", "Accepted FE", "Proposed Blocker", "Accepted Blocker"]
+      .filter(kw => bugs.map(bug => bug.keywords.includes(kw.replace(" ", ""))).some(R.identity))
+      .map(kw => <BBBadge color={kw.includes("Proposed")?"warning":"danger"}>{kw}</BBBadge>)
+
     const cve_bage = bugs.map(bug => bug.keywords.includes("Security") && bug.keywords.includes("SecurityTracking")).some(R.identity)?
       <BBBadge color="danger">CVE</BBBadge> : null
 
@@ -105,7 +110,7 @@ class Widget extends PureComponent {
               {orphan_badge}
               {ftbfs_badge}
               {fti_badge}
-              {pb_badge}
+              {bug_badges}
               {cve_bage}
               {orphan_impacted_badge}
             </h5>

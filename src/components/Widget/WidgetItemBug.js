@@ -24,14 +24,46 @@ const priority_severity_color = (ps) => {
   return "text-muted"
 }
 
+const getClassName = (keywords) => {
+  if (keywords.includes("AcceptedBlocker"))
+    return "accepted-blocker"
+
+  if (keywords.includes("AcceptedFE"))
+    return "accepted-fe"
+
+  return ""
+}
+
+const getBBType = (keywords) => {
+  if (keywords.includes("AcceptedBlocker") || keywords.includes("ProposedBlocker"))
+    return "B"
+
+  if (keywords.includes("AcceptedFE") || keywords.includes("ProposedFE"))
+    return "FE"
+
+  return ""
+}
+
+const getType = (priv, keywords) => {
+  const BBs = ["Proposed FE", "Accepted FE", "Proposed Blocker", "Accepted Blocker"]
+      .filter(kw => keywords.includes(kw.replace(" ", "")))
+
+  const BBs_string = BBs.length !== 0? ` (${BBs.join(', ')})` : ""
+
+  if (priv) {
+    return `This is a private bug${BBs_string}`
+  } else {
+    return `This is a bug${BBs_string}`
+  }
+}
+
 export class Bug extends PureComponent {
   render() {
     const modified = moment.utc(this.props.modified)
-    const isProposedB = this.props.keywords.includes("ProposedBlocker")
 
     return (
-      <WidgetRow className={isProposedB? "proposed-blocker": ""}>
-        <WidgetHead type={`This is a ${this.props.private?"private":""} bug`} icon="fa-bug" private={this.props.private}>
+      <WidgetRow className={getClassName(this.props.keywords)}>
+        <WidgetHead type={getType(this.props.private, this.props.keywords)} icon="fa-bug" private={this.props.private} bb={getBBType(this.props.keywords)}>
           <WidgetTitle fulltitle={this.props.title}>
             <a target="_blank" rel="noopener noreferrer" href={this.props.url}>{this.props.title}</a>
           </WidgetTitle>
