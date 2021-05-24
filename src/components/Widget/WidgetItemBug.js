@@ -27,7 +27,10 @@ const priority_severity_color = (ps) => {
 export class Bug extends PureComponent {
   render() {
     const modified = moment.utc(this.props.modified)
-    const isProposedB = this.props.keywords.includes("ProposedBlocker")
+    const isProposedB = this.props.keywords.includes("ProposedBlocker") ||
+                        this.props.keywords.includes("AcceptedBlocker") ||
+                        this.props.keywords.includes("ProposedFE") ||
+                        this.props.keywords.includes("AcceptedFE")
 
     return (
       <WidgetRow className={isProposedB? "proposed-blocker": ""}>
