@@ -37,10 +37,18 @@
 }
 
 
-.proposed-blocker .media i.fa {
+.proposed-blocker .media i.fa, .proposed-blocker .media .bb {
   color: #ffc107;
+}
+
+.accepted-blocker .media i.fa, .accepted-blocker .media .bb {
+  color: #dc3545;
 }
 
 .private {
   color: #bb5c9b;
+}
+
+.bb {
+  font-weight: bold;
 }
