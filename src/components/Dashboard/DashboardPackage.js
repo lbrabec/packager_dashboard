@@ -83,6 +83,7 @@ class DashboardPackage extends Component {
 
   onSuggestionSelected = (event, { suggestion }) => {
     console.log(suggestion)
+    window.open(`${window.location.origin}/package/${suggestion}`)
     this.setState({
       selectedPackage: suggestion
     })
@@ -134,9 +135,6 @@ class DashboardPackage extends Component {
             inputProps={inputProps}
             theme={theme}
           />
-        </div>
-        <div className="container py-4">
-          {this.state.selectedPackage}
         </div>
       </DashboardLayout>
     )
