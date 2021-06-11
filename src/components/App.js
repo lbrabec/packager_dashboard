@@ -38,6 +38,9 @@ class App extends Component {
           <Route path="/helpmepls" exact>
             <Help />
           </Route>
+          <Route path='/orphan'>
+            <Redirect to="/user/orphan" />
+          </Route>
           <Route path='/callback' render={(props) => {
             const query = new URLSearchParams(props.location.search)
             const token = query.get("oidc_token")
