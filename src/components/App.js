@@ -62,7 +62,12 @@ class App extends Component {
             }
             return <Dashboard {...props}  isPackage={false}/>
 
-          }}></Route>
+          }} />
+          <Route path='/:fasuser' render={(props) => {
+            // compatibility
+            return <Redirect to={`/user/${props.match.params.fasuser}`} />
+          }
+          } />
         </Switch>
       </BrowserRouter>
     ) : (
