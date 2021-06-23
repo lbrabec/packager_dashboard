@@ -97,13 +97,14 @@ class Dashboard extends Component {
       return <DashboardNonPackager />
     }
 
-    const { bzs, prs, static_info } = this.props.user_data
+    const { bzs, prs, static_info, abrt_reports } = this.props.user_data
     const { package_versions } = static_info.data
     const { options, releases, } = this.props
     const { show_groups } = options
 
     const isLoading = this.props.server_error ||
-                      bzs.status !== 200 || prs.status !== 200 || static_info.status !== 200
+                      bzs.status !== 200 || prs.status !== 200 ||
+                      abrt_reports.status !== 200 || static_info.status !== 200
 
 
     if (!isLoading){

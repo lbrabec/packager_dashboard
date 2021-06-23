@@ -6,6 +6,7 @@ import { PR } from "./WidgetItemPR"
 import { Override } from "./WidgetItemOverride"
 import { Koschei } from "./WidgetItemKoschei"
 import { FTI } from "./WidgetItemFTI"
+import { ABRT } from "./WidgetItemABRT"
 import { Orphan } from "./WidgetItemOrphan"
 import { OrphanBadge, FTBadge, BBBadge, OrphanImpactedBadge } from "./WidgetLayout"
 import $ from "jquery"
@@ -30,11 +31,14 @@ class Widget extends PureComponent {
       overrides,
       koschei,
       fti,
+      abrt_reports,
       ownershipIcon,
       orphan,
       versions,
       cvesOnly,
     } = this.props
+
+    console.log(title, abrt_reports)
 
     const bugs_items = R.sortWith([
       cvesOnly?
@@ -64,6 +68,7 @@ class Widget extends PureComponent {
     )(fti)
 
     const fti_items = fti.map((f) => <FTI title={title} {...f} key={"fti_" + title + f.release + f.repo} isFTI={fti_no_src.length > 0} />)
+    const abrt_item = abrt_reports.problems_present? <ABRT {...abrt_reports} pkg={title} /> : null
     const orphan_badge = orphan.orphaned ? <OrphanBadge since={orphan.problematic_since} /> : null
     const orphan_impacted_badge = orphan.depends_on_orphaned ? <OrphanImpactedBadge color="danger">Orphan impacted</OrphanImpactedBadge> : null
     const orphan_item = orphan.depends_on_orphaned? <Orphan {...orphan} title={title}/> : null
@@ -125,6 +130,7 @@ class Widget extends PureComponent {
           {koschei_items}
           {fti_items}
           {orphan_item}
+          {abrt_item}
         </div>
       </div>
     )

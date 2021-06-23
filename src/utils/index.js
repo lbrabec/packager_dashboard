@@ -9,6 +9,7 @@ export const dataLen = (pkg, includeOrphans = true) =>
   pkg.data.overrides.length +
   pkg.data.koschei.length +
   pkg.data.fti.length +
+  (pkg.data.abrt_reports.problems_present? 1 : 0) +
   (pkg.data.orphan.depends_on_orphaned ? 1 : 0) +
   (includeOrphans && pkg.data.orphan.orphaned ? 1 : 0)
 
@@ -24,7 +25,6 @@ export const itemsCntPerCategory = (packages) => {
     R.sum,
     (category) => packages.map(p => p.data[category].length)
   )
-
   return {
     bugs: itemsCntInCategory("bugs"),
     prs: itemsCntInCategory("prs"),
@@ -33,6 +33,7 @@ export const itemsCntPerCategory = (packages) => {
     koschei: itemsCntInCategory("koschei"),
     orphans: R.sum(packages.map(pkg => (pkg.data.orphan.depends_on_orphaned ? 1 : 0) + (pkg.data.orphan.orphaned ? 1 : 0))),
     fti: itemsCntInCategory("fti"),
+    abrt_reports: R.sum(packages.map(p => p.data.abrt_reports.outstanding_problems.length)),
   }
 }
 
@@ -127,6 +128,7 @@ export const onlyCategoryShown = (options, category) => {
       "show_orphaned",
       "show_koschei",
       "show_fti",
+      "show_abrt_reports"
     ])
   )
 }
@@ -140,11 +142,13 @@ export const filterCategory = (options, releases, user_data) => {
     koschei: filterKoschei(options, releases, user_data),
     orphan: filterOrphan(options, releases, user_data),
     fti: filterFTI(options, releases, user_data),
+    abrt_reports: filterABRT(options, releases, user_data),
   }
 }
 
 export const EMPTY_ARRAY = []
 export const NOT_ORPHAN = { orphaned: false, depends_on_orphaned: false, orphaned_since: null }
+export const NO_ABRT = { outstanding_problems: [], problems_present: false, retrace_link: "" }
 
 export const filterBugs = (options, releases, user_data) => (pkg) => {
   const { bzs } = user_data
@@ -228,6 +232,13 @@ export const filterFTI = (options, releases, user_data) => (pkg) => {
   })
 }
 
+export const filterABRT = (options, releases, user_data) => (pkg) => {
+  const { abrt_reports } = user_data
+  if (abrt_reports.status === 204) return NO_ABRT
+
+  return abrt_reports.data[pkg]
+}
+
 const getMostRecent = (pkg) => {
   const { bugs, prs, updates, overrides, koschei, orphan, fti } = pkg.data
 
@@ -290,7 +301,8 @@ export const hiddenDueFiltering = (options, filtered, unfiltered) =>
   (options.show_overrides && filtered.overrides < unfiltered.overrides) ||
   (options.show_koschei && filtered.koschei < unfiltered.koschei) ||
   (options.show_fti && filtered.fti < unfiltered.fti) ||
-  (options.show_orphans && filtered.orphans < unfiltered.orphans)
+  (options.show_orphans && filtered.orphans < unfiltered.orphans) ||
+  (options.show_abrt_reports && filtered.abrt_reports < unfiltered.abrt_reports)
 
 
 export const packageObject = (filterFunction) => (pkg) => ({
@@ -303,6 +315,7 @@ export const packageObject = (filterFunction) => (pkg) => ({
     koschei: filterFunction.koschei(pkg),
     orphan: filterFunction.orphan(pkg),
     fti: filterFunction.fti(pkg),
+    abrt_reports: filterFunction.abrt_reports(pkg),
   },
 })
 
@@ -317,6 +330,7 @@ export const filterHiddenCategories = (options) => (packageObjects) => {
       koschei: options.show_koschei? pkg.data.koschei : EMPTY_ARRAY,
       orphan: options.show_orphaned? pkg.data.orphan : NOT_ORPHAN,
       fti: options.show_fti? pkg.data.fti : EMPTY_ARRAY,
+      abrt_reports: options.show_abrt_reports? pkg.data.abrt_reports : NO_ABRT,
     }
   }))
 }

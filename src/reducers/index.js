@@ -29,6 +29,7 @@ export const defaultOptions = {
     show_fti: true,
     show_groups: {},
     show_releases: {},
+    show_abrt_reports: true,
 }
 
 // placeholder for now, but in the future

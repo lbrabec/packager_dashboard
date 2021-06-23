@@ -99,6 +99,13 @@ class Stats extends PureComponent {
               icon="fa-user-slash"
               count={stats.orphans}
               fulltitle={`${stats.orphans} packages orphaned or orphan impacted`}
+              className="mr-4"
+            />
+            <StatIcon
+              category="abrt_reports"
+              icon="fa-chart-area"
+              count={stats.abrt_reports}
+              fulltitle={`${stats.abrt_reports} outstanding ABRT reports`}
             />
           </div>
         </div>
@@ -131,6 +138,7 @@ class _StatIcon extends PureComponent {
           show_orphaned: show,
           show_koschei: show,
           show_fti: show,
+          show_abrt_reports: show,
           [`show_${onWhat}`]: true,
         })
       )

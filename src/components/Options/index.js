@@ -45,6 +45,7 @@ class Options extends PureComponent {
       show_orphaned,
       show_koschei,
       show_fti,
+      show_abrt_reports,
     } = this.props.options
 
     const className = "pd-options " + (this.props.show ? "pd-options-shown" : "pd-options-hidden")
@@ -194,6 +195,10 @@ class Options extends PureComponent {
 
           <OptionsSwitch name="show_fti" value={show_fti} handler={this.handle("general")}>
             <div className="font-weight-bold">Show fedora-health-check fails</div>
+          </OptionsSwitch>
+
+          <OptionsSwitch name="show_abrt_reports" value={show_abrt_reports} handler={this.handle("general")}>
+            <div className="font-weight-bold">Show outstanding ABRT reports</div>
           </OptionsSwitch>
 
           <hr />
