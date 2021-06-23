@@ -93,8 +93,8 @@ export class PR extends PureComponent {
             R.compose(
               R.map((ci) => (
                 <div className="row" key={`${this.prid}_${ci[0]}`}>
-                  <div className="col-6">{ci[0]}</div>
-                  <div className="col-6">{resultToBadge(ci[1])}</div>
+                  <div className="col-8">{ci[0]}</div>
+                  <div className="col-4">{resultToBadge(ci[1])}</div>
                 </div>
               )),
               R.toPairs,
