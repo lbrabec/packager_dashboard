@@ -41,10 +41,13 @@ export const loadUser = payload => (dispatch, getState) => {
         // retry after 10s if fetched data not complete
         // and user has not changed meanwhile
         if(getState().fasuser === payload.what &&
-           (data.bzs.status !== 200 ||
+            //dont refresh on 404
+            data.static_info.status !== 404 &&
+           (//but refresh on 202...
+            data.bzs.status !== 200 ||
             data.prs.status !== 200 ||
-            data.static_info.status !== 200)){
-            setTimeout(() => dispatch(loadUser(payload.what)), 10000);
+            data.static_info.status !== 200 )){
+            setTimeout(() => dispatch(loadUser({what: payload.what, isPackage: payload.isPackage})), 10000);
         }
     })
     .catch((error) => {
@@ -52,7 +55,7 @@ export const loadUser = payload => (dispatch, getState) => {
         //dispatch(throwError({error: error, reason: ActionTypes.LOAD_USER}))
         //server-side error, retry in 60s
         dispatch(setServerError(true))
-        setTimeout(() => dispatch(loadUser(payload.what)), 60000)
+        setTimeout(() => dispatch(loadUser({what: payload.what, isPackage: payload.isPackage})), 60000)
     });
 }
 

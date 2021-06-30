@@ -80,6 +80,10 @@ class Dashboard extends Component {
   }
 
   render() {
+    if (this.props.user_data !== undefined && this.props.user_data.static_info.status === 404) {
+      return <DashboardNonPackager package={true}/>
+    }
+
     if (
       this.props.fasuser === "" ||
       this.props.user_data === undefined || // mind the order (lazy eval)

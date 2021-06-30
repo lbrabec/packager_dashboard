@@ -14,7 +14,12 @@ class DashboardNonPackager extends PureComponent {
               <h1 className="display-1">
                 <i className="fas fa-box-open"></i>
               </h1>
-              <h1 className="mt-4">User {this.props.fasuser} is not a packager</h1>
+              {
+                this.props.package?
+                <h1 className="mt-4">{this.props.fasuser} is not a package</h1>
+                :
+                <h1 className="mt-4">User {this.props.fasuser} is not a packager</h1>
+              }
           </div>
         </div>
       </DashboardLayout>
