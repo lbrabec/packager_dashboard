@@ -199,6 +199,7 @@ const pkg = {
     koschei: U.EMPTY_ARRAY,
     orphan: U.NOT_ORPHAN,
     fti: U.EMPTY_ARRAY,
+    abrt_reports: U.NO_ABRT,
   },
 }
 
