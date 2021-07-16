@@ -33,7 +33,7 @@ export const itemsCntPerCategory = (packages) => {
     koschei: itemsCntInCategory("koschei"),
     orphans: R.sum(packages.map(pkg => (pkg.data.orphan.depends_on_orphaned ? 1 : 0) + (pkg.data.orphan.orphaned ? 1 : 0))),
     fti: itemsCntInCategory("fti"),
-    abrt_reports: R.sum(packages.map(p => p.data.abrt_reports.outstanding_problems.length)),
+    abrt_reports: R.sum(packages.map(p => p.data.abrt_reports?.outstanding_problems?.length ? 1 : 0)),
   }
 }
 
