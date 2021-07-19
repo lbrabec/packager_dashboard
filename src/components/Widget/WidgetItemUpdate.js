@@ -29,7 +29,7 @@ export class Update extends PureComponent {
 
   collapseToggle(e) {
     this.setState({ collapsed: !this.state.collapsed })
-    $(`#update_${this.props.updateid.replace(".", "_")}`).collapse("toggle")
+    $(`#update_${this.props.title.replace(".", "_")}_${this.props.updateid}`).collapse("toggle")
     e.stopPropagation()
   }
 
@@ -46,7 +46,11 @@ export class Update extends PureComponent {
         <ul>
           {this.props.builds_nvrs.map((nvr) => (
             <li>
-              {nvr}
+              <a href={`https://koji.fedoraproject.org/koji/search?terms=${nvr}&type=build&match=glob`}
+                 target="_blank" rel="noopener noreferrer"
+                 onClick={(e) => e.stopPropagation()}>
+                {nvr}
+              </a>
             </li>
           ))}
         </ul>
@@ -56,7 +60,7 @@ export class Update extends PureComponent {
     return (
       <WidgetCollapsibleRow
         handler={this.collapseToggle.bind(this)}
-        id={`update_${this.props.updateid.replace(".", "_")}`}
+        id={`update_${this.props.title.replace(".", "_")}_${this.props.updateid}`}
         collapsibleData={data}
         noMargin={true}>
         <WidgetHead type="This is an enhancement update" icon="fa-bolt">
