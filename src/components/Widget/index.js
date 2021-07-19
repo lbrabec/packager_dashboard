@@ -52,7 +52,7 @@ class Widget extends PureComponent {
       R.descend(bug => moment.utc(bug.reported).unix())
     ], bugs).map((bug) => <Bug {...bug} key={bug.url} />)
     const updates_items = updates.map((update) => (
-      <Update {...update} key={title + update.pretty_name} />
+      <Update {...update} key={title + update.pretty_name} title={title}/>
     ))
     const pull_requests_items = prs.map((pr) => <PR {...pr} key={"pr" + pr.url} />)
     const overrides_items = overrides.map((override) => (

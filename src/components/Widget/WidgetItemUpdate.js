@@ -1,6 +1,7 @@
 import React, { PureComponent } from "react"
 import {
-  WidgetRow,
+  WidgetCollapsibleRow,
+  WidgetChevron,
   WidgetHead,
   WidgetTitle,
   WidgetSubTitle,
@@ -8,6 +9,7 @@ import {
   WidgetIconDetail,
 } from "./WidgetLayout"
 import * as moment from "moment"
+import $ from "jquery"
 
 const karma_color = (karma) => {
   if (karma > 0) return "text-success"
@@ -17,14 +19,50 @@ const karma_color = (karma) => {
 }
 
 export class Update extends PureComponent {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      collapsed: true,
+    }
+  }
+
+  collapseToggle(e) {
+    this.setState({ collapsed: !this.state.collapsed })
+    $(`#update_${this.props.title.replace(".", "_")}_${this.props.updateid}`).collapse("toggle")
+    e.stopPropagation()
+  }
+
   render() {
     const created = moment.utc(this.props.submission_date)
     const stable = moment.utc(this.props.stable_by_time)
     const now = moment().utc()
     const stableText = this.props.stable_by_time !== null? `, ${now.isBefore(stable)? "goes" : "should have gone"} stable ${stable.fromNow()}` : null
 
+    const data = (
+      <>
+        <br />
+        Builds:
+        <ul>
+          {this.props.builds_nvrs.map((nvr) => (
+            <li>
+              <a href={`https://koji.fedoraproject.org/koji/search?terms=${nvr}&type=build&match=glob`}
+                 target="_blank" rel="noopener noreferrer"
+                 onClick={(e) => e.stopPropagation()}>
+                {nvr}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </>
+    )
+
     return (
-      <WidgetRow>
+      <WidgetCollapsibleRow
+        handler={this.collapseToggle.bind(this)}
+        id={`update_${this.props.title.replace(".", "_")}_${this.props.updateid}`}
+        collapsibleData={data}
+        noMargin={true}>
         <WidgetHead type="This is an enhancement update" icon="fa-bolt">
           <WidgetTitle fulltitle={this.props.pretty_name}>
             <a target="_blank" rel="noopener noreferrer" href={this.props.url}>{this.props.pretty_name}</a>
@@ -41,7 +79,8 @@ export class Update extends PureComponent {
         <WidgetIconDetail icon="fa-thumbs-up" alt="Karma" color={karma_color(this.props.karma)}>
           {this.props.karma}
         </WidgetIconDetail>
-      </WidgetRow>
+        <WidgetChevron collapsed={this.state.collapsed} col="col-md-1" />
+      </WidgetCollapsibleRow>
     )
   }
 }
