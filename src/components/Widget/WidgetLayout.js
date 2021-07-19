@@ -22,7 +22,7 @@ export class WidgetCollapsibleRow extends PureComponent {
         //data-target={`#${this.props.id}`}
       >
         <div className="row align-items-center no-gutters">{this.props.children}</div>
-        <WidgetCollapsibleBlock id={this.props.id}>
+        <WidgetCollapsibleBlock id={this.props.id} noMargin={this.props.noMargin}>
           {this.props.collapsibleData}
         </WidgetCollapsibleBlock>
       </div>
@@ -195,7 +195,7 @@ export class WidgetCollapsibleBlock extends PureComponent {
   render() {
     return (
       <div className="row no-gutters pl-4">
-        <div className="collapse small mt-n3 bg-white" id={this.props.id}>
+        <div className={"collapse small bg-white " + (this.props.noMargin? "" : "mt-n3")} id={this.props.id}>
           {this.props.children}
         </div>
       </div>
