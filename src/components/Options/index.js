@@ -220,7 +220,7 @@ export default connect((state) => {
         ? []
         : R.keys(state.user_data.static_info.data.group_packages),
     has_calendars:
-      state.user_data === undefined
+      state.user_data === undefined || state.user_data.static_info.status !== 200
         ? false
         : R.compose(
             R.length,
