@@ -46,6 +46,7 @@ export const loadUser = payload => (dispatch, getState) => {
            (//but refresh on 202...
             data.bzs.status !== 200 ||
             data.prs.status !== 200 ||
+            data.abrt_reports.status !== 200 ||
             data.static_info.status !== 200 )){
             setTimeout(() => dispatch(loadUser({what: payload.what, isPackage: payload.isPackage})), 10000);
         }
