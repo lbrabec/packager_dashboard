@@ -66,7 +66,6 @@ class Dashboard extends Component {
     // debounce the setState
     clearTimeout(this.searchTimeout)
     //const value = e.target.value
-    console.log(AST)
     this.searchTimeout = setTimeout(() => this.setState({ searchAST: AST }), 500)
   }
 

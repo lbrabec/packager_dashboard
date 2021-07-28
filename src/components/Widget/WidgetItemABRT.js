@@ -36,7 +36,7 @@ class ABRToutstanding extends PureComponent {
     const data = (
       <ul>
         {this.props.outstanding_problems.map((p) => (
-          <li>
+          <li key={p.url}>
             crash function: {p.crash_function} <br />
             count: {p.count} <br />
             <a target="_blank" rel="noopener noreferrer" href={p.url} onClick={(e) => { e.stopPropagation() }}>{p.url}</a>
@@ -60,7 +60,7 @@ class ABRToutstanding extends PureComponent {
           <WidgetSubTitle>
             {this.state.collapsed ? (
               <>
-                {outProbCnt} outlying problem{outProbCnt === 1 ? null : "s"} (> 2.7σ)
+                {outProbCnt} outlying problem{outProbCnt === 1 ? null : "s"} (&gt; 2.7σ)
               </>
             ) : (
               <span>&nbsp;</span>

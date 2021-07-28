@@ -38,8 +38,6 @@ class Widget extends PureComponent {
       cvesOnly,
     } = this.props
 
-    console.log(title, abrt_reports)
-
     const bugs_items = R.sortWith([
       cvesOnly?
       R.descend(bug => ["unspecified", "low", "medium", "high", "urgent"].indexOf(bug.severity))

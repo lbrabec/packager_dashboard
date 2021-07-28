@@ -82,7 +82,6 @@ class DashboardPackage extends Component {
   }
 
   onSuggestionSelected = (event, { suggestion }) => {
-    console.log(suggestion)
     window.open(`${window.location.origin}/package/${suggestion}`)
     this.setState({
       selectedPackage: suggestion

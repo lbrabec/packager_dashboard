@@ -50,7 +50,6 @@ class App extends Component {
             return <Redirect to="/" />
           }} />
           <Route path="/user/:fasuser" render={(props) => {
-            console.log("aaaaa")
             const query = new URLSearchParams(props.location.search)
             const token = query.get("oidc_token")
             if(token !== null) {

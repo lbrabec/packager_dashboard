@@ -44,12 +44,7 @@ const dl = R.compose(
 )
 
 export const balancedSplitRecursive = (data) => {
-  const t0 = performance.now()
   const out = _bs(data, [])
-  const t1 = performance.now()
-
-  console.log(`BS (recursive) took ${t1 - t0} milliseconds.`)
-  console.log(dl(out[0]), dl(out[1]))
   return out
 }
 
@@ -63,7 +58,6 @@ const _bs = (a, b = []) => {
 }
 
 export const balancedSplit = (data) => {
-  const t0 = performance.now()
   var a = data
   var b = []
   if (a.length < 2) return [a, b]
@@ -77,8 +71,6 @@ export const balancedSplit = (data) => {
     new_a = R.dropLast(1, a)
     new_b = R.concat([R.last(a)], b)
   }
-  const t1 = performance.now()
-  console.log(`BS (while) took ${t1 - t0} milliseconds.`)
   return [a, b]
 }
 

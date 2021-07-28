@@ -45,7 +45,7 @@ export class Update extends PureComponent {
         Builds:
         <ul>
           {this.props.builds_nvrs.map((nvr) => (
-            <li>
+            <li key={`${this.props.title.replace(".", "_")}_${nvr}`}>
               <a href={`https://koji.fedoraproject.org/koji/search?terms=${nvr}&type=build&match=glob`}
                  target="_blank" rel="noopener noreferrer"
                  onClick={(e) => e.stopPropagation()}>
