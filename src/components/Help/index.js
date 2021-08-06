@@ -36,6 +36,11 @@ const updates = [
     submission_date: moment().utc().subtract(3, "days").format("YYYY-MM-DD HH:mm:ss"),
     updateid: "FEDORA-2020-b93b9312bc",
     url: "https://bodhi.fedoraproj…s/FEDORA-2020-b93b9312bc",
+    builds_nvrs: [
+      "foobar-12.3.fc31",
+      "python-foobar-12.3.fc31",
+      "foobar-lib-12.3.fc31",
+    ]
   },
 ]
 
