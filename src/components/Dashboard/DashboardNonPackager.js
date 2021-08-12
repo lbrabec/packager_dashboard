@@ -18,7 +18,14 @@ class DashboardNonPackager extends PureComponent {
                 this.props.package?
                 <h1 className="mt-4">{this.props.fasuser} is not a package</h1>
                 :
-                <h1 className="mt-4">User {this.props.fasuser} is not a packager</h1>
+                <>
+                  <h1 className="mt-4">User {this.props.fasuser} is not a packager</h1>
+                  <h4 className="mt-4 ">
+                    <a href="https://fedoraproject.org/wiki/Join_the_package_collection_maintainers" target="_blank" rel="noopener noreferrer">
+                      Become a packager
+                    </a>
+                  </h4>
+                </>
               }
           </div>
         </div>
