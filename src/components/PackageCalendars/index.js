@@ -2,10 +2,11 @@ import React, { Component } from "react"
 import { connect } from "react-redux"
 import * as R from "ramda"
 import * as moment from "moment"
+import $ from "jquery"
 
 import "./package-calendars.css"
 
-const transormCalendars = R.compose(
+const transformCalendars = R.compose(
   R.sortBy((date) => moment.utc(date[0])),
   R.toPairs,
   R.mapObjIndexed((val, key, obj) =>
@@ -47,6 +48,13 @@ class PackageCalendars extends Component {
       expanded: false,
     }
   }
+  /*
+  componentDidMount() {
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    })
+  }
+  */
 
   toggleHandler() {
     this.setState({ expanded: !this.state.expanded })
@@ -57,12 +65,18 @@ class PackageCalendars extends Component {
       return null
     }
 
-    const transormedCalendars = transormCalendars(this.props.calendars)
-    if (transormedCalendars.length === 0) {
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    })
+
+    const transformedCalendars = transformCalendars(this.props.calendars)
+    if (transformedCalendars.length === 0) {
       return null
     }
 
-    const calendars = R.take(this.state.expanded ? Infinity : 4, transormedCalendars)
+    console.log(transformedCalendars)
+
+    const calendars = R.take(this.state.expanded ? Infinity : 4, transformedCalendars)
 
     const calendar_cards = calendars.map((c) => (
       <div
@@ -79,6 +93,8 @@ class PackageCalendars extends Component {
               <td className="package-calendar-events">
                 {R.keys(c[1]).map((event) => (
                   <div
+                    data-toggle="tooltip"
+                    data-original-title={c[1][event].packages.join(', ')}
                     className={this.state.expanded ? "pb-1" : "pb-1 text-ellipsis"}
                     key={`event_${event}`}>
                     {c[1][event].url !== "null" ? ( // due to conversion above, null got converted to "null"
