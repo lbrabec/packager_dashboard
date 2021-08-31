@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import { connect } from "react-redux"
 import * as R from "ramda"
 import * as moment from "moment"
+import $ from "jquery"
 
 import "./package-calendars.css"
 
@@ -18,6 +19,7 @@ const transormCalendars = R.compose(
           R.groupBy((i) => i.url)
         )(v)[0],
         packages: v.map((i) => i.package),
+        calendar_name: v[0].calendar_name
       })),
       R.groupBy((item) => item.summary) //group by summary
     )(val)
@@ -46,6 +48,12 @@ class PackageCalendars extends Component {
     this.state = {
       expanded: false,
     }
+  }
+
+  componentDidMount() {
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    })
   }
 
   toggleHandler() {
@@ -79,6 +87,8 @@ class PackageCalendars extends Component {
               <td className="package-calendar-events">
                 {R.keys(c[1]).map((event) => (
                   <div
+                    data-toggle="tooltip"
+                    data-original-title={c[1][event].calendar_name}
                     className={this.state.expanded ? "pb-1" : "pb-1 text-ellipsis"}
                     key={`event_${event}`}>
                     {c[1][event].url !== "null" ? ( // due to conversion above, null got converted to "null"
