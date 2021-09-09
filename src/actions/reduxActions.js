@@ -110,6 +110,35 @@ export const loadOptions = payload => dispatch => {
     })
 }
 
+export const loadPinned = payload => dispatch => {
+    const pinned = JSON.parse(R.defaultTo("[]", localStorage.getItem(payload + "_pinned")))
+
+    dispatch({
+        type: ActionTypes.LOAD_PINNED,
+        payload: pinned
+    })
+}
+
+export const savePinned = payload => dispatch => {
+    dispatch({
+        type: ActionTypes.SAVE_PINNED,
+        payload: payload
+    })
+
+    localStorage.setItem(payload.fasuser + "_pinned", JSON.stringify(payload.pinned))
+}
+
+export const handlePin = payload => (dispatch, getState) => {
+    dispatch({
+        type: ActionTypes.HANDLE_PIN,
+        payload: payload
+    })
+
+    const { fasuser, pinned } = getState()
+
+    dispatch(savePinned({fasuser: fasuser, pinned: pinned}))
+}
+
 export const resetOptions = payload => dispatch => {
     localStorage.setItem(payload, JSON.stringify(defaultOptions))
     dispatch({

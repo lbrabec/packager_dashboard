@@ -13,7 +13,7 @@ import ResponsiveMasonry from "../ResponsiveMasonry"
 import ModalNetwork from "../ModalNetwork"
 import * as R from "ramda"
 import { connect } from "react-redux"
-import { setUser, loadUser, loadOptions, loadReleases, loadSchedule,
+import { setUser, loadUser, loadOptions, loadPinned, loadReleases, loadSchedule,
          loadCachingInfo, loadEnvironment, getVersion, loadServiceAlerts, loadLinkedUser, saveToken } from "../../actions/reduxActions"
 import * as U from "../../utils"
 import { showAllOptions } from "../../reducers"
@@ -60,6 +60,7 @@ class Dashboard extends Component {
     }
 
     this.props.dispatch(loadOptions(this.props.match.params.fasuser))
+    this.props.dispatch(loadPinned(this.props.match.params.fasuser))
   }
 
   searchHandler(AST) {
@@ -173,7 +174,7 @@ class Dashboard extends Component {
       unfilteredCntPerCat
     )
 
-    const package_cards = R.compose(
+    const createPackageCards = R.compose(
       R.map(
         R.map((pkg) => (
           <Widget
@@ -192,7 +193,16 @@ class Dashboard extends Component {
       R.filter((pkg) => U.searchMatch(this.state.searchAST, pkg.name)),
       R.filter((pkg) => U.dataLen(pkg) > 0),
       U.filterHiddenCategories(options)
-    )(filteredPackages)
+    )
+
+    const filteredPackagesPinned = filteredPackages.filter((pkg) => this.props.pinned.includes(pkg.name))
+    const filteredPackagesUnpinned = filteredPackages.filter((pkg) => !this.props.pinned.includes(pkg.name))
+
+    const package_cards_pinned = createPackageCards(filteredPackagesPinned)
+    const package_cards_unpinned = createPackageCards(filteredPackagesUnpinned)
+
+    const shownPackages = package_cards_pinned[0].length + package_cards_pinned[1].length +
+                          package_cards_unpinned[0].length + package_cards_unpinned[1].length
 
     return (
       <DashboardLayout searchHandler={this.searchHandler.bind(this)}>
@@ -200,17 +210,18 @@ class Dashboard extends Component {
         <VersionAlert />
         <ServiceAlerts />
         <Stats
-          shownPackages={package_cards[0].length + package_cards[1].length}
+          shownPackages={shownPackages}
           isLoading={isLoading}
           stats={filteredCntPerCat}
         />
         <NewcomerAlert show={isLoading && !this.props.server_error} />
         <Timeline />
         <PackageCalendars />
-        <ResponsiveMasonry items={package_cards} />
+        <ResponsiveMasonry items={package_cards_pinned} />
+        <ResponsiveMasonry items={package_cards_unpinned} />
         <ItemsInfo
           hiddenDueFiltering={hiddenDueFiltering}
-          shownPackages={package_cards[0].length + package_cards[1].length}
+          shownPackages={shownPackages}
         />
         <ModalNetwork />
       </DashboardLayout>
@@ -219,12 +230,13 @@ class Dashboard extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { user_data, fasuser, options, releases, caching_info, server_error, environment } = state
+  const { user_data, fasuser, options, pinned, releases, caching_info, server_error, environment } = state
 
   return {
     user_data,
     fasuser,
     options,
+    pinned,
     releases,
     caching_info,
     server_error,

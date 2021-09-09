@@ -9,6 +9,7 @@ import { FTI } from "./WidgetItemFTI"
 import { ABRT } from "./WidgetItemABRT"
 import { Orphan } from "./WidgetItemOrphan"
 import { OrphanBadge, FTBadge, BBBadge, OrphanImpactedBadge } from "./WidgetLayout"
+import { handlePin } from "../../actions/reduxActions"
 import $ from "jquery"
 import * as R from "ramda"
 import * as moment from "moment"
@@ -104,11 +105,14 @@ class Widget extends PureComponent {
 
     return (
       <div className="widget card py-3">
-        <div className="row no-gutters d-flex justify-content-between">
+        <div className="row no-gutters d-flex justify-content-between widget-title-container">
           <div>
             <h5 className="font-weight-bold d-flex align-items-center">
               <span data-toggle="tooltip" title="" data-html="true" data-original-title={versions_html}>
                 {title}
+              </span>
+              <span className="pin" onClick={() => this.props.dispatch(handlePin(title))}>
+                <i className="fas fa-thumbtack ml-1"></i>
               </span>
               {orphan_badge}
               {ftbfs_badge}
@@ -135,8 +139,10 @@ class Widget extends PureComponent {
   }
 }
 
-const mapStateToProps = (_) => {
-  return {}
+const mapStateToProps = (state) => {
+  return {
+    fasuser: state.fasuser
+  }
 }
 
 export default connect(mapStateToProps)(Widget)

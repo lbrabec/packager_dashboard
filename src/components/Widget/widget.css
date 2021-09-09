@@ -52,3 +52,16 @@
 .bb {
   font-weight: bold;
 }
+
+.pin {
+  width: 1rem;
+  cursor: pointer;
+}
+
+.pin i {
+  display: none;
+}
+
+.widget-title-container:hover .pin i {
+  display: block;
+}
