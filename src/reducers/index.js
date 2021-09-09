@@ -46,6 +46,7 @@ const defaultState = {
     },
     token: '',
     options: defaultOptions,
+    pinned: {},
     releases: {
         fedora: [],
         epel: [],
@@ -160,6 +161,30 @@ export default (state = defaultState, action) => {
                 ...state,
                 options: action.payload === null? defaultOptions : action.payload
             }
+
+        case ActionTypes.LOAD_PINNED:
+            return {
+                ...state,
+                pinned: action.payload
+            }
+
+        case ActionTypes.HANDLE_PIN:
+            return {
+                ...state,
+                pinned: {
+                    ...state.pinned,
+                    [action.payload.title]: action.payload.priority
+                }
+
+            }
+            /*
+            return {
+                ...state,
+                pinned: state.pinned.includes(action.payload)?
+                    state.pinned.filter(p => p !== action.payload)
+                    :
+                    [...state.pinned, action.payload],
+            }*/
 
         case ActionTypes.RESET_OPTIONS:
             return {

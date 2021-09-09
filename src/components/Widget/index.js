@@ -9,6 +9,7 @@ import { FTI } from "./WidgetItemFTI"
 import { ABRT } from "./WidgetItemABRT"
 import { Orphan } from "./WidgetItemOrphan"
 import { OrphanBadge, FTBadge, BBBadge, OrphanImpactedBadge } from "./WidgetLayout"
+import { handlePin } from "../../actions/reduxActions"
 import $ from "jquery"
 import * as R from "ramda"
 import * as moment from "moment"
@@ -20,6 +21,11 @@ class Widget extends PureComponent {
     $(function () {
       $('[data-toggle="tooltip"]').tooltip()
     })
+  }
+
+  hideToolips() {
+    $('[data-toggle="tooltip"]').tooltip('hide')
+
   }
 
   render() {
@@ -102,9 +108,36 @@ class Widget extends PureComponent {
       R.mapObjIndexed((val, key, obj) => R.pickBy((v, k) => v!==null, val))
     )(versions)
 
+    const pinIcons = <>
+      {R.defaultTo(0, this.props.pinned[title]) !== 1?
+        <span className="pin mr-1" onClick={() => {this.hideToolips(); this.props.dispatch(handlePin({title, priority: 1}))}}>
+          <i className="fas fa-thumbtack fa-fw" title="Pin package to the top"></i>
+        </span>
+        :null
+      }
+      {R.defaultTo(0, this.props.pinned[title]) === 1?
+        <span className="pin mx-1" onClick={() => {this.hideToolips(); this.props.dispatch(handlePin({title, priority: 0}))}}>
+          <i className="fas fa-eye fa-fw" title="Unpin package"></i>
+        </span>
+        :null
+      }
+      {R.defaultTo(0, this.props.pinned[title]) === -1?
+        <span className="pin mx-1" onClick={() => {this.hideToolips(); this.props.dispatch(handlePin({title, priority: 0}))}}>
+          <i className="fas fa-eye fa-fw" title="Unstash package"></i>
+        </span>
+        :null
+      }
+      {R.defaultTo(0, this.props.pinned[title]) !== -1?
+        <span className="pin ml-1" onClick={() => {this.hideToolips(); this.props.dispatch(handlePin({title, priority: -1}))}}>
+          <i className="fas fa-ban fa-fw" title="Stash package to the bottom"></i>
+        </span>
+        :null
+      }
+    </>
+
     return (
       <div className="widget card py-3">
-        <div className="row no-gutters d-flex justify-content-between">
+        <div className="row no-gutters d-flex justify-content-between widget-title-container">
           <div>
             <h5 className="font-weight-bold d-flex align-items-center">
               <span data-toggle="tooltip" title="" data-html="true" data-original-title={versions_html}>
@@ -118,7 +151,12 @@ class Widget extends PureComponent {
               {orphan_impacted_badge}
             </h5>
           </div>
-          <div>{ownershipIcon}</div>
+          <div>
+            <span className="pin-wrapper mr-2">
+              {pinIcons}
+            </span>
+            {ownershipIcon}
+          </div>
         </div>
         <div className="list-group">
           {bugs_items}
@@ -135,8 +173,11 @@ class Widget extends PureComponent {
   }
 }
 
-const mapStateToProps = (_) => {
-  return {}
+const mapStateToProps = (state) => {
+  return {
+    fasuser: state.fasuser,
+    pinned: state.pinned
+  }
 }
 
 export default connect(mapStateToProps)(Widget)
