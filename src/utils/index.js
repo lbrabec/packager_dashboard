@@ -64,7 +64,7 @@ export const balancedSplit = (data) => {
 
   var new_a = R.dropLast(1, a)
   var new_b = R.concat([R.last(a)], b)
-  while (a.length >= 2 && dl(new_a) - dl(new_b) >= t) {
+  while (a.length >= 2 && (Math.abs(dl(new_a) - dl(new_b)) <= Math.abs(dl(a) - dl(b)))) {
     b = new_b
     a = new_a
 
