@@ -7,7 +7,7 @@ const shorterSummary = (summary) => {
   const summary_l = summary.toLowerCase()
   if (summary_l.includes("branch")) return "Branch from Rawhide"
   if (summary_l.includes("beta") && summary_l.includes("freeze")) return "Beta freeze"
-  if (summary_l.includes("beta") && summary_l.includes("release")) return "Beta release"
+  if (summary_l.includes("beta") && summary_l.includes("target")) return "Beta release"
   if (summary_l.includes("final") && summary_l.includes("freeze")) return "Final freeze"
   if (summary_l.includes("final") && summary_l.includes("target")) return "Final release"
   if (summary_l.includes("eol")) return summary
