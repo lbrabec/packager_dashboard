@@ -31,16 +31,16 @@ class Widget extends PureComponent {
   render() {
     const {
       title,
-      bugs,
+      bzs,
       prs,
       updates,
       overrides,
       koschei,
-      fti,
+      fails_to_install,
       abrt_reports,
       ownershipIcon,
-      orphan,
-      versions,
+      orphans,
+      package_versions,
       cvesOnly,
     } = this.props
 
@@ -54,7 +54,9 @@ class Widget extends PureComponent {
                        bug.keywords.includes("AcceptedFE")? 1:0
       ),
       R.descend(bug => moment.utc(bug.reported).unix())
-    ], bugs).map((bug) => <Bug {...bug} key={bug.url} />)
+    ], bzs).map((bug) => <Bug {...bug} key={bug.url} />)
+
+    //const bugs_items = bzs.map(bug => <Bug {...bug} key={bug.url} />)
     const updates_items = updates.map((update) => (
       <Update {...update} key={title + update.pretty_name} title={title}/>
     ))
@@ -69,22 +71,22 @@ class Widget extends PureComponent {
     const fti_no_src = R.compose(
       R.filter((r) => R.keys(r).length > 0),
       R.map((f) => R.pickBy((v, k) => !k.startsWith("src"), f.problems))
-    )(fti)
+    )(fails_to_install)
 
-    const fti_items = fti.map((f) => <FTI title={title} {...f} key={"fti_" + title + f.release + f.repo} isFTI={fti_no_src.length > 0} />)
+    const fti_items = fails_to_install.map((f) => <FTI title={title} {...f} key={"fti_" + title + f.release + f.repo} isFTI={fti_no_src.length > 0} />)
     const abrt_item = abrt_reports.problems_present? <ABRT {...abrt_reports} pkg={title} /> : null
-    const orphan_badge = orphan.orphaned ? <OrphanBadge since={orphan.problematic_since} /> : null
-    const orphan_impacted_badge = orphan.depends_on_orphaned ? <OrphanImpactedBadge color="danger">Orphan impacted</OrphanImpactedBadge> : null
-    const orphan_item = orphan.depends_on_orphaned? <Orphan {...orphan} title={title}/> : null
-    const fti_src = fti.map(f => R.keys(f.problems).map(p => p.startsWith("src")).some(R.identity)).some(R.identity)
+    const orphan_badge = orphans.orphaned ? <OrphanBadge since={orphans.problematic_since} /> : null
+    const orphan_impacted_badge = orphans.depends_on_orphaned ? <OrphanImpactedBadge color="danger">Orphan impacted</OrphanImpactedBadge> : null
+    const orphan_item = orphans.depends_on_orphaned? <Orphan {...orphans} title={title}/> : null
+    const fti_src = fails_to_install.map(f => R.keys(f.problems).map(p => p.startsWith("src")).some(R.identity)).some(R.identity)
     const ftbfs_badge = (fti_src || koschei.length > 0) ? <FTBadge>FTBFS</FTBadge> : null
     const fti_badge = fti_no_src.length > 0 ? <FTBadge>FTI</FTBadge> : null
 
     const bug_badges = ["Proposed FE", "Accepted FE", "Proposed Blocker", "Accepted Blocker"]
-      .filter(kw => bugs.map(bug => bug.keywords.includes(kw.replace(" ", ""))).some(R.identity))
+      .filter(kw => bzs.map(bug => bug.keywords.includes(kw.replace(" ", ""))).some(R.identity))
       .map(kw => <BBBadge color={kw.includes("Proposed")?"warning":"danger"}>{kw}</BBBadge>)
 
-    const cve_bage = bugs.map(bug => bug.keywords.includes("Security") && bug.keywords.includes("SecurityTracking")).some(R.identity)?
+    const cve_bage = bzs.map(bug => bug.keywords.includes("Security") && bug.keywords.includes("SecurityTracking")).some(R.identity)?
       <BBBadge color="danger">CVE</BBBadge> : null
 
     const orderPrefix = rv => {
@@ -106,7 +108,7 @@ class Widget extends PureComponent {
       R.mapObjIndexed((val, key, obj) => R.toPairs(val)),
       R.pickBy((v,k) => !R.isEmpty(v)),
       R.mapObjIndexed((val, key, obj) => R.pickBy((v, k) => v!==null, val))
-    )(versions)
+    )(package_versions)
 
     const pinIcons = <>
       {R.defaultTo(0, this.props.pinned[title]) !== 1?

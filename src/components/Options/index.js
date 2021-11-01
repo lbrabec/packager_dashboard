@@ -216,16 +216,17 @@ export default connect((state) => {
     options: state.options,
     releases: state.releases,
     groups:
-      state.user_data === undefined || state.user_data.static_info.status !== 200
+      state.dashboard_data === undefined || state.dashboard_data.status !== 200
         ? []
-        : R.keys(state.user_data.static_info.data.group_packages),
+        : R.pipe(
+            R.map(pkg => pkg.maintainers.groups),
+            R.values,
+            R.flatten,
+            R.uniq
+        )(state.dashboard_data.packages),
     has_calendars:
-      state.user_data === undefined || state.user_data.static_info.status !== 200
+      state.dashboard_data === undefined || state.dashboard_data.status !== 200
         ? false
-        : R.compose(
-            R.length,
-            R.keys,
-            R.filter((p) => !R.isNil(p))
-          )(state.user_data.static_info.data.calendars),
+        : R.map(pkg => pkg.data.calendars, state.dashboard_data.packages),
   }
 })(Options)

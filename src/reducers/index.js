@@ -37,8 +37,8 @@ export const defaultOptions = {
 export const showAllOptions = defaultOptions
 
 const defaultState = {
-    user_data: undefined,
-    fasuser: "",
+    dashboard_query: "",
+    dashboard_data: undefined,
     linked_user: {
         is_authenticated: false,
         user: '',
@@ -72,27 +72,21 @@ const defaultState = {
 
 export default (state = defaultState, action) => {
     switch (action.type) {
-        case ActionTypes.SET_USER:
+        case ActionTypes.SET_DASHBOARD_QUERY:
             return {
                 ...state,
-                fasuser: action.payload
+                dashboard_query: action.payload
             }
 
-        case ActionTypes.UNSET_USER:
+        case ActionTypes.UNSET_DASHBOARD_QUERY:
             return defaultState
 
-        case ActionTypes.LOAD_USER:
-            return {
-                ...state,
-                //user_data: undefined
-            }
-
-        case ActionTypes.LOAD_USER_RESP:
+        case ActionTypes.LOAD_DASHBOARD_RESP:
             //drop new payload if user changed
-            return action.payload.forUser === state.fasuser?
+            return action.payload.forQuery === state.dashboard_query?
             {
                 ...state,
-                user_data: action.payload.data
+                dashboard_data: action.payload.data
             }
             :
             {
@@ -177,14 +171,6 @@ export default (state = defaultState, action) => {
                 }
 
             }
-            /*
-            return {
-                ...state,
-                pinned: state.pinned.includes(action.payload)?
-                    state.pinned.filter(p => p !== action.payload)
-                    :
-                    [...state.pinned, action.payload],
-            }*/
 
         case ActionTypes.RESET_OPTIONS:
             return {

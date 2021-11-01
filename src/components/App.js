@@ -9,6 +9,8 @@ import Dashboard from "./Dashboard"
 import DashboardPackage from "./Dashboard/DashboardPackage"
 import Error from "./Error"
 import Help from "./Help"
+import * as QS from 'query-string'
+import * as R from "ramda"
 
 import { throwError, saveToken } from "../actions/reduxActions"
 
@@ -28,19 +30,32 @@ class App extends Component {
           <Route path="/" exact>
             <EntryForm />
           </Route>
-          <Route path="/package/:fasuser" render={(props)=> {
-            return <Dashboard {...props} isPackage={true}/>
+          <Route path="/dashboard" render={(props)=> {
+            const query = QS.parse(window.location.search)
+            console.log(query)
+            const token = query.oidc_token
+            if(token !== undefined) {
+              console.log("received token: " + token)
+              this.props.dispatch(saveToken(token))
+              cookies.set("token", token, { path: "/", sameSite: 'lax' })
+              // redirect to drop oidc_token to not to have it in address bar
+              const redirect = window.location.pathname + '?' + QS.stringify(R.omit(['oidc_token'], query))
+              console.log("redirecting to: ", redirect)
+              return <Redirect to={redirect} />
+            }
+            return <Dashboard {...props} />
           }}/>
+
           <Route path="/packages" render={(props)=> {
             return <DashboardPackage {...props}/>
           }}/>
+
           <Route path="/version.json" onEnter={() => window.location.reload()} />
+
           <Route path="/helpmepls" exact>
             <Help />
           </Route>
-          <Route path='/orphan'>
-            <Redirect to="/user/orphan" />
-          </Route>
+
           <Route path='/callback' render={(props) => {
             const query = new URLSearchParams(props.location.search)
             const token = query.get("oidc_token")
@@ -49,24 +64,10 @@ class App extends Component {
             cookies.set("token", token, { path: "/", sameSite: 'lax' })
             return <Redirect to="/" />
           }} />
-          <Route path="/user/:fasuser" render={(props) => {
-            const query = new URLSearchParams(props.location.search)
-            const token = query.get("oidc_token")
-            if(token !== null) {
-              console.log("received token: " + token)
-              this.props.dispatch(saveToken(token))
-              cookies.set("token", token, { path: "/", sameSite: 'lax' })
-              // redirect to drop url params (i.e. to not to have oidc_token in address bar)
-              return <Redirect to={window.location.pathname} />
-            }
-            return <Dashboard {...props}  isPackage={false}/>
 
-          }} />
-          <Route path='/:fasuser' render={(props) => {
-            // compatibility
-            return <Redirect to={`/user/${props.match.params.fasuser}`} />
-          }
-          } />
+          <Route path='/:fasuser' render={(props) => (<Redirect to={`/dashboard?users=${props.match.params.fasuser}`} />)} />
+          <Route path='/user/:fasuser' render={(props) => (<Redirect to={`/dashboard?users=${props.match.params.fasuser}`} />)} />
+          <Route path='/orphan'><Redirect to="/dashboard?users=orphan" /></Route>
         </Switch>
       </BrowserRouter>
     ) : (

@@ -1,15 +1,45 @@
 import React, { PureComponent } from "react"
 import { connect } from "react-redux"
 import { changeOptionBatch } from "../../actions/reduxActions"
+import * as R from "ramda"
 import * as U from "../../utils"
+import * as QS from 'query-string'
 import $ from "jquery"
 
 import "./stats.css"
 
+const createLabelAndTooltip = (queryString) => {
+  const queryObj = QS.parse(queryString)
+  const users = R.defaultTo("", queryObj.users).split(",").filter(s => s!=="")
+  const groups = R.defaultTo("", queryObj.groups).split(",").filter(s => s!=="")
+
+  if (users.length === 1 && groups.length === 0) {
+    return { label: users[0], tooltip: users[0] }
+  }
+  if (users.length === 0 && groups.length === 1) {
+    return { label: groups[0], tooltip: groups[0] }
+  }
+  if (groups.length === 0) {
+    return { label: "multiple users", tooltip: `users: ${users.join(", ")}` }
+  }
+  if (users.length === 0) {
+    return { label: "multiple groups", tooltip: `groups: ${groups.join(", ")}` }
+  }
+  return {label: "multiple users and groups", tooltip: `users: ${users.join(", ")}<br />groups: ${groups.join(", ")}`}
+}
+
 class Stats extends PureComponent {
   render() {
-    const { static_info } = this.props.user_data
-    const { stats } = this.props
+    const { stats, packages } = this.props
+    const { label, tooltip} = createLabelAndTooltip(window.location.search)
+
+    const packagesCnt = R.pipe(
+      R.values,
+      R.filter(pkg => pkg.maintainers.users.length > 0),
+      R.length
+    )(packages)
+
+    const packagesCntWithGroups = R.values(packages).length
 
     const spinner = this.props.isLoading ? (
       <span className="ml-3 mr-2">
@@ -21,20 +51,27 @@ class Stats extends PureComponent {
       <div className="container pt-4 font-weight-bold">
         <div className="row">
           <div className="col-md-6 text-muted">
-            {this.props.fasuser}:
-            <span
+          <span
               data-toggle="tooltip"
+              data-html="true"
               title=""
-              className="ml-3 mr-2"
-              data-original-title={`${this.props.fasuser} has ${static_info.data.primary_packages.length} packages`}>
-              <i className="fas fa-user mr-1" /> {static_info.data.primary_packages.length}
+              className=""
+              data-original-title={tooltip}>
+              {label}:
             </span>
             <span
               data-toggle="tooltip"
               title=""
               className="ml-3 mr-2"
-              data-original-title={`${this.props.fasuser} has ${static_info.data.packages.length} packages (including groups)`}>
-              <i className="fas fa-users mr-1" /> {static_info.data.packages.length}
+              data-original-title={`${label} has ${packagesCnt} packages`}>
+              <i className="fas fa-user mr-1" /> {packagesCnt}
+            </span>
+            <span
+              data-toggle="tooltip"
+              title=""
+              className="ml-3 mr-2"
+              data-original-title={`${label} has ${packagesCntWithGroups} packages (including groups)`}>
+              <i className="fas fa-users mr-1" /> {packagesCntWithGroups}
             </span>
             <span
               data-toggle="tooltip"
@@ -55,8 +92,8 @@ class Stats extends PureComponent {
             <StatIcon
               category="bugs"
               icon="fa-bug"
-              count={stats.bugs}
-              fulltitle={`${stats.bugs} bugs`}
+              count={stats.bzs}
+              fulltitle={`${stats.bzs} bugs`}
               className="ml-0 ml-md-3 mr-4"
             />
             <StatIcon
@@ -90,8 +127,8 @@ class Stats extends PureComponent {
             <StatIcon
               category="fti"
               icon="fa-file-medical-alt"
-              count={stats.fti}
-              fulltitle={`${stats.fti} fails in fedora-health-check (FTI/FTBFS)`}
+              count={stats.fails_to_install}
+              fulltitle={`${stats.fails_to_install} fails in fedora-health-check (FTI/FTBFS)`}
               className="mr-4"
             />
             <StatIcon
@@ -167,10 +204,10 @@ const StatIcon = connect((state) => ({
 }))(_StatIcon)
 
 const mapStateToProps = (state) => {
-  const { user_data, fasuser, options, releases, server_error } = state
-
+  const { dashboard_data, fasuser, options, releases, server_error } = state
+  const { packages } = dashboard_data
   return {
-    user_data,
+    packages,
     fasuser,
     options,
     releases,
