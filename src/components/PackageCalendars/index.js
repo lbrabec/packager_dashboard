@@ -122,16 +122,17 @@ class PackageCalendars extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { user_data } = state
+  const { dashboard_data } = state
   const { show_calendars } = state.options
 
-  if (user_data === undefined) {
+  if (dashboard_data === undefined) {
     return {
       calendars: [],
+      show_calendars: show_calendars,
     }
   }
 
-  const { calendars } = user_data.static_info.data
+  const calendars = R.map(pkgData => pkgData.data.calendars, dashboard_data.packages)
 
   return {
     calendars,

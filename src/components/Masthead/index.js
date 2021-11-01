@@ -2,7 +2,7 @@ import React, { PureComponent } from "react"
 import { Link } from "react-router-dom"
 import Cookies from "universal-cookie"
 import { connect } from "react-redux"
-import { unsetUser } from "../../actions/reduxActions"
+import { unsetDashboardQuery } from "../../actions/reduxActions"
 import { Parser } from "../../utils/searchparser"
 
 import Options from "../Options"
@@ -31,8 +31,8 @@ class Masthead extends PureComponent {
 
   logout() {
     this.hideToolips()
-    cookies.remove("fasusername", { path: "/", sameSite: 'lax' })
-    this.props.dispatch(unsetUser())
+    cookies.remove("dashboard_query", { path: "/", sameSite: 'lax' })
+    this.props.dispatch(unsetDashboardQuery())
   }
 
   searchHandler(e) {
@@ -51,7 +51,7 @@ class Masthead extends PureComponent {
   }
 
   componentDidMount(){
-    this.setState({cookied_user: cookies.get("fasusername")})
+    this.setState({cookied_user: cookies.get("dashboard_query")})
   }
 
   optionsHandler(e) {
@@ -60,10 +60,10 @@ class Masthead extends PureComponent {
 
   render() {
     const logoLink = this.props.linked_user.is_authenticated?
-    <a href={`/${this.props.linked_user.user}`}><Logo /></a>
+    <a href={`/dashboard?users=${this.props.linked_user.user}`}><Logo /></a>
     :
     this.state.cookied_user !== undefined ?
-      <a href={`/${this.state.cookied_user}`}><Logo /></a>
+      <a href={`/dashboard${this.state.cookied_user}`}><Logo /></a>
       :
       <Logo />
 

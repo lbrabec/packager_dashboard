@@ -4,7 +4,7 @@ import Cookies from "universal-cookie"
 import Logo from "../Logo"
 import { StgAlert } from "../Alerts"
 import Footer from "../Footer"
-import { setUser, loadEnvironment } from "../../actions/reduxActions"
+import { setDashboardQuery, loadEnvironment } from "../../actions/reduxActions"
 import { connect } from "react-redux"
 
 import "./entryform.css"
@@ -18,23 +18,24 @@ class EntryForm extends Component {
   }
 
   handleSubmit(e) {
-    this.props.dispatch(setUser(this.input.current.value))
-    cookies.set("fasusername", this.input.current.value, { path: "/", sameSite: 'lax' })
+    const query = "?users=" + this.input.current.value
+    this.props.dispatch(setDashboardQuery(query))
+    cookies.set("dashboard_query", query, { path: "/", sameSite: 'lax' })
     e.preventDefault()
   }
 
   componentDidMount() {
     this.props.dispatch(loadEnvironment())
 
-    if (cookies.get("fasusername") !== undefined) {
-      console.log("found fasuser in cookies...")
-      this.props.dispatch(setUser(cookies.get("fasusername")))
+    if (cookies.get("dashboard_query") !== undefined) {
+      console.log("found dashboard_query in cookies...")
+      this.props.dispatch(setDashboardQuery(cookies.get("dashboard_query")))
     }
   }
 
   render() {
-    if (this.props.fasuser !== "") {
-      return <Redirect to={"/user/" + this.props.fasuser} />
+    if (this.props.dashboard_query !== "") {
+      return <Redirect to={"/dashboard" + this.props.dashboard_query} />
     }
 
     return (
@@ -74,6 +75,7 @@ class EntryForm extends Component {
 const mapStateToProps = (state) => {
   return {
     fasuser: state.fasuser,
+    dashboard_query: state.dashboard_query,
   }
 }
 

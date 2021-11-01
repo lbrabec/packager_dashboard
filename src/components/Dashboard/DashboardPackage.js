@@ -1,16 +1,6 @@
 import React, { Component } from "react"
-import Cookies from "universal-cookie"
 import DashboardLayout from "./DashboardLayout"
-import DashboardLoading from "./DashboardLoading"
-import Widget from "../Widget"
-import { StgAlert, ServiceAlerts, VersionAlert, NewcomerAlert } from "../Alerts"
-import Stats from "../Stats"
-import Timeline from "../Timeline"
-import PackageCalendars from "../PackageCalendars"
-import ItemsInfo from "./ItemsInfo"
-import ResponsiveMasonry from "../ResponsiveMasonry"
-import ModalNetwork from "../ModalNetwork"
-import * as R from "ramda"
+import { StgAlert, ServiceAlerts, VersionAlert } from "../Alerts"
 import { connect } from "react-redux"
 import {
   loadPackages,
@@ -22,13 +12,9 @@ import {
   loadServiceAlerts,
   loadLinkedUser,
 } from "../../actions/reduxActions"
-import * as U from "../../utils"
 
 import Autosuggest from "react-autosuggest"
 import "./dashboard.css"
-import { min } from "moment"
-
-
 
 const getSuggestions = (packages, value) => {
   const input = value.trim().toLowerCase()

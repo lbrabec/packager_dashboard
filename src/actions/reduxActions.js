@@ -3,61 +3,45 @@ import { defaultOptions } from '../reducers';
 import * as R from "ramda"
 
 
-export const setUser = payload => ({
-    type: ActionTypes.SET_USER,
+export const setDashboardQuery = payload => ({
+    type: ActionTypes.SET_DASHBOARD_QUERY,
     payload: payload
 })
 
-export const unsetUser = payload => ({
-    type: ActionTypes.UNSET_USER,
+export const unsetDashboardQuery = payload => ({
+    type: ActionTypes.UNSET_DASHBOARD_QUERY,
     payload: payload
 })
 
-export const loadUserResp = payload => ({
-    type: ActionTypes.LOAD_USER_RESP,
+export const loadDashboardResp = payload => ({
+    type: ActionTypes.LOAD_DASHBOARD_RESP,
     payload: payload
 })
 
-export const loadUser = payload => (dispatch, getState) => {
+export const loadDashboard = payload => (dispatch, getState) => {
     dispatch({
-        type: ActionTypes.LOAD_USER,
+        type: ActionTypes.LOAD_DASHBOARD,
         payload: payload
     });
 
-    const URL = payload.isPackage?
-        window.env.PACKAGER_DASHBOARD_API + "/package/"
-        :
-        window.env.PACKAGER_DASHBOARD_API
+    const URL = window.env.PACKAGER_DASHBOARD_APIv2 + payload
 
-    fetch(URL + payload.what, {credentials: 'include'})
+    fetch(URL, {credentials: 'include'})
     .then(blob => blob.json())
     .then(data => {
-        dispatch(loadUserResp({
-            forUser: payload.what,
+        dispatch(loadDashboardResp({
+            forQuery: window.location.search,
             data: data
         }))
         dispatch(setServerError(false))
-
-        // retry after 10s if fetched data not complete
-        // and user has not changed meanwhile
-        if(getState().fasuser === payload.what &&
-            //dont refresh on 404
-            data.static_info.status !== 404 &&
-           (//but refresh on 202...
-            data.bzs.status !== 200 ||
-            data.prs.status !== 200 ||
-            data.abrt_reports.status !== 200 ||
-            data.static_info.status !== 200 )){
-            setTimeout(() => dispatch(loadUser({what: payload.what, isPackage: payload.isPackage})), 10000);
-        }
     })
     .catch((error) => {
         console.error('Error:', error);
-        //dispatch(throwError({error: error, reason: ActionTypes.LOAD_USER}))
         //server-side error, retry in 60s
         dispatch(setServerError(true))
-        setTimeout(() => dispatch(loadUser({what: payload.what, isPackage: payload.isPackage})), 60000)
+        setTimeout(() => dispatch(loadDashboard(payload)), 60000)
     });
+
 }
 
 export const changeOption = payload => (dispatch, getState) => {
@@ -66,14 +50,14 @@ export const changeOption = payload => (dispatch, getState) => {
         payload: payload
     })
 
-    // fasuser needs to be set to proper username right now
-    // if not, this will cause a bug when fasuser === ""
+    // dashboard_query needs to be set to proper username right now
+    // if not, this will cause a bug when dashboard_query === ""
     // to prevent this, dashboard shouldn't render unless the
     // username is properly set in global state
-    const { fasuser , options } = getState()
+    const { dashboard_query , options } = getState()
 
     dispatch(saveOptions({
-        fasuser: fasuser,
+        dashboard_query: dashboard_query,
         options: options
     }))
 }
@@ -84,10 +68,10 @@ export const changeOptionBatch = payload => (dispatch, getState) => {
         payload: payload
     })
 
-    const { fasuser, options } = getState()
+    const { dashboard_query, options } = getState()
 
     dispatch(saveOptions({
-        fasuser: fasuser,
+        dashboard_query: dashboard_query,
         options: options
     }))
 }
@@ -98,11 +82,12 @@ export const saveOptions = payload => dispatch => {
         payload: payload
     })
 
-    localStorage.setItem(payload.fasuser, JSON.stringify(payload.options))
+    localStorage.setItem('options_' + payload.dashboard_query, JSON.stringify(payload.options))
 }
 
 export const loadOptions = payload => dispatch => {
-    const options = JSON.parse(localStorage.getItem(payload))
+    const key = 'options_' + window.location.search
+    const options = JSON.parse(localStorage.getItem(key))
 
     dispatch({
         type: ActionTypes.LOAD_OPTIONS,
@@ -111,7 +96,8 @@ export const loadOptions = payload => dispatch => {
 }
 
 export const loadPinned = payload => dispatch => {
-    const pinned = JSON.parse(R.defaultTo("{}", localStorage.getItem(payload + "_pinned")))
+    const key = 'pinned_' + window.location.search
+    const pinned = JSON.parse(R.defaultTo("{}", localStorage.getItem(key)))
 
     dispatch({
         type: ActionTypes.LOAD_PINNED,
@@ -120,12 +106,14 @@ export const loadPinned = payload => dispatch => {
 }
 
 export const savePinned = payload => dispatch => {
+    const key = 'pinned_' + payload.dashboard_query
+
     dispatch({
         type: ActionTypes.SAVE_PINNED,
         payload: payload
     })
 
-    localStorage.setItem(payload.fasuser + "_pinned", JSON.stringify(payload.pinned))
+    localStorage.setItem(key, JSON.stringify(payload.pinned))
 }
 
 export const handlePin = payload => (dispatch, getState) => {
@@ -134,9 +122,9 @@ export const handlePin = payload => (dispatch, getState) => {
         payload: payload
     })
 
-    const { fasuser, pinned } = getState()
+    const { dashboard_query, pinned } = getState()
 
-    dispatch(savePinned({fasuser: fasuser, pinned: pinned}))
+    dispatch(savePinned({dashboard_query: dashboard_query, pinned: pinned}))
 }
 
 export const resetOptions = payload => dispatch => {
