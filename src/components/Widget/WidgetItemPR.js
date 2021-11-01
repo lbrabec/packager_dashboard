@@ -33,7 +33,7 @@ const getMixedBadge = (cis) => {
       </WidgetBadge>
     )
   } else
-  if (results.every((val) => val[1] === "fail")) {
+  if (results.every((val) => val[1] === "fail") || results.every((val) => val[1] === "erro") ) {
     return (
       <WidgetBadge col="col-md-2" type="danger">
         FAIL <i className="fas fa-times-circle"></i>
