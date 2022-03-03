@@ -4,7 +4,8 @@ COPY . ./
 RUN yarn
 RUN yarn build
 RUN sed -i "s#SUBDIR: '.*',#SUBDIR: '${SUBDIR:-/}',#" /app/build/env.js && \
-    sed -i "s#API: '.*'#API: '${API:-https://packager-dashboard.stg.fedoraproject.org/api/v1/}'#" /app/build/env.js
+    sed -i "s#API: '.*'#API: '${API:-https://packager-dashboard.stg.fedoraproject.org/api/v1/}'#" /app/build/env.js && \
+    sed -i "s#APIv2: '.*'#APIv2: '${APIv2:-https://packager-dashboard.stg.fedoraproject.org/api/v2/}'#" /app/build/env.js
 
 
 FROM quay.io/bitnami/nginx
