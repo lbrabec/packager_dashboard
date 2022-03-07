@@ -148,7 +148,7 @@ class DashboardNG extends Component {
         return <Widget
                   title={pkg.name}
                   {...pkg.data}
-                  ownershipIcon={null}
+                  ownershipIcon={UNG.ownershipIcon(pkg)}
                   key={pkg.name}
                   cvesOnly={options.show_cves_only}
                 />

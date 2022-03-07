@@ -1,3 +1,4 @@
+import React from "react"
 import * as R from "ramda"
 
 export const parsedQueryToCanonicalString = ({ users, packages, groups }) => {
@@ -252,4 +253,28 @@ export const pipeLog = (a) => {
   console.log(a)
   console.log("DEBUG *******************")
   return a
+}
+
+export const ownershipIcon = (pkg) => {
+  const users = R.pipe(
+    R.uniq,
+    R.join(", ")
+  )(pkg.maintainers.users)
+  const groups = R.pipe(
+    R.uniq,
+    R.join(", ")
+  )(pkg.maintainers.groups)
+
+  if (pkg.maintainers.users.length > 0 && pkg.maintainers.groups.length > 0) {
+    // direct and group ownership
+    return <i className="fas fa-user-friends mr-1" title={`package owned both by users (${users}) and through groups (${groups})`}></i>
+  }
+
+  if (pkg.maintainers.users.length === 0 && pkg.maintainers.groups.length > 0) {
+    // group ownership only
+    return <i className="fas fa-users mr-1" title={`package owned through groups only (${groups})`}></i>
+  }
+
+  // direct ownership only
+  return <i className="fas fa-user mr-1" title={`package directly owned by users (${users})`}></i>
 }
