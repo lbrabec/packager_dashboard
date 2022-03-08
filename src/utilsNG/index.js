@@ -275,6 +275,11 @@ export const ownershipIcon = (pkg) => {
     return <i className="fas fa-users mr-1" title={`package owned through groups only (${groups})`}></i>
   }
 
-  // direct ownership only
-  return <i className="fas fa-user mr-1" title={`package directly owned by users (${users})`}></i>
+  if (pkg.maintainers.users.length > 0) {
+    // direct ownership only
+    return <i className="fas fa-user mr-1" title={`package directly owned by users (${users})`}></i>
+  }
+
+  // packages explicitly requested using query ?packages=
+  return <i className="fas fa-box-open mr-1" title={`package explicitly requested`}></i>
 }
