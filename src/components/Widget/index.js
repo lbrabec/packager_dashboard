@@ -42,6 +42,8 @@ class Widget extends PureComponent {
       orphans,
       package_versions,
       cvesOnly,
+      isFreeze,
+      branched,
     } = this.props
 
     const bugs_items = R.sortWith([
@@ -58,7 +60,7 @@ class Widget extends PureComponent {
 
     //const bugs_items = bzs.map(bug => <Bug {...bug} key={bug.url} />)
     const updates_items = updates.map((update) => (
-      <Update {...update} key={title + update.pretty_name} title={title}/>
+      <Update {...update} isFreeze={isFreeze} branched={branched} key={title + update.pretty_name} title={title}/>
     ))
     const pull_requests_items = prs.map((pr) => <PR {...pr} key={"pr" + pr.url} />)
     const overrides_items = overrides.map((override) => (

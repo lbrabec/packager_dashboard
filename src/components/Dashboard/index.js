@@ -151,6 +151,8 @@ class DashboardNG extends Component {
                   ownershipIcon={UNG.ownershipIcon(pkg)}
                   key={pkg.name}
                   cvesOnly={options.show_cves_only}
+                  isFreeze={releases.branched_frozen}
+                  branched={releases.branched}
                 />
       })),
     )

@@ -51,6 +51,7 @@ const defaultState = {
         fedora: [],
         epel: [],
         currentFedora: 0,
+        branched_frozen: false,
     },
     schedule: [],
     caching_info: {

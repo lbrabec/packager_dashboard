@@ -153,7 +153,8 @@ export const loadReleases = payload => dispatch => {
         const currentFedora = R.defaultTo(data.fedora.rawhide, data.fedora.branched)
         dispatch({
             type: ActionTypes.LOAD_RELEASES_RESP,
-            payload: { fedora, epel, currentFedora }
+            payload: { fedora, epel, currentFedora,
+                       branched_frozen:data.fedora.branched_frozen, branched:data.fedora.branched }
         })
     })
     .catch((error) => {

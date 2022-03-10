@@ -18,6 +18,25 @@ const karma_color = (karma) => {
   return "text-muted"
 }
 
+const getStableText = (props) => {
+  if (props.stable_by_time === null) {
+    return null
+  }
+
+  const now = moment().utc()
+  const stableTime = moment.utc(props.stable_by_time)
+
+  if (now.isBefore(stableTime)) {
+    return ` goes stable ${stableTime.fromNow()}`
+  } else {
+    if (props.isFreeze && props.release.includes(props.branched)) {
+      return " goes stable after freeze"
+    } else {
+      return ` should have gone stable ${stableTime.fromNow()}`
+    }
+  }
+}
+
 export class Update extends PureComponent {
   constructor(props) {
     super(props)
@@ -35,9 +54,7 @@ export class Update extends PureComponent {
 
   render() {
     const created = moment.utc(this.props.submission_date)
-    const stable = moment.utc(this.props.stable_by_time)
-    const now = moment().utc()
-    const stableText = this.props.stable_by_time !== null? `, ${now.isBefore(stable)? "goes" : "should have gone"} stable ${stable.fromNow()}` : null
+    const stableText = getStableText(this.props)
 
     const data = (
       <>
