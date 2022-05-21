@@ -1,4 +1,4 @@
-FROM quay.io/bitnami/node:10 as react-build
+FROM gcr.io/bitnami-containers/node:12 as react-build
 WORKDIR /app
 COPY . ./
 RUN yarn
@@ -8,7 +8,7 @@ RUN sed -i "s#SUBDIR: '.*',#SUBDIR: '${SUBDIR:-/}',#" /app/build/env.js && \
     sed -i "s#APIv2: '.*'#APIv2: '${APIv2:-https://packager-dashboard.stg.fedoraproject.org/api/v2/}'#" /app/build/env.js
 
 
-FROM quay.io/bitnami/nginx
+FROM gcr.io/bitnami-containers/nginx
 COPY nginx.conf /opt/bitnami/nginx/conf/server_blocks/nginx_packager_dashboard.conf
 COPY --from=react-build /app/build /app
 EXPOSE 8000
