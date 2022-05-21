@@ -64,10 +64,9 @@ class App extends Component {
             cookies.set("token", token, { path: "/", sameSite: 'lax' })
             return <Redirect to="/" />
           }} />
-
-          <Route path='/:fasuser' render={(props) => (<Redirect to={`/dashboard?users=${props.match.params.fasuser}`} />)} />
-          <Route path='/user/:fasuser' render={(props) => (<Redirect to={`/dashboard?users=${props.match.params.fasuser}`} />)} />
           <Route path='/orphan'><Redirect to="/dashboard?users=orphan" /></Route>
+          <Route path='/user/:fasuser' render={(props) => (<Redirect to={`/dashboard?users=${props.match.params.fasuser}`} />)} />
+          <Route path='/:fasuser' render={(props) => (<Redirect to={`/dashboard?users=${props.match.params.fasuser}`} />)} />
         </Switch>
       </BrowserRouter>
     ) : (
