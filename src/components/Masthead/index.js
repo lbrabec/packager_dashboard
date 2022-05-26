@@ -67,6 +67,8 @@ class Masthead extends PureComponent {
       :
       <Logo />
 
+    const isCustom = window.location.pathname === "/custom"
+
     return (
       <div className="masthead navbar py-1 px-0 px-md-2">
         <div className="container px-1 px-md-2">
@@ -106,23 +108,37 @@ class Masthead extends PureComponent {
                   )
                 }
                 <div className="ml-1 ml-md-0 mt-1 ml-md-0">
-                  <span data-toggle="tooltip" title="" data-original-title="Help" className="mr-4">
-                    <Link onClick={this.hideToolips.bind(this)} to="/helpmepls">
-                      <i className="fas fa-question-circle"></i>
-                    </Link>
-                  </span>
+                  {
+                    <span data-toggle="tooltip" title="" data-original-title="Help" className="mr-4">
+                      <Link onClick={this.hideToolips.bind(this)} to="/helpmepls">
+                        <i className="fas fa-question-circle"></i>
+                      </Link>
+                    </span>
+                  }
 
-                  <span data-toggle="tooltip" title="" data-original-title="Options" className="mr-4">
-                    <button type="button" className="btn btn-link mt-n2" data-target="#optionsX" data-toggle="modal" onClick={this.optionsHandler.bind(this)}>
-                      <i className="fas fa-cog"></i>
-                    </button>
-                  </span>
+                  {isCustom? null :
+                    <span data-toggle="tooltip" title="" data-original-title="Options" className="mr-4">
+                      <button type="button" className="btn btn-link mt-n2" data-target="#optionsX" data-toggle="modal" onClick={this.optionsHandler.bind(this)}>
+                        <i className="fas fa-cog"></i>
+                      </button>
+                    </span>
+                  }
 
-                  <span data-toggle="tooltip" title="" data-original-title="Change user/group">
-                    <Link onClick={this.logout.bind(this)} to="/">
-                      <i className="fas fa-sign-out-alt"></i>
-                    </Link>
-                  </span>
+                  {isCustom? null :
+                    <span data-toggle="tooltip" title="" data-original-title="Customize dashboard" className="mr-4">
+                      <Link onClick={this.logout.bind(this)} to={"/custom" + window.location.search}>
+                        <i className="fas fa-edit"></i>
+                      </Link>
+                    </span>
+                  }
+
+                  {isCustom? null :
+                    <span data-toggle="tooltip" title="" data-original-title="Change user/group">
+                      <Link onClick={this.logout.bind(this)} to="/">
+                        <i className="fas fa-sign-out-alt"></i>
+                      </Link>
+                    </span>
+                  }
                 </div>
               </div>
             </div>

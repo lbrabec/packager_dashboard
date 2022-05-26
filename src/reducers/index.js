@@ -258,6 +258,18 @@ export default (state = defaultState, action) => {
                 all_fedora_packages: action.payload
             }
 
+        case ActionTypes.LOAD_PACKAGERS_RESP:
+            return {
+                ...state,
+                all_fedora_packagers: action.payload
+            }
+
+        case ActionTypes.LOAD_GROUPS_RESP:
+            return {
+                ...state,
+                all_fedora_groups: action.payload
+            }
+
         case ActionTypes.LOAD_ONE_PACKAGE_RESP:
             return {
                 ...state,

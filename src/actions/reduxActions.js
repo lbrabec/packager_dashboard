@@ -319,6 +319,44 @@ export const loadPackages = payload => dispatch => {
     });
 }
 
+export const loadPackagers = payload => dispatch => {
+    dispatch({
+        type: ActionTypes.LOAD_PACKAGERS,
+        payload: payload
+    })
+
+    fetch(window.env.PACKAGER_DASHBOARD_API + 'all_fedora_packagers')
+    .then(blob => blob.json())
+    .then(data => {
+        dispatch({
+            type: ActionTypes.LOAD_PACKAGERS_RESP,
+            payload: data
+        })
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
+
+export const loadGroups = payload => dispatch => {
+    dispatch({
+        type: ActionTypes.LOAD_GROUPS,
+        payload: payload
+    })
+
+    fetch(window.env.PACKAGER_DASHBOARD_API + 'all_fedora_groups')
+    .then(blob => blob.json())
+    .then(data => {
+        dispatch({
+            type: ActionTypes.LOAD_GROUPS_RESP,
+            payload: data
+        })
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
+
 export const loadOnePackage = payload => dispatch => {
     dispatch({
         type: ActionTypes.LOAD_ONE_PACKAGE,

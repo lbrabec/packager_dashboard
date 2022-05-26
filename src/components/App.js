@@ -6,7 +6,7 @@ import { connect } from "react-redux"
 
 import EntryForm from "./EntryForm"
 import Dashboard from "./Dashboard"
-import DashboardPackage from "./Dashboard/DashboardPackage"
+import CustomDashboard from "./Dashboard/CustomDashboard"
 import Error from "./Error"
 import Help from "./Help"
 import * as QS from 'query-string'
@@ -46,8 +46,8 @@ class App extends Component {
             return <Dashboard {...props} />
           }}/>
 
-          <Route path="/packages" render={(props)=> {
-            return <DashboardPackage {...props}/>
+          <Route path="/custom" render={(props)=> {
+            return <CustomDashboard {...props}/>
           }}/>
 
           <Route path="/version.json" onEnter={() => window.location.reload()} />

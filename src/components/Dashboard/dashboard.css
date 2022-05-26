@@ -8,8 +8,15 @@
   margin-top: 20vh;
 }
 
+.autosuggest {
+  width: 90%;
+  position: absolute;
+  z-index: 500;
+}
+
 .suggestions {
   max-height: 200px;
+  overflow-x: hidden;
   overflow-y: auto;
   background-color: #fff;
   border-color: rgb(183, 198, 218);
@@ -24,4 +31,13 @@
 
 .suggestions ul li {
   padding-left: 1em;
+}
+
+.pillbox {
+  padding-top: 3.5em;
+}
+
+.remove-item {
+  padding-left: 0.5em;
+  cursor: pointer;
 }
