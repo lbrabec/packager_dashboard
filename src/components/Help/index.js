@@ -3,7 +3,7 @@ import Logo from "../Logo"
 import Footer from "../Footer"
 import Widget from "../Widget"
 import ModalNetwork from "../ModalNetwork"
-import * as U from "../../utils"
+import * as UNG from "../../utilsNG"
 import * as moment from "moment"
 
 import "./help.css"
@@ -196,15 +196,22 @@ const orphan = {
 
 const pkg = {
   name: "foobar",
+  package: "foobar",
+  maintainers: {
+    groups: [],
+    users: ['someuser'],
+  },
   data: {
-    bugs: U.EMPTY_ARRAY,
-    prs: U.EMPTY_ARRAY,
-    updates: U.EMPTY_ARRAY,
-    overrides: U.EMPTY_ARRAY,
-    koschei: U.EMPTY_ARRAY,
-    orphan: U.NOT_ORPHAN,
-    fti: U.EMPTY_ARRAY,
-    abrt_reports: U.NO_ABRT,
+    bzs: UNG.EMPTY_ARRAY,
+    prs: UNG.EMPTY_ARRAY,
+    updates: UNG.EMPTY_ARRAY,
+    overrides: UNG.EMPTY_ARRAY,
+    koschei: UNG.EMPTY_ARRAY,
+    orphans: UNG.NOT_ORPHAN,
+    fails_to_install: UNG.EMPTY_ARRAY,
+    abrt_reports: UNG.NO_ABRT,
+    calendars: [],
+    package_versions: {},
   },
 }
 
@@ -282,17 +289,17 @@ class Help extends Component {
                 </p>
                 <ul>
                   <li>
-                    <a href="/python-sig" target="_blank">
+                    <a href="/dashboard?groups=python-sig" target="_blank">
                       Python SIG
                     </a>
                   </li>
                   <li>
-                    <a href="/churchyard" target="_blank">
+                    <a href="/dashborad?users=churchyard" target="_blank">
                       Miro Hroncok
                     </a>
                   </li>
                   <li>
-                    <a href="/frantisekz" target="_blank">
+                    <a href="/dashboard?users=frantisekz" target="_blank">
                       Frantisek Zatloukal
                     </a>
                   </li>
@@ -366,34 +373,36 @@ class Help extends Component {
                       search input to filter packages by their name, you can use regular
                       expressions and boolean logic:
                       <table>
-                        <tr>
-                          <td>
-                            <span className="text-monospace">&&</span>
-                          </td>
-                          <td>
-                            logical <span className="font-italic">and</span>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <span className="text-monospace">||</span>
-                          </td>
-                          <td>
-                            logical <span className="font-italic">or</span>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <span className="text-monospace">!</span>
-                          </td>
-                          <td>negation</td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <span className="text-monospace pr-4">r/^py.*/</span>
-                          </td>
-                          <td>regex</td>
-                        </tr>
+                        <tbody>
+                          <tr>
+                            <td>
+                              <span className="text-monospace">&&</span>
+                            </td>
+                            <td>
+                              logical <span className="font-italic">and</span>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <span className="text-monospace">||</span>
+                            </td>
+                            <td>
+                              logical <span className="font-italic">or</span>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <span className="text-monospace">!</span>
+                            </td>
+                            <td>negation</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <span className="text-monospace pr-4">r/^py.*/</span>
+                            </td>
+                            <td>regex</td>
+                          </tr>
+                        </tbody>
                       </table>
                       Parentheses also work and you can do complex search expressions such as:<br/>
                       <span className="text-monospace">(rust || golang) && !(bitbucket || github)</span>
@@ -505,15 +514,15 @@ class Help extends Component {
             example uses following color coding:
             <ul>
               <li>
-                <span style={{ "font-weight": "bold", color: "#3c6eb4" }}>blue color</span> for
+                <span style={{ "fontWeight": "bold", color: "#3c6eb4" }}>blue color</span> for
                 packages owned directly by you
               </li>
               <li>
-                <span style={{ "font-weight": "bold", color: "#DC3545" }}>red color</span> for
+                <span style={{ "fontWeight": "bold", color: "#DC3545" }}>red color</span> for
                 packages owned through group
               </li>
               <li>
-                <span style={{ "font-weight": "bold", color: "#8C527D" }}>purple color</span> for
+                <span style={{ "fontWeight": "bold", color: "#8C527D" }}>purple color</span> for
                 packages owned directly and through group
               </li>
             </ul>
@@ -559,7 +568,7 @@ class Help extends Component {
                 </p>
                 <Widget
                   title={pkg.name}
-                  {...{ ...pkg.data, bugs: bugs }}
+                  {...{ ...pkg.data, bzs: bugs }}
                   ownershipIcon={null}
                   versions={version}
                   cvesOnly={false}
@@ -630,7 +639,7 @@ class Help extends Component {
                 </p>
                 <Widget
                   title={pkg.name}
-                  {...{ ...pkg.data, fti: fti }}
+                  {...{ ...pkg.data, fails_to_install: fti }}
                   ownershipIcon={null}
                   versions={version}
                   cvesOnly={false}
@@ -649,7 +658,7 @@ class Help extends Component {
                 </p>
                 <Widget
                   title={pkg.name}
-                  {...{ ...pkg.data, orphan: orphan }}
+                  {...{ ...pkg.data, orphans: orphan }}
                   ownershipIcon={null}
                   versions={version}
                   cvesOnly={false}
