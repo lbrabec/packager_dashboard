@@ -59,7 +59,26 @@ class EntryForm extends Component {
               Go!
             </button>
           </form>
-          <div className="text-muted mt-3">
+
+          <div className="w-50 my-4 d-flex flex-row">
+            <span className="" style={{width: "50%", height: "2.4em"}}>
+              <hr />
+            </span>
+            <span className="px-4 text-muted" style={{height: "2.4em", paddingTop: "5px"}}>
+              <span>or</span>
+            </span>
+            <span className="" style={{width: "50%", height: "2.4em"}}>
+              <hr />
+            </span>
+          </div>
+
+          <div className="mb-4">
+            <a href="/custom" role="button" className="btn btn-outline-secondary">
+              Create your own dashboard
+            </a>
+          </div>
+
+          <div className="text-muted mt-4">
             <a href="/helpmepls">
               Need help?
             </a>
