@@ -41,7 +41,7 @@ class DashboardNonPackager extends PureComponent {
                 <>
                   <h1 className="mt-4">There are no packages for {users} {packages} {groups}</h1>
                   <h4 className="mt-4 ">
-                    <a href="https://fedoraproject.org/wiki/Join_the_package_collection_maintainers" target="_blank" rel="noopener noreferrer">
+                    <a href="https://docs.fedoraproject.org/en-US/package-maintainers/Joining_the_Package_Maintainers/" target="_blank" rel="noopener noreferrer">
                       Become a packager
                     </a>
                   </h4>
