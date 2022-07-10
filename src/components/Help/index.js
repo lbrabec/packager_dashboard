@@ -294,7 +294,7 @@ class Help extends Component {
                     </a>
                   </li>
                   <li>
-                    <a href="/dashborad?users=churchyard" target="_blank">
+                    <a href="/dashboard?users=churchyard" target="_blank">
                       Miro Hroncok
                     </a>
                   </li>
