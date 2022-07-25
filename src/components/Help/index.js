@@ -270,7 +270,7 @@ class Help extends Component {
               <a href="/" className="ml-2 ml-md-0">
                 <Logo className="py-4" />
               </a>
-              <a href="/" className="h4 mr-2 ml-md-0">
+              <a href="#" onClick={() => window.history.back()} className="h4 mr-2 ml-md-0">
                 <i className="fa fa-times" />
               </a>
             </div>

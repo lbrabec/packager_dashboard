@@ -145,7 +145,7 @@ class Widget extends PureComponent {
           <div>
             <h5 className="font-weight-bold d-flex align-items-center">
               <span data-toggle="tooltip" title="" data-html="true" data-original-title={versions_html}>
-                {title}
+                <a href={"https://src.fedoraproject.org/rpms/" + title} target="_blank" rel="noreferrer">{title}</a>
               </span>
               {orphan_badge}
               {ftbfs_badge}
