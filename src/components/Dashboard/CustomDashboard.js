@@ -62,7 +62,8 @@ class CustomDashboard extends Component {
 
   getQuery = () => {
     const query = {
-      users: [...this.state.selected_packagers, ...this.state.selected_groups],
+      users: this.state.selected_packagers,
+      groups: this.state.selected_groups,
       packages: this.state.selected_packages,
     }
 
