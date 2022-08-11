@@ -73,14 +73,14 @@ export class Update extends PureComponent {
         </ul>
       </>
     )
-
+    const article = "eyuioa".includes(this.props.type[0])? "an" : "a"
     return (
       <WidgetCollapsibleRow
         handler={this.collapseToggle.bind(this)}
         id={`update_${this.props.title.replace(".", "_")}_${this.props.updateid}`}
         collapsibleData={data}
         noMargin={true}>
-        <WidgetHead type="This is an enhancement update" icon="fa-bolt">
+        <WidgetHead type={`This is ${article} ${this.props.type} update`} icon="fa-bolt">
           <WidgetTitle fulltitle={this.props.pretty_name}>
             <a target="_blank" rel="noopener noreferrer" href={this.props.url}>{this.props.pretty_name}</a>
           </WidgetTitle>
