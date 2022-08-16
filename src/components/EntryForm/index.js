@@ -11,14 +11,26 @@ import "./entryform.css"
 
 const cookies = new Cookies()
 
+
+
 class EntryForm extends Component {
   constructor(props) {
     super(props)
     this.input = createRef()
   }
 
+  getQuery() {
+    const found = this.input.current.value.match(/(?:sssd-maintainers|.+[-_]sig$)/g)
+
+    if (found !== null) {
+      return "?groups=" + this.input.current.value
+    } else {
+      return "?users=" + this.input.current.value
+    }
+  }
+
   handleSubmit(e) {
-    const query = "?users=" + this.input.current.value
+    const query = this.getQuery()
     this.props.dispatch(setDashboardQuery(query))
     cookies.set("dashboard_query", query, { path: "/", sameSite: 'lax' })
     e.preventDefault()
