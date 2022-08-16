@@ -1,6 +1,6 @@
 import React, { Component } from "react"
-import { Route, Switch, Redirect } from "react-router"
-import { BrowserRouter } from "react-router-dom"
+import { Route, Routes, Navigate } from "react-router"
+import { BrowserRouter, useParams } from "react-router-dom"
 import Cookies from "universal-cookie"
 import { connect } from "react-redux"
 
@@ -16,6 +16,11 @@ import { throwError, saveToken } from "../actions/reduxActions"
 
 const cookies = new Cookies()
 
+const CompatRedirect = (props) => {
+  let { fasuser } = useParams();
+  return <Navigate to={`/dashboard?users=${fasuser}`} />
+}
+
 class App extends Component {
   componentDidCatch(error, info) {
     console.log(error, info)
@@ -23,51 +28,45 @@ class App extends Component {
     this.props.dispatch(throwError({ error: error, reason: info.componentStack }))
   }
 
+  getDashboard() {
+    const query = QS.parse(window.location.search)
+    console.log(query)
+    const token = query.oidc_token
+    if(token !== undefined) {
+      console.log("received token: " + token)
+      this.props.dispatch(saveToken(token))
+      cookies.set("token", token, { path: "/", sameSite: 'lax' })
+      // navigate to drop oidc_token to not to have it in address bar
+      const redirect = window.location.pathname + '?' + QS.stringify(R.omit(['oidc_token'], query))
+      console.log("redirecting to: ", redirect)
+      return <Navigate to={redirect} />
+    }
+    return <Dashboard />
+  }
+
+  getCallback() {
+    const query = new URLSearchParams(window.location.search)
+    const token = query.get("oidc_token")
+    console.log("received token: " + token)
+    this.props.dispatch(saveToken(token))
+    cookies.set("token", token, { path: "/", sameSite: 'lax' })
+    return <Navigate to="/" />
+  }
+
   render() {
     return this.props.error === undefined ? (
       <BrowserRouter basename={window.env.SUBDIR}>
-        <Switch>
-          <Route path="/" exact>
-            <EntryForm />
-          </Route>
-          <Route path="/dashboard" render={(props)=> {
-            const query = QS.parse(window.location.search)
-            console.log(query)
-            const token = query.oidc_token
-            if(token !== undefined) {
-              console.log("received token: " + token)
-              this.props.dispatch(saveToken(token))
-              cookies.set("token", token, { path: "/", sameSite: 'lax' })
-              // redirect to drop oidc_token to not to have it in address bar
-              const redirect = window.location.pathname + '?' + QS.stringify(R.omit(['oidc_token'], query))
-              console.log("redirecting to: ", redirect)
-              return <Redirect to={redirect} />
-            }
-            return <Dashboard {...props} />
-          }}/>
-
-          <Route path="/custom" render={(props)=> {
-            return <CustomDashboard {...props}/>
-          }}/>
-
+        <Routes>
+          <Route path="/" exact element={<EntryForm />} />
+          <Route path="/dashboard" element={<this.getDashboard />}/>
+          <Route path="/custom" element={<CustomDashboard />}/>
           <Route path="/version.json" onEnter={() => window.location.reload()} />
-
-          <Route path="/helpmepls" exact>
-            <Help />
-          </Route>
-
-          <Route path='/callback' render={(props) => {
-            const query = new URLSearchParams(props.location.search)
-            const token = query.get("oidc_token")
-            console.log("received token: " + token)
-            this.props.dispatch(saveToken(token))
-            cookies.set("token", token, { path: "/", sameSite: 'lax' })
-            return <Redirect to="/" />
-          }} />
-          <Route path='/orphan'><Redirect to="/dashboard?users=orphan" /></Route>
-          <Route path='/user/:fasuser' render={(props) => (<Redirect to={`/dashboard?users=${props.match.params.fasuser}`} />)} />
-          <Route path='/:fasuser' render={(props) => (<Redirect to={`/dashboard?users=${props.match.params.fasuser}`} />)} />
-        </Switch>
+          <Route path="/helpmepls" exact element={<Help />} />
+          <Route path='/callback' element={<this.getCallback />} />
+          <Route path='/orphan' element={<Navigate to="/dashboard?users=orphan" />} />
+          <Route path='/user/:fasuser' element={<CompatRedirect />} />
+          <Route path='/:fasuser' element={<CompatRedirect />} />
+        </Routes>
       </BrowserRouter>
     ) : (
       <Error error={this.props.error} />

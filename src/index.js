@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 /*
 import $ from 'jquery';
 import Popper from 'popper.js';
@@ -17,6 +17,8 @@ import './index.css';
 import App from './components/App';
 import * as serviceWorker from './serviceWorker';
 
+const container = document.getElementById('root');
+const root = createRoot(container);
 
 const loggerMiddleware = createLogger();
 const store = createStore(reducer, applyMiddleware(
@@ -24,13 +26,12 @@ const store = createStore(reducer, applyMiddleware(
   loggerMiddleware
 ));
 
-ReactDOM.render(
+root.render(
   <React.StrictMode>
     <Provider store={store}>
       <App />
     </Provider>
-  </React.StrictMode>,
-  document.getElementById('root')
+  </React.StrictMode>
 );
 
 // If you want your app to work offline and load faster, you can change

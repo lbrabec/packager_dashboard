@@ -86,7 +86,7 @@ class Widget extends PureComponent {
 
     const bug_badges = ["Proposed FE", "Accepted FE", "Proposed Blocker", "Accepted Blocker"]
       .filter(kw => bzs.map(bug => bug.keywords.includes(kw.replace(" ", ""))).some(R.identity))
-      .map(kw => <BBBadge color={kw.includes("Proposed")?"warning":"danger"}>{kw}</BBBadge>)
+      .map(kw => <BBBadge key={kw} color={kw.includes("Proposed")?"warning":"danger"}>{kw}</BBBadge>)
 
     const cve_bage = bzs.map(bug => bug.keywords.includes("Security") && bug.keywords.includes("SecurityTracking")).some(R.identity)?
       <BBBadge color="danger">CVE</BBBadge> : null

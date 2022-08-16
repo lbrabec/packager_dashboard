@@ -1,5 +1,5 @@
 import React, { Component, createRef } from "react"
-import { Redirect } from "react-router"
+import { Navigate } from "react-router"
 import Cookies from "universal-cookie"
 import Logo from "../Logo"
 import { StgAlert } from "../Alerts"
@@ -47,7 +47,7 @@ class EntryForm extends Component {
 
   render() {
     if (this.props.dashboard_query !== "") {
-      return <Redirect to={"/dashboard" + this.props.dashboard_query} />
+      return <Navigate to={"/dashboard" + this.props.dashboard_query} />
     }
 
     return (
