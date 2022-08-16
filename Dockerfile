@@ -1,4 +1,4 @@
-FROM gcr.io/bitnami-containers/node:12 as react-build
+FROM gcr.io/bitnami-containers/node:16 as react-build
 WORKDIR /app
 COPY . ./
 RUN yarn
