@@ -54,7 +54,7 @@ class Options extends PureComponent {
       <div className={className}>
         <div className="d-flex justify-content-between">
           <span>
-            <span style={{ fontSize: "1.5em" }}>Options</span>
+            <span style={{ fontSize: "1.5em" }}>Filters and Options</span>
             <button
               className="btn btn-link mt-n1 ml-3 pd-options-reset"
               onClick={() => this.props.dispatch(resetOptions(this.props.fasuser))}>

@@ -225,6 +225,37 @@ const version = {
   },
 }
 
+const abrt_reports = {
+  "outstanding_problems": [
+    {
+      "count": 70629,
+      "crash_function": "__pthread_kill_implementation",
+      "id": 498769,
+      "url": "https://retrace.fedoraproject.org/faf/problems/498769"
+    },
+    {
+      "count": 147273,
+      "crash_function": "_dl_relocate_object",
+      "id": 497633,
+      "url": "https://retrace.fedoraproject.org/faf/problems/497633"
+    },
+    {
+      "count": 136396,
+      "crash_function": "g_log_structured_array",
+      "id": 100696,
+      "url": "https://retrace.fedoraproject.org/faf/problems/100696"
+    },
+    {
+      "count": 106624,
+      "crash_function": "g_log_structured_array",
+      "id": 497939,
+      "url": "https://retrace.fedoraproject.org/faf/problems/497939"
+    }
+  ],
+  "problems_present": true,
+  "retrace_link": "https://retrace.fedoraproject.org/faf/problems/?component_names=gjs&daterange=2022-07-30:2022-08-29"
+}
+
 function Venn(props) {
   return (
     <div style={{ width: 100, margin: "auto" }} className="my-2">
@@ -362,6 +393,12 @@ class Help extends Component {
                       </th>
                       <td>Orphaned or orphan impacted package</td>
                     </tr>
+                    <tr>
+                      <th scope="row">
+                        <i className={`fa fa-chart-area mr-1`} />
+                      </th>
+                      <td>ABRT reports in retrace server</td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -409,7 +446,13 @@ class Help extends Component {
                       <span className="text-monospace">(rust || golang) && !(bitbucket || github)</span>
                     </li>
                     <li>
+                      <i className="fas fa-question-circle"></i> button opens this help
+                    </li>
+                    <li>
                       <i className="fas fa-cog"></i> button, click opens filtering options
+                    </li>
+                    <li>
+                      <i className="fas fa-edit"></i> button to customize the dashboard
                     </li>
                     <li>
                       <i className="fas fa-sign-out-alt"></i> button to swich users
@@ -433,10 +476,28 @@ class Help extends Component {
                         <span
                           data-toggle="tooltip"
                           title=""
-                          data-original-title="Options"
+                          data-original-title="Help"
+                          className="mr-4">
+                          <button type="button" className="btn btn-link">
+                            <i className="fas fa-question-circle"></i>
+                          </button>
+                        </span>
+                        <span
+                          data-toggle="tooltip"
+                          title=""
+                          data-original-title="Filters and Options"
                           className="mr-4">
                           <button type="button" className="btn btn-link" data-target="#options" data-toggle="modal">
                             <i className="fas fa-cog"></i>
+                          </button>
+                        </span>
+                        <span
+                          data-toggle="tooltip"
+                          title=""
+                          data-original-title="Customize dashboard"
+                          className="mr-4">
+                          <button type="button" className="btn btn-link">
+                            <i className="fas fa-edit"></i>
                           </button>
                         </span>
                         <span
@@ -507,6 +568,13 @@ class Help extends Component {
                   data-original-title="1 packages orphaned">
                   <i className={`fa fa-user-slash mr-1`} /> 1
                 </span>
+                <span
+                  data-toggle="tooltip"
+                  title=""
+                  className={`text-nowrap pointer text-muted font-weight-bold mr-4`}
+                  data-original-title="2 outstanding ABRT reports">
+                  <i className={`fa fa-chart-area mr-1`} /> 2
+                </span>
               </div>
             </div>
             <hr />
@@ -565,7 +633,8 @@ class Help extends Component {
                   The item shows bug summary, time from the last activity, release, number of
                   comments, bug status (new, assigned, ...) and priority/severity of the bug
                   (L&nbsp;-&nbsp; low, M&nbsp;-&nbsp;medium, H&nbsp;-&nbsp;high,
-                  U&nbsp;-&nbsp;urgent)
+                  U&nbsp;-&nbsp;urgent). Use Filters and Options (<i className="fas fa-cog"></i> button in the top bar)
+                  to filter bugs by severity/priority, bug status, and bug keywords.
                 </p>
                 <Widget
                   title={pkg.name}
@@ -660,6 +729,20 @@ class Help extends Component {
                 <Widget
                   title={pkg.name}
                   {...{ ...pkg.data, orphans: orphan }}
+                  ownershipIcon={null}
+                  versions={version}
+                  cvesOnly={false}
+                />
+
+                <h3 className="mt-4">Reported ABRT problems</h3>
+                <p>
+                  Problems reported to retrace server by Automatic Bug Reporting Tool (ABRT) are
+                  indicated by this item. If there are outlying problems present (high count of
+                  occurence) this item becomes expandable with list of links to those problems.
+                </p>
+                <Widget
+                  title={pkg.name}
+                  {...{ ...pkg.data, abrt_reports: abrt_reports }}
                   ownershipIcon={null}
                   versions={version}
                   cvesOnly={false}

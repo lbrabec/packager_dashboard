@@ -117,7 +117,7 @@ class Masthead extends PureComponent {
                   }
 
                   {isCustom? null :
-                    <span data-toggle="tooltip" title="" data-original-title="Options" className="mr-4">
+                    <span data-toggle="tooltip" title="" data-original-title="Filters and Options" className="mr-4">
                       <button type="button" className="btn btn-link mt-n2" data-target="#optionsX" data-toggle="modal" onClick={this.optionsHandler.bind(this)}>
                         <i className="fas fa-cog"></i>
                       </button>
