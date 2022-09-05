@@ -41,6 +41,12 @@ class Stats extends PureComponent {
 
     const packagesCntWithGroups = R.values(packages).length
 
+    const packagesCntWithGroupsOnly = R.pipe(
+      R.values,
+      R.filter(pkg => pkg.maintainers.users.length === 0 && pkg.maintainers.groups.length > 0),
+      R.length
+    )(packages)
+
     const spinner = this.props.isLoading ? (
       <span className="ml-3 mr-2">
         <i className="fas fa-sync-alt fa-spin"></i>
@@ -71,7 +77,14 @@ class Stats extends PureComponent {
               title=""
               className="ml-3 mr-2"
               data-original-title={`${label} has ${packagesCntWithGroups} packages (including groups)`}>
-              <i className="fas fa-users mr-1" /> {packagesCntWithGroups}
+              <i className="fas fa-user-friends mr-1" /> {packagesCntWithGroups}
+            </span>
+            <span
+              data-toggle="tooltip"
+              title=""
+              className="ml-3 mr-2"
+              data-original-title={`${label} has ${packagesCntWithGroupsOnly} packages (through groups only)`}>
+              <i className="fas fa-users mr-1" /> {packagesCntWithGroupsOnly}
             </span>
             <span
               data-toggle="tooltip"
