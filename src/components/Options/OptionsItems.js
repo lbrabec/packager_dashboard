@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 import * as R from "ramda"
-import { CustomCheckbox, GroupTriSwitch } from "./OptionsLayout"
+import { CustomCheckbox, GroupTriSwitch, GroupSwitch } from "./OptionsLayout"
 
 class _ReleasesBlock extends Component {
   render() {
@@ -140,52 +140,90 @@ class _GroupBlock extends Component {
       return (null)
     }
 
-    const groupSwitches = this.props.groups.map((group) => (
-      <GroupTriSwitch
-        name={group}
-        value={R.defaultTo("always", this.props.show_groups[group])}
-        handler={this.props.handler}
-        key={group}>
-        <div className="font-weight-bold">{group}</div>
-      </GroupTriSwitch>
-    ))
+    if (this.props.groupsOnly) {
+      const groupSwitches = this.props.groups.map((group) => (
+        <GroupSwitch
+          name={group}
+          value={R.defaultTo("always", this.props.show_groups[group])}
+          handler={this.props.handler}
+          key={group}>
+          <div className="font-weight-bold">{group}</div>
+        </GroupSwitch>
+      ))
 
-    return (
-      <div>
-        <h5>Groups</h5>
-        <div className="row no-gutters mb-1">
-          <div className="col-1">
-            <span
-              className=""
-              data-toggle="tooltip"
-              title=""
-              data-original-title="Include all packages maintained by this group regardless of my direct package relationship">
-              <i className="fas fa-users mr-1"></i>
-            </span>
+      return (
+        <>
+          <div className="row no-gutters mb-1">
+            <div className="col-1">
+              <span
+                style={{ paddingLeft: "2px" }}
+                className=""
+                data-toggle="tooltip"
+                title=""
+                data-original-title="Show packages from this group">
+                <i className="fas fa-eye mr-1"></i>
+              </span>
+            </div>
+            <div className="col-1">
+              <span
+                style={{ paddingLeft: "0px" }}
+                data-toggle="tooltip"
+                title=""
+                data-original-title="Hide packages from this group">
+                <i className="fas fa-eye-slash"></i>
+              </span>
+            </div>
           </div>
-          <div className="col-1">
-            <span
-              style={{ paddingLeft: "2px" }}
-              className=""
-              data-toggle="tooltip"
-              title=""
-              data-original-title="Include packages that I directly maintain regardless of their relationship to this group">
-              <i className="fas fa-user mr-1"></i>
-            </span>
+          {groupSwitches}
+        </>
+      )
+    } else {
+      const groupSwitches = this.props.groups.map((group) => (
+        <GroupTriSwitch
+          name={group}
+          value={R.defaultTo("always", this.props.show_groups[group])}
+          handler={this.props.handler}
+          key={group}>
+          <div className="font-weight-bold">{group}</div>
+        </GroupTriSwitch>
+      ))
+
+      return (
+        <div>
+          <div className="row no-gutters mb-1">
+            <div className="col-1">
+              <span
+                className=""
+                data-toggle="tooltip"
+                title=""
+                data-original-title="Include all packages maintained by this group regardless of my direct package relationship">
+                <i className="fas fa-users mr-1"></i>
+              </span>
+            </div>
+            <div className="col-1">
+              <span
+                style={{ paddingLeft: "2px" }}
+                className=""
+                data-toggle="tooltip"
+                title=""
+                data-original-title="Include packages that I directly maintain regardless of their relationship to this group">
+                <i className="fas fa-user mr-1"></i>
+              </span>
+            </div>
+            <div className="col-1">
+              <span
+                style={{ paddingLeft: "0px" }}
+                data-toggle="tooltip"
+                title=""
+                data-original-title="Exclude all packages maintained by this group regardless of my direct package relationship">
+                <i className="fas fa-eye-slash"></i>
+              </span>
+            </div>
           </div>
-          <div className="col-1">
-            <span
-              style={{ paddingLeft: "0px" }}
-              data-toggle="tooltip"
-              title=""
-              data-original-title="Exclude all packages maintained by this group regardless of my direct package relationship">
-              <i className="fas fa-eye-slash"></i>
-            </span>
-          </div>
+          {groupSwitches}
         </div>
-        {groupSwitches}
-      </div>
-    )
+      )
+    }
   }
 }
 

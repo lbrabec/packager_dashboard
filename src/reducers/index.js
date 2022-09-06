@@ -30,6 +30,7 @@ export const defaultOptions = {
     show_groups: {},
     show_releases: {},
     show_abrt_reports: true,
+    show_groups_only: false,
 }
 
 // placeholder for now, but in the future

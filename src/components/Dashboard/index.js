@@ -114,7 +114,13 @@ class DashboardNG extends Component {
       UNG.convertToPDStyle,
     )(dashboard_data.packages)
 
-    const excludedPackages = R.pipe(
+    const excludedPackages = options.show_groups_only?
+    R.pipe(
+      R.filter((pkg) => pkg.maintainers.users.length !== 0),
+      R.map(R.prop("name")),
+    )(packages)
+    :
+    R.pipe(
       R.filter((pkg) => pkg.maintainers.groups.map(group => options.show_groups[group] === "never").some(R.identity)),
       R.map(R.prop("name")),
     )(packages)

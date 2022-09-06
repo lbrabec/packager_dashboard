@@ -46,6 +46,8 @@ class Options extends PureComponent {
       show_koschei,
       show_fti,
       show_abrt_reports,
+
+      show_groups_only,
     } = this.props.options
 
     const className = "pd-options " + (this.props.show ? "pd-options-shown" : "pd-options-hidden")
@@ -202,7 +204,11 @@ class Options extends PureComponent {
           </OptionsSwitch>
 
           <hr />
-          <GroupBlock groups={this.props.groups} handler={this.handle("group")} />
+          <h5>Groups</h5>
+          <OptionsSwitch name="show_groups_only" value={show_groups_only} handler={this.handle("general")}>
+            <div className="font-weight-bold mb-2">Show groups only</div>
+          </OptionsSwitch>
+          <GroupBlock groups={this.props.groups} handler={this.handle("group")} groupsOnly={this.props.options.show_groups_only}/>
         </form>
       </div>
     )

@@ -96,3 +96,34 @@ export class GroupTriSwitch extends Component {
     )
   }
 }
+
+export class GroupSwitch extends Component {
+  render() {
+    //compatibility with tri switch
+    const value = this.props.value === "mine"? "never" : this.props.value
+
+    return (
+      <div className="row no-gutters">
+        <div className="col-1">
+          <CustomRadio
+            name={this.props.name}
+            handler={this.props.handler}
+            type="always"
+            value={value}></CustomRadio>
+        </div>
+        <div className="col-1">
+          <CustomRadio
+            name={this.props.name}
+            handler={this.props.handler}
+            type="never"
+            value={value}></CustomRadio>
+        </div>
+        <div className="col-auto">
+          <div className="">
+            <label>{this.props.children}</label>
+          </div>
+        </div>
+      </div>
+    )
+  }
+}
