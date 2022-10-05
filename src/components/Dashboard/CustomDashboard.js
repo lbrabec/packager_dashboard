@@ -57,7 +57,10 @@ class CustomDashboard extends Component {
       selected_packages: query['packages']? query['packages'].split(",") : [],
       selected_packagers: query['users']? query['users'].split(",") : [],
       selected_groups: query['groups']? query['groups'].split(",") : [],
+      required_acl: query['required_acl']? query['required_acl'] : "commit",
     }
+
+    console.log(this.state)
   }
 
   getQuery = () => {
@@ -65,6 +68,9 @@ class CustomDashboard extends Component {
       users: this.state.selected_packagers,
       groups: this.state.selected_groups,
       packages: this.state.selected_packages,
+    }
+    if (this.state.required_acl !== "commit") {
+      query.required_acl = this.state.required_acl
     }
 
     return QS.stringify(query, {arrayFormat: 'comma'})
@@ -104,6 +110,16 @@ class CustomDashboard extends Component {
       })
     }
     this.onSuggestionsClearRequested(what)()
+  }
+
+  handleACL = (e) => {
+    console.log(e.target.value)
+    this.setState({
+      required_acl: e.target.value
+    }, () => {
+      const url = "/custom?" + this.getQuery()
+      window.history.pushState({}, "", url)
+    })
   }
 
   removeItem = (what, val) => () => {
@@ -204,6 +220,19 @@ class CustomDashboard extends Component {
                     <i className="fas fa-check"></i>
                   </a>
                 </div>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-2 pb-4">
+              <div className="form-group">
+                <label htmlFor="ACLSelect" className="font-weight-bold text-muted">
+                  Required ACL
+                </label>
+                <select className="form-control" id="ACLSelect" onChange={this.handleACL} value={this.state.required_acl}>
+                  <option value="commit">commit</option>
+                  <option value="admin">admin</option>
+                </select>
               </div>
             </div>
           </div>
