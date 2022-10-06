@@ -72,20 +72,29 @@ class DashboardNG extends Component {
     this.searchTimeout = setTimeout(() => this.setState({ searchAST: AST }), 500)
   }
 
-  setRefresh(what, func, param=undefined) {
+  setRefresh(what, func, param=undefined, interval=window.env.REFRESH_INTERVAL) {
     if (this.refreshInterval[what] === undefined) {
-      console.log(`Spawning periodic refersh for ${what}, interval is ${window.env.REFRESH_INTERVAL/1000} seconds.`)
+      console.log(`Spawning periodic refersh for ${what}, interval is ${interval/1000} seconds.`)
       this.refreshInterval[what] = setInterval(() => {
         this.props.dispatch(func(param))
-      }, window.env.REFRESH_INTERVAL)
+      }, interval)
     }
   }
 
   scheduleRefresh(isLoading) {
     if (!isLoading){
-      // loading user can take some time, start refresh only
+      // loading user can take some time, start periodic refresh only
       // when the first load is finished
+      console.log("200, setting up standard periodic refresh")
+      clearInterval(this.refreshInterval['loadDashboard'])
+      this.refreshInterval['loadDashboard'] = undefined
       this.setRefresh('loadDashboard', loadDashboard, window.location.search)
+    } else {
+      // otherwise try in a short time
+      console.log("202, loading again in 30 seconds")
+      clearInterval(this.refreshInterval['loadDashboard'])
+      this.refreshInterval['loadDashboard'] = undefined
+      this.setRefresh('loadDashboard', loadDashboard, window.location.search, 1000 * 30)
     }
     this.setRefresh('loadSchedule', loadSchedule)
     this.setRefresh('loadReleases', loadReleases)
@@ -97,7 +106,7 @@ class DashboardNG extends Component {
   render() {
     if (this.props.dashboard_query === "" ||
         this.props.dashboard_data === undefined ||
-        this.props.dashboard_data.status > 202) { // hm? ask frantisek
+        this.props.dashboard_data.status > 202) {
           return <DashboardLoading serverError={this.props.server_error} />
     }
 
