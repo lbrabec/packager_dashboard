@@ -5,7 +5,7 @@ import * as U from "../../utils"
 
 import { ReleasesBlock, BugStatusGrid, BugKeywordsGrid, GroupBlock } from "./OptionsItems"
 import { CustomCheckbox, OptionsSwitch } from "./OptionsLayout"
-import { changeOption, resetOptions } from "../../actions/reduxActions"
+import { changeOption, resetOptions, loadDashboard, setDashboardQuery } from "../../actions/reduxActions"
 import "./options.css"
 
 
@@ -14,6 +14,7 @@ class Options extends PureComponent {
     super(props)
 
     this.handle = this.handle.bind(this)
+    this.handleACL = this.handleACL.bind(this)
   }
 
   handle(changeType) {
@@ -26,6 +27,21 @@ class Options extends PureComponent {
           value: U.valueOfInput(e.target),
         })
       )
+    }
+  }
+
+  handleACL(e) {
+    if (window.location.search.includes("&required_acl=admin")) {
+      const query = window.location.search.replace("&required_acl=admin", "")
+      const url = "/dashboard" + query
+      this.props.dispatch(setDashboardQuery(query))
+      this.props.dispatch(loadDashboard(query))
+      window.history.pushState({}, "", url)
+    } else {
+      const url = "/dashboard" + window.location.search + "&required_acl=admin"
+      this.props.dispatch(setDashboardQuery(window.location.search+"&required_acl=admin"))
+      this.props.dispatch(loadDashboard(window.location.search+"&required_acl=admin"))
+      window.history.pushState({}, "", url)
     }
   }
 
@@ -205,9 +221,21 @@ class Options extends PureComponent {
 
           <hr />
           <h5>Groups</h5>
-          <OptionsSwitch name="show_groups_only" value={show_groups_only} handler={this.handle("general")}>
-            <div className="font-weight-bold mb-2">Show groups only</div>
-          </OptionsSwitch>
+          <label htmlFor="group_acl">Required ACL</label>
+          <div className="pb-2">
+            <select id="group_acl" className="custom-select" value={window.location.search.includes("&required_acl=admin")? "admin" : "commit"}
+              onChange={this.handleACL}>
+              <option value="commit">commit</option>
+              <option value="admin">admin</option>
+            </select>
+          </div>
+          {
+            (window.location.search.includes("packages") || window.location.search.includes("users")) && (
+              <OptionsSwitch name="show_groups_only" value={show_groups_only} handler={this.handle("general")}>
+                <div className="font-weight-bold mb-2">Show groups only</div>
+              </OptionsSwitch>
+            )
+          }
           <GroupBlock groups={this.props.groups} handler={this.handle("group")} groupsOnly={this.props.options.show_groups_only}/>
         </form>
       </div>
