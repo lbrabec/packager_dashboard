@@ -106,12 +106,17 @@ class Options extends PureComponent {
           </OptionsSwitch>
 
           {this.props.has_calendars ? (
+            <>
             <OptionsSwitch
               name="show_calendars"
               value={show_calendars}
               handler={this.handle("general")}>
               <div className="font-weight-bold">Show Package Calendars</div>
             </OptionsSwitch>
+            <a href="https://pagure.io/package-calendars/" className="pl-as-switch" target="_blank" rel="noreferrer">
+              add calendars
+            </a>
+            </>
           ) : null}
 
           <hr />
