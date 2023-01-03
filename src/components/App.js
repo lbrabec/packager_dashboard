@@ -31,6 +31,10 @@ class App extends Component {
   getDashboard() {
     const query = QS.parse(window.location.search)
     console.log(query)
+    if (R.isEmpty(query)) {
+      console.log("query is empty, redirecting to /")
+      return <Navigate to="/" />
+    }
     const token = query.oidc_token
     if(token !== undefined) {
       console.log("received token: " + token)
