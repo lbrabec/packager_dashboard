@@ -65,7 +65,7 @@ class Masthead extends PureComponent {
     this.state.cookied_user !== undefined ?
       <a href={`/dashboard${this.state.cookied_user}`}><Logo /></a>
       :
-      <Logo />
+      <a href="/"><Logo /></a>
 
     const isCustom = window.location.pathname === "/custom"
 
