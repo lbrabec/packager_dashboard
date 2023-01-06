@@ -1,15 +1,15 @@
 import React, { PureComponent } from "react"
 import { connect } from "react-redux"
 import { changeOptionBatch } from "../../actions/reduxActions"
+import queryString from 'query-string'
 import * as R from "ramda"
 import * as U from "../../utils"
-import * as QS from 'query-string'
 import $ from "jquery"
 
 import "./stats.css"
 
-const createLabelAndTooltip = (queryString) => {
-  const queryObj = QS.parse(queryString)
+const createLabelAndTooltip = (queryStringParam) => {
+  const queryObj = queryString.parse(queryStringParam)
   const users = R.defaultTo("", queryObj.users).split(",").filter(s => s!=="")
   const groups = R.defaultTo("", queryObj.groups).split(",").filter(s => s!=="")
 

@@ -9,7 +9,7 @@ import Dashboard from "./Dashboard"
 import CustomDashboard from "./Dashboard/CustomDashboard"
 import Error from "./Error"
 import Help from "./Help"
-import * as QS from 'query-string'
+import queryString from 'query-string'
 import * as R from "ramda"
 
 import { throwError, saveToken } from "../actions/reduxActions"
@@ -29,7 +29,7 @@ class App extends Component {
   }
 
   getDashboard() {
-    const query = QS.parse(window.location.search)
+    const query = queryString.parse(window.location.search)
     console.log(query)
     if (R.isEmpty(query)) {
       console.log("query is empty, redirecting to /")
@@ -41,7 +41,7 @@ class App extends Component {
       this.props.dispatch(saveToken(token))
       cookies.set("token", token, { path: "/", sameSite: 'lax' })
       // navigate to drop oidc_token to not to have it in address bar
-      const redirect = window.location.pathname + '?' + QS.stringify(R.omit(['oidc_token'], query))
+      const redirect = window.location.pathname + '?' + queryString.stringify(R.omit(['oidc_token'], query))
       console.log("redirecting to: ", redirect)
       return <Navigate to={redirect} />
     }

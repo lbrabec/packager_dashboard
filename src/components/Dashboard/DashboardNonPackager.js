@@ -3,10 +3,10 @@ import DashboardLayout from "./DashboardLayout"
 import { connect } from "react-redux"
 
 import * as R from "ramda"
-import * as QS from "query-string"
+import queryString from "query-string"
 
 const getQueryText = () => {
-  const query = QS.parse(window.location.search)
+  const query = queryString.parse(window.location.search)
   const nicer = R.pipe(
     (what) => R.defaultTo("", query[what]),
     R.split(","),

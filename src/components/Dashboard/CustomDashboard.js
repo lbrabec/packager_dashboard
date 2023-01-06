@@ -14,7 +14,7 @@ import {
   loadServiceAlerts,
   loadLinkedUser,
 } from "../../actions/reduxActions"
-import * as QS from 'query-string'
+import queryString from 'query-string'
 import Autosuggest from "react-autosuggest"
 import "./dashboard.css"
 
@@ -43,7 +43,7 @@ class CustomDashboard extends Component {
   constructor(props) {
     super(props)
 
-    const query = QS.parse(window.location.search)
+    const query = queryString.parse(window.location.search)
     this.searchTimeout = undefined
     this.state = {
       value_packages: "",
@@ -73,7 +73,7 @@ class CustomDashboard extends Component {
       query.required_acl = this.state.required_acl
     }
 
-    return QS.stringify(query, {arrayFormat: 'comma'})
+    return queryString.stringify(query, {arrayFormat: 'comma'})
   }
 
   onChange = (what) => (event, { newValue }) => {
