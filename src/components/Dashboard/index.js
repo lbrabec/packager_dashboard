@@ -63,6 +63,8 @@ class DashboardNG extends Component {
 
     this.props.dispatch(loadOptions(window.location.search))
     this.props.dispatch(loadPinned(window.location.search))
+
+    this.scheduleRefresh()
   }
 
   searchHandler(AST) {
@@ -81,21 +83,20 @@ class DashboardNG extends Component {
     }
   }
 
-  scheduleRefresh(isLoading) {
-    if (!isLoading){
-      // loading user can take some time, start periodic refresh only
-      // when the first load is finished
-      console.log("200, setting up standard periodic refresh")
-      clearInterval(this.refreshInterval['loadDashboard'])
-      this.refreshInterval['loadDashboard'] = undefined
-      this.setRefresh('loadDashboard', loadDashboard, window.location.search)
-    } else {
-      // otherwise try in a short time
-      console.log("202, loading again in 30 seconds")
-      clearInterval(this.refreshInterval['loadDashboard'])
-      this.refreshInterval['loadDashboard'] = undefined
-      this.setRefresh('loadDashboard', loadDashboard, window.location.search, 1000 * 30)
-    }
+  scheduleRefresh() {
+    this.setRefresh('loadDashboard', loadDashboard, window.location.search, 1000*30)
+    var watchDogInterval = setInterval(() => {
+      console.log("watchdog is checking")
+      const isLoading = this.props.server_error || this.props.dashboard_data === undefined || this.props.dashboard_data.status !== 200
+      if (!isLoading) {
+        console.log("200, setting up standard periodic refresh")
+        clearInterval(this.refreshInterval['loadDashboard'])
+        this.refreshInterval['loadDashboard'] = undefined
+        this.setRefresh('loadDashboard', loadDashboard, window.location.search)
+        clearInterval(watchDogInterval)
+        console.log("watchdog exiting")
+      }
+    }, 1000)
     this.setRefresh('loadSchedule', loadSchedule)
     this.setRefresh('loadReleases', loadReleases)
     this.setRefresh('loadCachingInfo', loadCachingInfo)
@@ -117,7 +118,6 @@ class DashboardNG extends Component {
     const { options, dashboard_data, pinned, releases } = this.props
 
     const isLoading = this.props.server_error || this.props.dashboard_data.status !== 200
-    this.scheduleRefresh(isLoading)
 
     const packages = R.pipe(
       UNG.convertToPDStyle,
