@@ -180,7 +180,7 @@ class DashboardNG extends Component {
       options,
       filteredCntPerCategory,
       unfilteredCntPerCategory
-    )
+    ) || (packageCardsStashed[0].length + packageCardsStashed[1].length > 0 && !options.show_stashed)
 
     const shownPackages = packageCardsPinned[0].length + packageCardsPinned[1].length +
                           packageCardsNormal[0].length + packageCardsNormal[1].length +
@@ -201,7 +201,8 @@ class DashboardNG extends Component {
         <PackageCalendars />
         <ResponsiveMasonry items={packageCardsPinned} />
         <ResponsiveMasonry items={packageCardsNormal} />
-        <ResponsiveMasonry items={packageCardsStashed} />
+        {options.show_stashed && <ResponsiveMasonry items={packageCardsStashed} />}
+
         <ItemsInfo
           hiddenDueFiltering={hiddenDueFiltering}
           shownPackages={shownPackages}

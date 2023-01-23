@@ -49,6 +49,7 @@ class Options extends PureComponent {
     const {
       show_schedule,
       show_calendars,
+      show_stashed,
       show_bugs,
       show_cves_only,
       bug_min_priority_severity,
@@ -118,6 +119,13 @@ class Options extends PureComponent {
             </a>
             </>
           ) : null}
+
+          <OptionsSwitch
+            name="show_stashed"
+            value={show_stashed}
+            handler={this.handle("general")}>
+            <div className="font-weight-bold">Show stashed packages</div>
+          </OptionsSwitch>
 
           <hr />
 
