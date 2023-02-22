@@ -1,4 +1,5 @@
 import React, { Component } from "react"
+import { Navigate } from "react-router"
 import Cookies from "universal-cookie"
 import DashboardLayout from "./DashboardLayout"
 import DashboardNonPackager from "./DashboardNonPackager"
@@ -19,6 +20,7 @@ import { loadOptions, loadPinned, loadReleases, loadSchedule, loadCachingInfo, l
 import * as U from "../../utils"
 import { showAllOptions } from "../../reducers"
 import "./dashboard.css"
+import queryString from 'query-string'
 
 import * as UNG from "../../utilsNG"
 
@@ -105,6 +107,12 @@ class DashboardNG extends Component {
   }
 
   render() {
+    const query = queryString.parse(window.location.search)
+    if (R.isEmpty(query)) {
+      console.log("query is empty, redirecting to /")
+      return <Navigate to="/" />
+    }
+
     if (this.props.dashboard_query === "" ||
         this.props.dashboard_data === undefined ||
         this.props.dashboard_data.status > 202) {

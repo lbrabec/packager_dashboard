@@ -1,7 +1,7 @@
 window.env = {
     SUBDIR: '/',
-    API: 'https://packager-dashboard.stg.fedoraproject.org/api/v1/',
-    APIv2: 'https://packager-dashboard.stg.fedoraproject.org/api/v2/',
+    API: 'https://packager-dashboard.fedoraproject.org/api/v1/',
+    APIv2: 'https://packager-dashboard.fedoraproject.org/api/v2/',
     REFRESH_INTERVAL: 1000*60*15,
 };
 

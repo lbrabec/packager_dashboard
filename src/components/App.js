@@ -58,11 +58,21 @@ class App extends Component {
   }
 
   render() {
+    const query = queryString.parse(window.location.search)
+    console.log(query)
+    const token = query.oidc_token
+    console.log("token:" + token)
+    if(token !== undefined) {
+      console.log("received token: " + token)
+      this.props.dispatch(saveToken(token))
+      cookies.set("token", token, { path: "/", sameSite: 'lax' })
+    }
+
     return this.props.error === undefined ? (
       <BrowserRouter basename={window.env.SUBDIR}>
         <Routes>
           <Route path="/" exact element={<EntryForm />} />
-          <Route path="/dashboard" element={<this.getDashboard />}/>
+          <Route path="/dashboard" element={<Dashboard />}/>
           <Route path="/custom" element={<CustomDashboard />}/>
           <Route path="/version.json" onEnter={() => window.location.reload()} />
           <Route path="/helpmepls" exact element={<Help />} />
