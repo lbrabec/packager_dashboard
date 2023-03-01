@@ -59,13 +59,12 @@ class App extends Component {
 
   render() {
     const query = queryString.parse(window.location.search)
-    console.log(query)
     const token = query.oidc_token
-    console.log("token:" + token)
     if(token !== undefined) {
       console.log("received token: " + token)
       this.props.dispatch(saveToken(token))
       cookies.set("token", token, { path: "/", sameSite: 'lax' })
+      window.location.search = queryString.stringify(R.omit(['oidc_token'], query))
     }
 
     return this.props.error === undefined ? (
