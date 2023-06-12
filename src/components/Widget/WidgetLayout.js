@@ -17,7 +17,7 @@ export class WidgetCollapsibleRow extends PureComponent {
     return (
       <div
         className="list-group-item p-1"
-        onClick={this.props.handler}
+        //onClick={this.props.handler}
         //data-toggle="collapse"
         //data-target={`#${this.props.id}`}
       >
@@ -178,6 +178,7 @@ export class WidgetChevron extends PureComponent {
   render() {
     return (
       <div
+        onClick={this.props.handler}
         className={`${
           this.props.col || "col-2"
         } text-right pr-2 pl-0 pl-sm-0 pl-md-0 pl-lg-0 font-weight-bold text-muted mh-100`}>

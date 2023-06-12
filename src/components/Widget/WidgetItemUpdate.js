@@ -76,7 +76,6 @@ export class Update extends PureComponent {
     const article = "eyuioa".includes(this.props.type[0])? "an" : "a"
     return (
       <WidgetCollapsibleRow
-        handler={this.collapseToggle.bind(this)}
         id={`update_${this.props.title.replace(".", "_")}_${this.props.updateid}`}
         collapsibleData={data}
         noMargin={true}>
@@ -96,7 +95,7 @@ export class Update extends PureComponent {
         <WidgetIconDetail icon="fa-thumbs-up" alt="Karma" color={karma_color(this.props.karma)}>
           {this.props.karma}
         </WidgetIconDetail>
-        <WidgetChevron collapsed={this.state.collapsed} col="col-md-1" />
+        <WidgetChevron collapsed={this.state.collapsed} handler={this.collapseToggle.bind(this)} col="col-md-1" />
       </WidgetCollapsibleRow>
     )
   }

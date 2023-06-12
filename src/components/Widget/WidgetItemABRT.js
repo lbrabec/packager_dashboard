@@ -48,7 +48,6 @@ class ABRToutstanding extends PureComponent {
     const outProbCnt = this.props.outstanding_problems.length
     return (
       <WidgetCollapsibleRow
-        handler={this.collapseToggle.bind(this)}
         id={`ABRT_${this.props.pkg.replace(".", "_")}`}
         collapsibleData={data}>
         <WidgetHead type="ABRT problems" icon="fa-chart-area" col="col-md">
@@ -68,7 +67,7 @@ class ABRToutstanding extends PureComponent {
           </WidgetSubTitle>
         </WidgetHead>
 
-        <WidgetChevron collapsed={this.state.collapsed} col="col-md-1" />
+        <WidgetChevron collapsed={this.state.collapsed} handler={this.collapseToggle.bind(this)} col="col-md-1" />
       </WidgetCollapsibleRow>
     )
   }

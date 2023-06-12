@@ -107,7 +107,6 @@ export class PR extends PureComponent {
 
     return (
       <WidgetCollapsibleRow
-        handler={this.collapseToggle.bind(this)}
         id={`PR_${this.pkg}_${this.prid}`}
         collapsibleData={data}>
         <WidgetHead type="This is a pull request" icon="fa-git" col="col-md">
@@ -124,7 +123,7 @@ export class PR extends PureComponent {
         </WidgetHead>
         {getMixedBadge(this.props.ci_status)}
 
-        <WidgetChevron collapsed={this.state.collapsed} col="col-md-1"/>
+        <WidgetChevron collapsed={this.state.collapsed} handler={this.collapseToggle.bind(this)} col="col-md-1"/>
       </WidgetCollapsibleRow>
     )
   }

@@ -47,7 +47,6 @@ export class FTI extends PureComponent {
 
     return (
       <WidgetCollapsibleRow
-        handler={this.collapseToggle.bind(this)}
         id={`FTI_reasons_${title}_${release.replace(/\s/g, "")}_${repo}`}
         collapsibleData={reasons_list}>
         <WidgetHead type={tooltip} icon={icon} col="col-10">
@@ -56,7 +55,7 @@ export class FTI extends PureComponent {
             {this.state.collapsed ? Object.keys(problems).join(", ") : <span>&nbsp;</span>}
           </WidgetSubTitle>
         </WidgetHead>
-        <WidgetChevron collapsed={this.state.collapsed} />
+        <WidgetChevron collapsed={this.state.collapsed} handler={this.collapseToggle.bind(this)} />
       </WidgetCollapsibleRow>
     )
   }
