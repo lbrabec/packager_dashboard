@@ -111,17 +111,22 @@ class Masthead extends PureComponent {
                 }
                 <div className="ml-1 ml-md-0 mt-1 ml-md-0">
                   {
-                    this.props.linked_user.is_authenticated
-                    ?
-                    <>Linked FAS: {this.props.linked_user.user}
-                    {!this.props.linked_user.fas_groups.includes("packager")? " (not a packager)" : null}
-                    <a href={window.env.UNLINK_USER}>unlink</a></>
+                    this.props.linked_user.is_authenticated?
+                    <span data-toggle="tooltip" title="" data-original-title="Logout from Fedora Account" className="mr-3">
+                      <a href={window.env.UNLINK_USER}>
+                        <i className="fas fa-user-check text-success"></i>
+                      </a>
+                    </span>
                     :
-                    <a href={window.env.LINK_USER}>Link FAS account</a>
+                    <span data-toggle="tooltip" title="" data-original-title="Login to Fedora Account" className="mr-3">
+                      <a href={window.env.LINK_USER}>
+                        <i className="fas fa-user text-muted"></i>
+                      </a>
+                    </span>
                   }
 
                   {
-                    <span data-toggle="tooltip" title="" data-original-title="Help" className="mr-4">
+                    <span data-toggle="tooltip" title="" data-original-title="Help" className="mr-3">
                       <Link onClick={this.hideToolips.bind(this)} to="/helpmepls">
                         <i className="fas fa-question-circle"></i>
                       </Link>
@@ -129,7 +134,7 @@ class Masthead extends PureComponent {
                   }
 
                   {isCustom? null :
-                    <span data-toggle="tooltip" title="" data-original-title="Filters and Options" className="mr-4">
+                    <span data-toggle="tooltip" title="" data-original-title="Filters and Options" className="mr-3">
                       <button type="button" className="btn btn-link mt-n2" data-target="#optionsX" data-toggle="modal" onClick={this.optionsHandler.bind(this)}>
                         <i className="fas fa-cog"></i>
                       </button>
@@ -137,7 +142,7 @@ class Masthead extends PureComponent {
                   }
 
                   {isCustom? null :
-                    <span data-toggle="tooltip" title="" data-original-title="Customize dashboard" className="mr-4">
+                    <span data-toggle="tooltip" title="" data-original-title="Customize dashboard" className="mr-3">
                       <Link onClick={this.logout.bind(this)} to={"/custom" + window.location.search}>
                         <i className="fas fa-edit"></i>
                       </Link>
