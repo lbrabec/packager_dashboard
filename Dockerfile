@@ -1,4 +1,4 @@
-FROM docker.io/bitnami/node:18 as react-build
+FROM docker.io/bitnami/node:22 as react-build
 WORKDIR /app
 COPY . ./
 RUN yarn
