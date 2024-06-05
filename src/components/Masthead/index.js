@@ -67,6 +67,8 @@ class Masthead extends PureComponent {
       :
       <a href="/"><Logo /></a>
 
+
+
     const isCustom = window.location.pathname === "/custom"
 
     return (
@@ -108,6 +110,16 @@ class Masthead extends PureComponent {
                   )
                 }
                 <div className="ml-1 ml-md-0 mt-1 ml-md-0">
+                  {
+                    this.props.linked_user.is_authenticated
+                    ?
+                    <>Linked FAS: {this.props.linked_user.user}
+                    {!this.props.linked_user.fas_groups.includes("packager")? " (not a packager)" : null}
+                    <a href={window.env.UNLINK_USER}>unlink</a></>
+                    :
+                    <a href={window.env.LINK_USER}>Link FAS account</a>
+                  }
+
                   {
                     <span data-toggle="tooltip" title="" data-original-title="Help" className="mr-4">
                       <Link onClick={this.hideToolips.bind(this)} to="/helpmepls">
