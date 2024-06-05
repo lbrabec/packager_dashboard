@@ -6,7 +6,7 @@ import Popper from 'popper.js';
 */
 
 import { createStore, applyMiddleware } from 'redux'
-import thunkMiddleware from 'redux-thunk'
+import { thunk } from 'redux-thunk'
 import { createLogger } from 'redux-logger'
 import { Provider } from 'react-redux'
 import reducer from './reducers'
@@ -22,7 +22,7 @@ const root = createRoot(container);
 
 const loggerMiddleware = createLogger();
 const store = createStore(reducer, applyMiddleware(
-  thunkMiddleware,
+  thunk,
   loggerMiddleware
 ));
 
