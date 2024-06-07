@@ -1,5 +1,7 @@
 import React, { Component } from "react"
 import DashboardLayout from "./DashboardLayout"
+import Cookies from "universal-cookie"
+import { unsetDashboardQuery } from "../../actions/reduxActions"
 import { StgAlert, ServiceAlerts, VersionAlert } from "../Alerts"
 import { connect } from "react-redux"
 import {
@@ -18,6 +20,7 @@ import queryString from 'query-string'
 import Autosuggest from "react-autosuggest"
 import "./dashboard.css"
 
+const cookies = new Cookies()
 
 const getSuggestions = (items, value, limit) => {
   const input = value.trim().toLowerCase()
@@ -163,6 +166,13 @@ class CustomDashboard extends Component {
     this.props.dispatch(loadLinkedUser())
   }
 
+
+  logout() {
+    this.hideToolips()
+    cookies.remove("dashboard_query", { path: "/", sameSite: 'lax' })
+    this.props.dispatch(unsetDashboardQuery())
+  }
+
   render() {
     const { value_packages, value_packagers, value_groups,
             suggestions_packages, suggestions_packagers, suggestions_groups } = this.state
@@ -201,7 +211,7 @@ class CustomDashboard extends Component {
         <VersionAlert />
         <ServiceAlerts />
         <div className="container pt-4 pb-3 text-muted">
-          <h2>Customize the dashboard</h2>
+          <h2>Customize the dashboard or <a onClick={this.logout.bind(this)} href="/"><i class="fas fa-home"></i>Return Home</a></h2>
         </div>
         <div className="container py-4">
         <div className="row">

@@ -5,9 +5,12 @@
 }
 
 .masthead a {
-  font-size: 1.5em;
   color: #3c6eb4 !important;
   cursor: pointer;
+}
+
+.btn:focus {
+  box-shadow: none;
 }
 
 .masthead button {

@@ -110,52 +110,48 @@ class Masthead extends PureComponent {
                   )
                 }
                 <div className="ml-1 ml-md-0 mt-1 ml-md-0">
+                <div class="btn-group mr-2" role="group">
                   {
                     this.props.linked_user.is_authenticated?
-                    <span data-toggle="tooltip" title="" data-original-title="Logout from Fedora Account" className="mr-3">
-                      <a href={window.env.UNLINK_USER}>
+                      <button className="btn mr-3" title="Linked Fedora Account" type="button" data-toggle="dropdown" aria-expanded="false">
                         <i className="fas fa-user-check text-success"></i>
-                      </a>
-                    </span>
+                      </button>
                     :
-                    <span data-toggle="tooltip" title="" data-original-title="Login to Fedora Account" className="mr-3">
-                      <a href={window.env.LINK_USER}>
-                        <i className="fas fa-user text-muted"></i>
-                      </a>
-                    </span>
+                    <button className="btn mr-3" title="Login to Fedora Account" type="button" aria-expanded="false">
+                      <a href={window.env.LINK_USER}><i className="fas fa-user text-muted"></i></a>
+                    </button>
+                  }
+                  {
+                    <div class="dropdown-menu">
+                      <a class="dropdown-item" href="#">Linked FAS: {this.props.linked_user.user}</a>
+                      <a class="dropdown-item" href={window.env.UNLINK_USER}>Unlink FAS</a>
+                    </div>
                   }
 
                   {
-                    <span data-toggle="tooltip" title="" data-original-title="Help" className="mr-3">
+                      <button className="btn mr-3" type="button" title="Help">
                       <Link onClick={this.hideToolips.bind(this)} to="/helpmepls">
                         <i className="fas fa-question-circle"></i>
                       </Link>
-                    </span>
+                      </button>
+
                   }
 
                   {isCustom? null :
-                    <span data-toggle="tooltip" title="" data-original-title="Filters and Options" className="mr-3">
-                      <button type="button" className="btn btn-link mt-n2" data-target="#optionsX" data-toggle="modal" onClick={this.optionsHandler.bind(this)}>
+                      <button className="btn mr-3" type="button" title="Filters and Options" data-target="#optionsX" data-toggle="modal" onClick={this.optionsHandler.bind(this)}>
                         <i className="fas fa-cog"></i>
                       </button>
-                    </span>
+
                   }
 
                   {isCustom? null :
-                    <span data-toggle="tooltip" title="" data-original-title="Customize dashboard" className="mr-3">
+                      <button className="btn mr-3" type="button" title="Customize dashboard">
                       <Link onClick={this.logout.bind(this)} to={"/custom" + window.location.search}>
-                        <i className="fas fa-edit"></i>
+                        <i className="fas fa-people-arrows"></i>
                       </Link>
-                    </span>
+                      </button>
                   }
-
-                  {isCustom? null :
-                    <span data-toggle="tooltip" title="" data-original-title="Change user/group">
-                      <Link onClick={this.logout.bind(this)} to="/">
-                        <i className="fas fa-sign-out-alt"></i>
-                      </Link>
-                    </span>
-                  }
+                  </div>
                 </div>
               </div>
             </div>
