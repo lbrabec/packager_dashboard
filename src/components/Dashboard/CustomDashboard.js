@@ -211,7 +211,7 @@ class CustomDashboard extends Component {
         <VersionAlert />
         <ServiceAlerts />
         <div className="container pt-4 pb-3 text-muted">
-          <h2>Customize the dashboard or <a onClick={this.logout.bind(this)} href="/"><i class="fas fa-home"></i>Return Home</a></h2>
+          <h2>Customize the dashboard or <a onClick={this.logout.bind(this)} href="/"><i class="fas fa-home"></i> Return Home</a></h2>
         </div>
         <div className="container py-4">
         <div className="row">
