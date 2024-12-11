@@ -138,13 +138,6 @@ class Stats extends PureComponent {
               className="mr-4"
             />
             <StatIcon
-              category="fti"
-              icon="fa-file-medical-alt"
-              count={stats.fails_to_install}
-              fulltitle={`${stats.fails_to_install} fails in fedora-health-check (FTI/FTBFS)`}
-              className="mr-4"
-            />
-            <StatIcon
               category="orphaned"
               icon="fa-user-slash"
               count={stats.orphans}

@@ -214,16 +214,6 @@ export const filterOrphan = (options, releases, user_data) => (pkg) => {
   return static_info.data.orphans[pkg]
 }
 
-export const filterFTI = (options, releases, user_data) => (pkg) => {
-  const { static_info } = user_data
-
-  return static_info.data.fails_to_install[pkg].filter((fti) => {
-    if (!showRelease(releases, options, fti)) return false
-
-    return true
-  })
-}
-
 export const filterABRT = (options, releases, user_data) => (pkg) => {
   const { abrt_reports } = user_data
   if (abrt_reports.status === 204) return NO_ABRT

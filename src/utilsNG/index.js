@@ -21,7 +21,6 @@ export const filterCategories = (options) => (pkg) => {
       overrides: options.show_overrides ? pkg.data.overrides : EMPTY_ARRAY,
       koschei: options.show_koschei ? pkg.data.koschei : EMPTY_ARRAY,
       orphans: options.show_orphaned ? pkg.data.orphans : NOT_ORPHAN,
-      fails_to_install: options.show_fti ? pkg.data.fails_to_install : EMPTY_ARRAY,
       abrt_reports: options.show_abrt_reports ? pkg.data.abrt_reports : NO_ABRT,
     },
   }
@@ -137,7 +136,6 @@ export const filterPackage = (options, releases) => (pkg) => {
       overrides: filterOverrides(pkg.data.overrides, options, releases),
       koschei: filterKoschei(pkg.data.koschei, options, releases),
       orphans: filterOrphans(pkg.data.orphans, options, releases),
-      fails_to_install: filterFTI(pkg.data.fails_to_install, options, releases),
       abrt_reports: filterABRT(pkg.data.abrt_reports, options, releases),
     },
   }
@@ -149,7 +147,6 @@ export const hiddenDueFiltering = (options, filtered, unfiltered) =>
   (options.show_updates && filtered.updates < unfiltered.updates) ||
   (options.show_overrides && filtered.overrides < unfiltered.overrides) ||
   (options.show_koschei && filtered.koschei < unfiltered.koschei) ||
-  (options.show_fti && filtered.fails_to_install < unfiltered.fails_to_install) ||
   (options.show_orphans && filtered.orphans < unfiltered.orphans) ||
   (options.show_abrt_reports && filtered.abrt_reports < unfiltered.abrt_reports)
 
@@ -160,7 +157,6 @@ export const dataLen = (pkg, includeOrphans = true) =>
   pkg.data.updates.length +
   pkg.data.overrides.length +
   pkg.data.koschei.length +
-  pkg.data.fails_to_install.length +
   (pkg.data.abrt_reports.problems_present ? 1 : 0) +
   (pkg.data.orphans.depends_on_orphaned ? 1 : 0) +
   (includeOrphans && pkg.data.orphans.orphaned ? 1 : 0)
@@ -185,7 +181,6 @@ export const itemsCntPerCategory = (packages) => {
     overrides: itemsCntInCategory("overrides"),
     koschei: itemsCntInCategory("koschei"),
     orphans: R.sum(packages.map(pkg => (pkg.data.orphans.depends_on_orphaned ? 1 : 0) + (pkg.data.orphans.orphaned ? 1 : 0))),
-    fails_to_install: itemsCntInCategory("fails_to_install"),
     abrt_reports: R.sum(packages.map(p => p.data.abrt_reports?.outstanding_problems?.length ? 1 : 0)),
   }
 }

@@ -36,7 +36,6 @@ class Widget extends PureComponent {
       updates,
       overrides,
       koschei,
-      fails_to_install,
       abrt_reports,
       ownershipIcon,
       orphans,
@@ -70,17 +69,10 @@ class Widget extends PureComponent {
       <Koschei title={title} {...k} key={"koschei" + title + k.release} />
     ))
 
-    const fti_no_src = R.compose(
-      R.filter((r) => R.keys(r).length > 0),
-      R.map((f) => R.pickBy((v, k) => !k.startsWith("src"), f.problems))
-    )(fails_to_install)
-
-    const fti_items = fails_to_install.map((f) => <FTI title={title} {...f} key={"fti_" + title + f.release + f.repo} isFTI={fti_no_src.length > 0} />)
     const abrt_item = abrt_reports.problems_present? <ABRT {...abrt_reports} pkg={title} /> : null
     const orphan_badge = orphans.orphaned ? <OrphanBadge since={orphans.problematic_since} /> : null
     const orphan_impacted_badge = orphans.depends_on_orphaned ? <OrphanImpactedBadge color="danger">Orphan impacted</OrphanImpactedBadge> : null
     const orphan_item = orphans.depends_on_orphaned? <Orphan {...orphans} title={title}/> : null
-    const fti_src = fails_to_install.map(f => R.keys(f.problems).map(p => p.startsWith("src")).some(R.identity)).some(R.identity)
     const ftbfs_badge = (fti_src || koschei.length > 0) ? <FTBadge>FTBFS</FTBadge> : null
     const fti_badge = fti_no_src.length > 0 ? <FTBadge>FTI</FTBadge> : null
 

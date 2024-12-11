@@ -83,75 +83,6 @@ const koschei = [
   },
 ]
 
-const fti = [
-  {
-    problems: {
-      aarch64: {
-        reason: [
-          "python3.8dist(decorator)",
-          "python3.8dist(numpy)",
-          "python3.8dist(setuptools)",
-          "python3.8dist(six)",
-          "python(abi) = 3.8",
-          "python3.8dist(networkx) >= 2",
-          "python3.8dist(ply) >= 3.4",
-        ],
-        since: "2020-07-17T07:41:32.007689425Z",
-      },
-      armv7hl: {
-        reason: [
-          "python(abi) = 3.8",
-          "python3.8dist(numpy)",
-          "python3.8dist(setuptools)",
-          "python3.8dist(six)",
-          "python3.8dist(networkx) >= 2",
-          "python3.8dist(ply) >= 3.4",
-          "python3.8dist(decorator)",
-        ],
-        since: "2020-07-17T07:41:32.007696065Z",
-      },
-      ppc64le: {
-        reason: [
-          "python(abi) = 3.8",
-          "python3.8dist(decorator)",
-          "python3.8dist(networkx) >= 2",
-          "python3.8dist(ply) >= 3.4",
-          "python3.8dist(numpy)",
-          "python3.8dist(setuptools)",
-          "python3.8dist(six)",
-        ],
-        since: "2020-07-17T07:41:32.007702589Z",
-      },
-      s390x: {
-        reason: [
-          "python3.8dist(networkx) >= 2",
-          "python3.8dist(ply) >= 3.4",
-          "python3.8dist(numpy)",
-          "python3.8dist(setuptools)",
-          "python3.8dist(six)",
-          "python(abi) = 3.8",
-          "python3.8dist(decorator)",
-        ],
-        since: "2020-07-17T07:41:32.007709187Z",
-      },
-      x86_64: {
-        reason: [
-          "python(abi) = 3.8",
-          "python3.8dist(numpy)",
-          "python3.8dist(setuptools)",
-          "python3.8dist(six)",
-          "python3.8dist(decorator)",
-          "python3.8dist(networkx) >= 2",
-          "python3.8dist(ply) >= 3.4",
-        ],
-        since: "2020-07-17T07:41:32.007717430Z",
-      },
-    },
-    release: "Fedora Rawhide",
-    repo: "rawhide",
-  },
-]
-
 const orphan = {
   depends_on_orphaned: true,
   direct_dependencies: ["bar"],
@@ -209,7 +140,6 @@ const pkg = {
     overrides: UNG.EMPTY_ARRAY,
     koschei: UNG.EMPTY_ARRAY,
     orphans: UNG.NOT_ORPHAN,
-    fails_to_install: UNG.EMPTY_ARRAY,
     abrt_reports: UNG.NO_ABRT,
     calendars: [],
     package_versions: {},
@@ -311,8 +241,8 @@ class Help extends Component {
               <div className="col-md-12">
                 <p>
                   Packager Dashboard is a service for Fedora package maintainers aiming to provide
-                  all relevant data: FTBFS/FTI status (from both Bugzilla, Koschei and health
-                  check), orphan warnings, bugzillas, pull requests, active overrides and updates -
+                  all relevant data: FTBFS/FTI status (from both Bugzilla, Koschei),
+                  orphan warnings, bugzillas, pull requests, active overrides and updates -
                   at a single place in an easy to read and filter way.
                 </p>
                 <p>
@@ -380,12 +310,6 @@ class Help extends Component {
                         <i className={`fa fa-wrench mr-1`} />
                       </th>
                       <td>FTBFS (Koschei fails)</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">
-                        <i className={`fa fa-file-medical-alt mr-1`} />
-                      </th>
-                      <td>FTI or FTBFS (fedora-health-check fails)</td>
                     </tr>
                     <tr>
                       <th scope="row">
@@ -558,13 +482,6 @@ class Help extends Component {
                   data-toggle="tooltip"
                   title=""
                   className={`text-nowrap pointer text-muted font-weight-bold mr-4`}
-                  data-original-title="0 fails in fedora-health-check (FTI/FTBFS)">
-                  <i className={`fa fa-file-medical-alt mr-1`} /> 0
-                </span>
-                <span
-                  data-toggle="tooltip"
-                  title=""
-                  className={`text-nowrap pointer text-muted font-weight-bold mr-4`}
                   data-original-title="1 packages orphaned">
                   <i className={`fa fa-user-slash mr-1`} /> 1
                 </span>
@@ -709,7 +626,7 @@ class Help extends Component {
                 </p>
                 <Widget
                   title={pkg.name}
-                  {...{ ...pkg.data, fails_to_install: fti }}
+                  {...{ ...pkg.data }}
                   ownershipIcon={null}
                   versions={version}
                   cvesOnly={false}
