@@ -16,7 +16,7 @@ import * as R from "ramda"
 import { connect } from "react-redux"
 import { loadOptions, loadPinned, loadReleases, loadSchedule, loadCachingInfo, loadEnvironment,
          getVersion, loadServiceAlerts, loadLinkedUser, saveToken, loadDashboard,
-         setDashboardQuery } from "../../actions/reduxActions"
+         setDashboardQuery, changeOptionBatch } from "../../actions/reduxActions"
 import * as U from "../../utils"
 import { showAllOptions } from "../../reducers"
 import "./dashboard.css"
@@ -65,6 +65,19 @@ class DashboardNG extends Component {
 
     this.props.dispatch(loadOptions(window.location.search))
     this.props.dispatch(loadPinned(window.location.search))
+
+    const query = queryString.parse(window.location.search)
+    const optionsFromURL = R.pipe(
+      R.defaultTo("{}"),
+      (rawStr) => {
+        try {
+          return JSON.parse(rawStr)
+        } catch {
+          return JSON.parse("{}")
+        }
+      }
+    )(query.options)
+    this.props.dispatch(changeOptionBatch(optionsFromURL))
 
     this.scheduleRefresh()
   }
